@@ -1,0 +1,112 @@
+:root {
+  --ROOMER_BLUE: #5587a2;
+  --ROOMER_GRAY: #1f241a;
+}
+
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 85%;
+  margin-top: 50px;
+  justify-content: flex-start;
+}
+
+.form-box-invisible {
+  display: none;
+}
+
+.disabledOverlay {
+  position: absolute;
+  color: darkred;
+  height: 300px;
+  width: 85%;
+}
+
+.form-box input, textarea {
+  display: block;
+  padding: .5rem 2% .5rem 2%;
+  margin: 10px 0 ;
+  border: 1px solid var(--ROOMER_GRAY);
+  border-radius: 5px;
+  font-size: 15px;
+  width: 96%;
+  background-color: lightgrey;
+  font-family: "Tahoma", "Arial", "Arabic Transparent";
+}
+
+input:disabled, textarea:disabled {
+  color: lightgray;
+  border: 1px solid lightgray;
+}
+
+input:focus, textarea:focus{
+  border: 1px solid var(--ROOMER_BLUE);
+  outline: none;
+}
+
+.profileForm textarea{
+  height: 47vh;
+}
+
+.profileForm .submitBtn {
+  width: 150px;
+  height: 2.2rem;
+  background-color: var(--ROOMER_GRAY);
+  border: 2px solid var(--ROOMER_GRAY);
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px 0px 10px 0px;
+  padding: 5px;
+  color: white;
+}
+
+.form-box textarea{
+  height: 25vh;
+}
+
+.form-box .submitBtn {
+  width: 150px;
+  height: 2.2rem;
+  background-color: var(--ROOMER_GRAY);
+  border: 2px solid var(--ROOMER_GRAY);
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 20px 0px 20px 0px;
+  padding: 5px;
+  color: white;
+}
+
+.submitBtnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.submitBtn:disabled {
+  background-color: lightgray;
+  border: 1px solid lightgray;
+  color: darkgray;
+}
+
+.resolveButton {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 2px 1px 2px 1px #dddddd;
+  border-radius: 60px;
+}
+
+.resolveButton:hover {
+  box-shadow: 1px 1px 1px 1px #dddddd;
+}
+
+.resolveButton-invisible {
+  display: none;
+}
+

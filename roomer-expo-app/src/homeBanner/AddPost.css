@@ -1,0 +1,178 @@
+
+.datePickerContainer {
+  margin: 10px 0px 10px 0px
+}
+
+.DateRangePickerInput__withBorder {
+  border-radius: 2px;
+  border: 0px solid #dbdbdb
+}
+
+.DateRangePickerInput_arrow_svg {
+  vertical-align: middle;
+  fill: #484848;
+  height: 24px;
+  width: 24px;
+  margin: 10px;
+}
+
+.CalendarDay__selected_span {
+  background: #8CDEE7;
+  color: white;
+  border: 1px solid #79bfc7;
+}
+
+.CalendarDay__selected {
+  background: #7AC4CD;
+  color: white;
+}
+
+.CalendarDay__selected:hover {
+  background: #7AC4CD;
+  color: white;
+}
+
+.CalendarDay__hovered_span:hover,
+.CalendarDay__hovered_span {
+  background: #8CDEE7;
+}
+
+.CalendarDay__selected_span:active,
+.CalendarDay__selected_span:hover {
+  background: #7AC4CD;
+  border: 1px double #79bfc7;
+  color: #fff
+}
+.CalendarDay__selected,
+.CalendarDay__selected:active,
+.CalendarDay__selected:hover {
+  background: #7AC4CD;
+  border: 1px double #79bfc7;
+  color: #fff
+}
+
+.CalendarDay__hovered_span,
+.CalendarDay__hovered_span:hover {
+  background: #8CDEE7;
+  border: 1px double #79bfc7;
+  color: white
+}
+
+.CalendarDay__hovered_span:active {
+  background: #8CDEE7;
+  border: 1px double #79bfc7;
+  color: white
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-top: 26px solid transparent;
+  border-right: 33px solid #8CDEE7;
+  bottom: 0;
+  right: 0
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
+  border-right: 33px solid #7AC4CD
+}
+
+.postform-box {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 85%;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+/* .postform-box input, textarea {
+  display: block;
+  padding: .5rem 2% .5rem 2%;
+  margin: 10px 0 ;
+  border: 1px solid #8CDEE7;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 96%;
+  font-family: "Tahoma", "Arial", "Arabic Transparent";
+} */
+
+.range-container input{
+  display: block;
+  padding: .5rem 2% .5rem 2%;
+  margin: 10px 20px 10px 10px;
+  border: 2px solid #b3b4b1;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 100px;
+  font-family: "Tahoma", "Arial", "Arabic Transparent";
+}
+
+.tag-container input{
+  display: block;
+  padding: .5rem 2% .5rem 2%;
+  margin: 10px;
+  border: 1px solid #8CDEE7;
+  border-radius: 5px;
+  font-size: 15px;
+  width: 50%;
+  font-family: "Tahoma", "Arial", "Arabic Transparent";
+}
+
+.date-container input{
+  display: block;
+  padding: .5rem 2% .5rem 2%;
+  margin: 10px 20px 10px 10px;
+  border: 2px solid #b3b4b1;
+  border-radius: 9px;
+  font-size: 15px;
+  width: 85%;
+  font-family: "Tahoma", "Arial", "Arabic Transparent";
+  text-align: center;
+}
+
+/* input:focus, textarea:focus{
+  border: 1px solid #7AC4CD;
+  outline: none;
+} */
+
+.postform-box textarea{
+  height: 25vh;
+}
+
+.postform-box .submitBtn {
+  width: 100%;
+  height: 2rem;
+  background-color: #7AC4CD;
+  border: 2px solid #8CDEE7;
+  cursor: pointer;
+  margin: 20px 0px 20px 0px ;
+}
+
+.range-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tag-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.date-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.addTagIcon {
+  font-size: 1.5em;
+  margin-left: 10px;
+}
+
+.searchIcon {
+  font-size: 2em;
+  margin-left: 10px;
+  margin-right: 30px;
+}
+

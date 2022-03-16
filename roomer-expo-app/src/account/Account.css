@@ -1,0 +1,26 @@
+.tab {
+  font-size: 1em;
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid #000;
+  color: #fff;
+  width: 100px;
+  text-align: center;
+  background-color: #aaaaaa;
+}
+
+.selectedTab {
+  font-size: 1em;
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid #000;
+  border-bottom: 0px;
+  color: #000;
+  width: 100px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.tab:hover {
+  background-color: #79bfc7;
+}

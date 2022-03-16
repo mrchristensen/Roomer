@@ -1,0 +1,98 @@
+.leftArrow {
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  font-size: 200%;
+  color: black;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.rightArrow {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  font-size: 200%;
+  color: black;
+  z-index: 10;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bannerTitle {
+  position: absolute;
+  font-size: 5em;
+  top: 20%;
+  left: 10%;
+  width: 400px;
+  color: white;
+  text-shadow: 2px 2px 16px black;
+  font-weight: bold;
+}
+
+.bannerTitleMobile {
+  position: absolute;
+  font-size: 2.3em;
+  top: 5%;
+  left: 15%;
+  width: 50%;
+  color: white;
+  text-shadow: 2px 2px 16px black;
+  font-weight: bold;
+}
+
+.slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+}
+
+.slideActive {
+  opacity: 0;
+  transition-duration: 1s ease;
+  transform: scale(1.08);
+}
+
+.addPostButton {
+  position: absolute;
+  height: 40px;
+  border-radius: 40px;
+  border: 2px solid white;
+  background-color: black;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  top: 80%;
+  right: 5%;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: .5px .5px 4px black;
+  cursor: pointer;
+}
+
+.addPostButton:hover {
+  box-shadow: 0 0 0 black;
+}
+
+.plusIcon {
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+.plusIconMobile {
+  position: absolute;
+  font-size: 3em;
+  top: 60%;
+  right: 15%;
+  background-color: white;
+  border-radius: 40px;
+  box-shadow: .5px .5px 8px black;
+}
+
+.plusIconMobile:focus {
+  box-shadow: 0 0 0 black;
+}
