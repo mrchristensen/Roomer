@@ -10,7 +10,7 @@ AWS.config.update({
 const s3 = new AWS.S3();
 const AWS_BUCKET_NAME = "AWS_BUCKET_NAME"
 
-const ROOMER_EMAIL = "farnsworth.natalie@gmail.com"; //TODO: use official roomer gmail once created
+const ROOMER_EMAIL = "ROOMER_EMAIL"
 
 export function sendSESEmail(toEmail, fromEmail, subject, message) {
   // Create sendEmail params 
