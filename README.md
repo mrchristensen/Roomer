@@ -12,6 +12,7 @@ Amplify
  - hosts website client
 
 SES
+ - enables users sending emails to each other
 
 Lambda
 
