@@ -7,6 +7,7 @@ Backend/ contains the lambda layer files used in AWS Lambda Layers
 AWS Services:
 
 Cognito
+ - handles user authentication
 
 Amplify
  - hosts website client
