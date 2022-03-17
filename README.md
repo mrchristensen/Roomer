@@ -16,6 +16,7 @@ SES
 
 Lambda
  - functions triggered by API gateway
+ - Lambda layer contains all Data Access Object files
 
 API Gateway
  - gateway for all backend endpoints
