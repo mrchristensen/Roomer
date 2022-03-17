@@ -22,5 +22,6 @@ API Gateway
  - gateway for all backend endpoints
 
 DynamoDB
+ - Database for user table
 
 EC2
