@@ -23,7 +23,7 @@ API Gateway
  - gateway for all backend endpoints
 
 DynamoDB
- - Database for user table
+ - Database for user table (not user credentials)
 
 EC2
  - an instance runs our MongoDB
