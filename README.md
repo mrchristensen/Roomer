@@ -9,6 +9,7 @@ AWS Services:
 Cognito
 
 Amplify
+ - hosts website client
 
 SES
 
