@@ -4,7 +4,7 @@ import { createBrowserApp } from "@react-navigation/web";
 import { Platform } from "react-native";
 
 import ProfileScreen from "./screens/profileScreen";
-import Account from "./account/Account";
+import Account from "./account/account";
 import HomeScreen from "./screens/homeScreen";
 import FeedbackScreen from "./screens/feedbackScreen";
 
