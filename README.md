@@ -15,6 +15,7 @@ SES
  - enables users sending emails to each other
 
 Lambda
+ - functions triggered by API gateway
 
 API Gateway
 
