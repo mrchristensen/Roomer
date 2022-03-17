@@ -18,6 +18,7 @@ Lambda
  - functions triggered by API gateway
 
 API Gateway
+ - gateway for all backend endpoints
 
 DynamoDB
 
