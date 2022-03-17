@@ -25,3 +25,4 @@ DynamoDB
  - Database for user table
 
 EC2
+ - an instance runs our MongoDB
