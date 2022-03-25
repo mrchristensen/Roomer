@@ -207,7 +207,7 @@ export async function createUser(userID, userEmail, username) {
 
 }
 
-export async function getUsername(userID) {
+export async function getUsername (userID) {
   console.log('Getting username in db')
 
   try {

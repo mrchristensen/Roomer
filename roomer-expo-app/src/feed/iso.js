@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useContext, Component} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -9,12 +9,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Overlay } from 'react-native-elements';
+import { Overlay, Icon } from 'react-native-elements';
+import { NavigationContext } from "react-navigation";
 import './Form.css';
 import { sendSESEmail } from '../AWS';
-import { Icon } from 'react-native-elements';
 import {Auth} from 'aws-amplify';
-import { resolvePostStatus, unresolvePostStatus, getUserEmail } from '../ServerFacade';
+import { resolvePostStatus, unresolvePostStatus, getUserEmail, getUsername } from '../ServerFacade';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -27,6 +27,24 @@ function epochToDateString(epoch) {
   var d = new Date(epoch);
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   return d.toLocaleDateString("en-US", options);
+}
+
+const UserPageLink = ({id, name, isOwner, exitCallback}) => {
+  const navigation = useContext(NavigationContext);
+
+  return <TouchableOpacity
+    style={styles.detailsText} 
+    onPress={() => {
+      navigation.navigate("Profile", {
+        owner: isOwner ? 1 : 0,
+        id: id,
+      });
+      exitCallback();
+    }}>
+    <>
+    {name}
+    </>
+  </TouchableOpacity>;
 }
 
 class ExpandedISO extends Component {
@@ -56,7 +74,7 @@ class ExpandedISO extends Component {
         />{"   resolved"}</View>: <></>,
       viewerIsAuthor: false, 
       statusResolveMessage: props.props.iso.status === "resolved" ? "Re-Post" : "Unpost",
-      
+      name: "",
     }
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
@@ -115,9 +133,8 @@ class ExpandedISO extends Component {
     ]
   }
 
-  componentDidMount() { 
+  componentDidMount() {
     Auth.currentAuthenticatedUser().then(user => {
-      console.log("CURRENT AUTHENTICATED USER OBJECT: ", user);
       this.setState(prevState => ({
         ...prevState,
         notLoggedIn: false,
@@ -125,6 +142,14 @@ class ExpandedISO extends Component {
         viewerIsAuthor: user.username === this.state.props.iso.userID,
         token: user.signInUserSession.accessToken,
       }));
+
+      if(user.username === this.state.props.iso.userID) {
+        this.setState({name: user.attributes.name});
+      } else {
+        getUsername(this.state.props.iso.userID).then(response => {
+          this.setState({name: response.Item.USERNAME});
+        });
+      }
     }).catch(() => {
       this.setState(prevState => ({
         ...prevState,
@@ -146,7 +171,6 @@ class ExpandedISO extends Component {
 
     if(this.state.emailValue != "" && this.state.subjectValue != "" && this.state.messageValue != "") {
       //send email
-      console.log("SENDING EMAIL TO THIS GUY: ", this.state.props.iso.userID);
       let toEmailValue = await getUserEmail(this.state.props.iso.userID, this.state.token);
       if (toEmailValue == -1) {
         //TODO: error handling
@@ -210,12 +234,15 @@ class ExpandedISO extends Component {
         </TouchableOpacity>
         <View style={styles.expandedIsoContainer}>
           <View style={styles.expandedIsoInfoContainer}>
-            <Image
-              source={{
-                uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.iso.userID}`,
-              }}
-              style={[styles.profileImageExpanded]}
-            />
+            <View style={styles.profileImageWrapper}>
+              <Image
+                source={{
+                  uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.iso.userID}`,
+                }}
+                style={[styles.profileImageExpanded]}
+              />
+              <UserPageLink id={this.state.props.iso.userID} name={this.state.name} isOwner={this.state.viewerIsAuthor} exitCallback={this.state.props.onPress}/>
+            </View>
             <View style={[styles.isoContentContainerExpanded]}>
               <Text style={[styles.topInfoRowExpanded]}>
               Type: {this.state.props.iso.housingType}
@@ -442,7 +469,13 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    marginRight: 20,
+    marginBottom: 10,
+  },
+  profileImageWrapper: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 20,
   },
   topInfoRow: {
     flexDirection: 'row',

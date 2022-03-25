@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   View,
@@ -9,8 +9,6 @@ import {
   CheckBox,
   Text,
   FlatList,
-  SafeAreaView,
-  TextInput,
   Picker
 } from 'react-native';
 import { AiFillPlusCircle, AiOutlineSearch } from 'react-icons/ai';
@@ -200,8 +198,8 @@ const AddPost = ({props}) => {
                 onValueChange={(itemValue, itemIndex) => {
                   setLocation(itemValue);
                 }}>
-                <Picker.Item label="Provo" value="provo" />
-                <Picker.Item label="Orem" value="orem" />
+                <Picker.Item label="Provo" value="Provo" />
+                <Picker.Item label="Orem" value="Orem" />
               </Picker>
               <AiOutlineSearch
                 className="searchIcon"

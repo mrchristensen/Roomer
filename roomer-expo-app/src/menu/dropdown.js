@@ -14,7 +14,9 @@ const Dropdown = (props) => {
     return (
         <div className='drop-down'>
             <div className='menu-item' onClick={(event) => {
-                navigation.navigate("Profile");
+                navigation.navigate("Profile", {
+                  owner: 1
+                });
             }}>
                 <span>
                     <Icon 

@@ -126,7 +126,7 @@ class Header extends Component {
                         {
                             this.state.isHome ? (
                                 <span className='options underline-home-effect'>
-                                    {this.findABuyerIcon}
+                                {this.findABuyerIcon}
                                 </span>
                             ) : (
                                 <span className='options underline-hover-effect'>
