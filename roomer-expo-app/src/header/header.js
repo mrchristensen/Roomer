@@ -1,4 +1,5 @@
 import React, {Component, useState} from 'react';
+import {Dimensions} from 'react-native';
 import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
 import './header.css'
 import RoomerLogo from './roomer.svg'
@@ -7,6 +8,9 @@ import {Icon} from 'react-native-elements';
 import AuthenticationCard from '../authentication/AuthenticationCard.js'
 import { Auth } from 'aws-amplify'
 import AddPost from '../homeBanner/addPost';
+
+const win = Dimensions.get("window");
+const isMobile = win.width < 600;
 
 class Header extends Component {
 
@@ -89,12 +93,12 @@ class Header extends Component {
     }
 
     findABuyerIcon = <div className='icon-wrapper'>
-        Find a Buyer
+        { !isMobile ? "Find a Buyer" : ""}
         <Icon           
         name='search'
         type='feather'
         color={"#fff"}
-        style={{marginLeft: 4}}
+        style={{marginLeft: !isMobile ? 4 : 10}}
         size={15}
     />
     </div>
@@ -109,7 +113,7 @@ class Header extends Component {
                             onClick={this.onClickFindAPlace}
                             >
                             <div className='icon-wrapper'>
-                                Find a Place 
+                                {!isMobile ? "Find a Place" : ""}
                                 <Icon           
                                 name='plus'
                                 type='feather'
