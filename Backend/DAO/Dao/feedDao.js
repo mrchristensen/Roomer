@@ -123,7 +123,7 @@ async function getFeed(uri, pageSize, lastPostId, housingType, housingPrice, loc
   */
 }
 
-async function getUserPosts(uri, userId, pageSize, lastPostId) {
+async function getUserPosts(uri, userId, pageSize, lastPostId, showResolved) {
   
   mongoose.connect(uri);
 
@@ -151,6 +151,10 @@ async function getUserPosts(uri, userId, pageSize, lastPostId) {
 
   if (lastPostId && lastPostId != null) {
     query._id = { $lt: lastPostId };
+  }
+
+  if (!showResolved) {
+    query.status = "unresolved";
   }
 
   var result = await isoModel.find(query).sort({postedDate:-1}).limit(pageSize);
