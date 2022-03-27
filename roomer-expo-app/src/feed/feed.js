@@ -29,7 +29,7 @@ class Feed extends Component {
       fromFilter: false,
       setUpdateFeedState: props.setUpdateFeedState
     };
-
+    
     this.state.setUpdateFeedState(this.updateState)
   }
 

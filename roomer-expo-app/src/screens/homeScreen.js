@@ -41,7 +41,7 @@ class App extends Component {
         fromFilter: false
       },
       isDarkMode: false, //useColorScheme() === 'dark',
-      loggedIn: true, //TODO: make this based off actual login value
+      loggedIn: true,
       updateFeedState: null
     };
   }
@@ -90,13 +90,13 @@ class App extends Component {
           <View style={[styles.sectionContainer]}>
             <Header />
             <View style={[styles.bodyContainer]}>
-              <Feed 
-                props={this.state.feedProps} 
-                setUpdateFeedState={this.setUpdateFeedState}
-              />
               <Filter 
                 filterValuesSet={this.filterValuesSet} 
                 updateFeedState={this.state.updateFeedState}
+              />
+              <Feed 
+                props={this.state.feedProps} 
+                setUpdateFeedState={this.setUpdateFeedState}
               />
             </View>
           </View>
@@ -112,11 +112,10 @@ class App extends Component {
             <View style={[styles.sectionContainer]}>
               <Header />
               <View style={[styles.bodyContainer]}>
-                {/* <FilterMobile filterValuesSet={this.filterValuesSet} /> */}
                 <Feed 
                   props={this.state.feedProps} 
-                  setUpdateFeedState={this.setUpdateFeedState}/>
-                <View style={[styles.extraBoxContainer]} />
+                  setUpdateFeedState={this.setUpdateFeedState}
+                />
               </View>
             </View>
           </ScrollView>

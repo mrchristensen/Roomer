@@ -52,14 +52,12 @@ div {
     align-items: center;
     justify-content: center;
     margin: 22px;
-    /* left: 4%; */
 }
 
 .header-options__right-not-logged-in {
     display: flex;
     flex-direction: row;
     margin: 22px;
-    /* left: 6%; */
 }
 
 .options {
@@ -93,8 +91,8 @@ div {
 }
 
 .options-wrapper {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .underline-hover-effect {
@@ -145,9 +143,9 @@ div {
 }
 
 .icon-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 @media (max-width: 601px) {
@@ -187,7 +185,12 @@ div {
     }
 }
 
-@media (max-width: 400px) {    
+@media (max-width: 400px) {  
+    .header-container {
+        max-width: 400px;
+        height: 80px;
+    }
+
     .roomer-logo-container {
         margin: 25px 0;
         padding: 0;
@@ -199,19 +202,19 @@ div {
     }
 
     .header-options__left {
-        margin: 18px;
+        margin: 5px;
     }
 
     .options {
         font-size: 12px;
-        margin-right: 0;
+        margin-right: 3px;
     }
 
     .options-feedback {
         font-size: 12px;
     }
 
-    .options-wrapper__right {
-        left: 25%;
+    .header-options__right-not-logged-in {
+        left: 1%;
     }
 }
