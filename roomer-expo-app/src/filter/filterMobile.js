@@ -225,23 +225,22 @@ const FilterMobile = (props) => {
 const styles = StyleSheet.create({
   filterMobileButton: {
     borderStyle: 'solid',
-    backgroundColor: '#d5d4d2',
+    backgroundColor: '#1e2419',
     borderRadius: 20,
     borderColor: '#b3b4b1',
     borderWidth: 2,
     width: responsiveWidth(30),
     alignItems: 'center',
-    marginBottom: 8,
-    marginTop: 10,
-    marginLeft: 10
+    marginLeft: 10,
+    marginBottom: 2
   },
   buttonText: {
-    color: '#5c6565',
+    color: '#ffffff',
     fontWeight: '500'
   },
   collapseBody: {
     width: '100%',
-    backgroundColor: '#f8f6f0',
+    backgroundColor: '#dcdcdc',
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',

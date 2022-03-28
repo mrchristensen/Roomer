@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
       },
   bodyContainer: !isMobile
     ? {
-        height: "100%",
+        height: "50%",
         width: "100%",
         flex: 1,
         flexDirection: "row",
