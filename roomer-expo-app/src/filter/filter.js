@@ -127,7 +127,6 @@ const Filter = (props) => {
 
     function setMap() {
         getCoordinates(location).then((response) => {
-            console.log(response);
             if (response.status == 200) {
                 let coordinates = response.data.results[0].geometry.location;
                 mapRef.current.animateToRegion({
@@ -146,7 +145,11 @@ const Filter = (props) => {
     }
 
     function confirmSelectedTags(updatedSelectedTags) {
-        setSelectedTags(updatedSelectedTags);
+        if (updatedSelectedTags.length == 0) {
+            setSelectedTags(null);
+        } else {
+            setSelectedTags(updatedSelectedTags);
+        }
     }
 
     function applyFilter() {
@@ -244,9 +247,6 @@ const Filter = (props) => {
                 </div>
             </div>
             <FilterTags confirmSelectedTags={confirmSelectedTags} />
-            {/* <div className='filter-button-container'>
-                <button className='filter-button' onClick={onApplyFilter}>Apply Filter</button>
-            </div> */}
         </View>
     );
 }

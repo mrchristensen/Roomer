@@ -18,7 +18,7 @@ import {
 import Feed from "../feed/feed";
 import Header from "../header/header";
 import Filter from "../filter/filter";
-import { responsiveWidth } from "react-native-responsive-dimensions";
+import FilterMobile from "../filter/filterMobile";
 
 const win = Dimensions.get("window");
 let isMobile = win.width < 600;
@@ -112,6 +112,7 @@ class App extends Component {
             <View style={[styles.sectionContainer]}>
               <Header />
               <View style={[styles.bodyContainer]}>
+                <FilterMobile />
                 <Feed 
                   props={this.state.feedProps} 
                   setUpdateFeedState={this.setUpdateFeedState}
@@ -149,72 +150,7 @@ const styles = StyleSheet.create({
     : {
         marginTop: 5,
         flexDirection: "column",
-      },
-  extraBoxContainer: !isMobile
-    ? {
-        width: "25%",
-        borderRadius: 60,
-        border: "2px solid #000",
-      }
-    : {
-        width: 0,
-        height: 0,
-      },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-  headerContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 75,
-    zIndex: 1,
-  },
-  roomerLogoContainer: {
-    justifyContent: "flex-start",
-  },
-  roomerLogo: {
-    width: 130,
-    height: 75,
-    left: -11,
-    resizeMode: "cover",
-  },
-  menuContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    height: 150,
-    marginTop: 20,
-  },
-  userImageContainer: {
-    justifyContent: "center",
-  },
-  userImage: {
-    height: 45,
-    width: 45,
-    right: 20,
-  },
-  hamburgerMenuContainer: {
-    justifyContent: "flex-end",
-  },
-  hamburgerMenuIcon: {
-    width: 40,
-    height: 40,
-    top: 15,
-  },
-  mainContainer: {
-    width: responsiveWidth(92),
-  },
+    },
 });
 
 registerRootComponent(App);
