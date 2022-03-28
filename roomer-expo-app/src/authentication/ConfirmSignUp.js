@@ -53,7 +53,7 @@ class ConfirmSignUp extends Component {
                     style={styles.textInputStyle}
                     onChangeText={(newValue)=>this.setState({email: newValue})}/>
                 <Text style={styles.categoryTextStyle}>
-                    Password
+                    Confirmation Code
                 </Text>
                 <TextInput
                     placeholder='Enter Confirmation Code'
