@@ -24,9 +24,10 @@ class PostsTab extends Component {
       posts: [],
       scrolling: false,
       token: props.token,
+      showUnresolved: props.showUnresolved
     };
 
-    getUserAccountPosts(this.state.userId, this.state.pageSize, undefined, props.token).then(response => {
+    getUserAccountPosts(this.state.userId, this.state.pageSize, undefined, props.showUnresolved, props.token).then(response => {
       if (response != -1) {
         this.setState(prevState => ({
           ...prevState,
@@ -53,6 +54,7 @@ class PostsTab extends Component {
       this.state.userId,
       this.state.pageSize,
       this.state.lastPostId,
+      this.state.showUnresolved,
       this.state.token
     ).then(response => {
 

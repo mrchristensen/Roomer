@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         minWidth: 1024,
-        overflow: "hidden"
+        overflow: "hidden",
+        fontFamily: 'sans-serif'
       }
     : {
         marginTop: 0,
@@ -139,6 +140,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         width: win.width,
+        fontFamily: 'sans-serif'
       },
   bodyContainer: !isMobile
     ? {

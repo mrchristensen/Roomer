@@ -21,7 +21,7 @@ class Header extends Component {
 
         this.state = {
             isLoggedIn: false,
-            userInfo: null,
+            userInfo: {Username: ""},
             signInClick: false,
             showAddPostOverlay: false,
             isHome: true,
@@ -108,7 +108,7 @@ class Header extends Component {
             <div className='header-container'>
                 <div className='header-options__left'>
                     <div className='options-wrapper'>
-                        <span 
+                        {this.state.isLoggedIn ? <span 
                             className='options underline-hover-effect'
                             onClick={this.onClickFindAPlace}
                             >
@@ -122,11 +122,11 @@ class Header extends Component {
                                 size={15}
                                 />
                             </div>
-                        </span>
+                        </span> : <></>}
                         {
                             this.state.isHome ? (
                                 <span className='options underline-home-effect'>
-                                    {this.findABuyerIcon}
+                                {this.findABuyerIcon}
                                 </span>
                             ) : (
                                 <span className='options underline-hover-effect'>
@@ -176,9 +176,9 @@ class Header extends Component {
                             firstName: user.FirstName
                         })} />
                 </Overlay>
-                <Overlay isVisible={this.state.showAddPostOverlay} onBackdropPress={this.onClickFindAPlace}>
-                    <AddPost props={{onPress: this.onClickFindAPlace}}/>
-                </Overlay>
+                {this.state.isLoggedIn ? <Overlay isVisible={this.state.showAddPostOverlay} onBackdropPress={this.onClickFindAPlace}>
+                    <AddPost props={{onPress: this.onClickFindAPlace, userID: this.state.userInfo.Username }}/>
+                </Overlay> : <></>}
             </div>
         );
     }

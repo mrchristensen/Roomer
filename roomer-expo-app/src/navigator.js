@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer, NavigationEvents } from "react-navigation";
+import { createAppContainer } from "react-navigation";
 import { createBrowserApp } from "@react-navigation/web";
 import { Platform } from "react-native";
 

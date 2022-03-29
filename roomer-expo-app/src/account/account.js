@@ -17,7 +17,7 @@ import "./Account.css";
 import MessagesTab from './messagesTab';
 import PostsTab from './postsTab';
 import RatingsTab from './ratingsTab';
-import { getUserAccountBio, editUserAccountBio } from '../ServerFacade';
+import { getUserAccountBio, editUserAccountBio, getUsername } from '../ServerFacade';
 import {Auth} from 'aws-amplify';
 import BareHeader from '../header/bareHeader';
 
@@ -127,7 +127,7 @@ class Account extends Component {
 
     this.state = {
       error: false, //sets to true if api call fails
-      userId: "",
+      userId: props.navigation.state.params.owner == "1" ? "" : props.navigation.state.params.id,
       imageUrl: "https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png",
       profileName: "ROOMER USER",
       profileDescription: "",
@@ -147,6 +147,7 @@ class Account extends Component {
       messagesSent: [],
       showTab: null,
       showEditOverlay: false,
+      viewerIsUser: props.navigation.state.params.owner == "1",
     };
 
     this.onEdit = this.onEdit.bind(this);
@@ -155,16 +156,29 @@ class Account extends Component {
 
   componentDidMount() {
     Auth.currentAuthenticatedUser().then(user => {
-      console.log(user);
+      let id = this.state.viewerIsUser ? user.username : this.state.userId;
       this.setState({
-        userId: user.username, 
-        showTab: <PostsTab userId={user.username} token={user.signInUserSession.accessToken}/>, 
-        imageUrl: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${user.username}`,
-        profileName: user.attributes.name,
+        showTab: <PostsTab userId={id} token={user.signInUserSession.accessToken} showUnresolved={this.state.viewerIsUser}/>, 
+        imageUrl: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${id}`,
         token: user.signInUserSession.accessToken,
       });
 
-      getUserAccountBio(user.username, user.signInUserSession.accessToken).then(response => {
+      if(this.state.viewerIsUser) {
+        this.setState({
+          userId: id,
+          profileName: user.attributes.name,
+        });
+      } else {
+        getUsername(id).then(response => {
+          if (response != -1) {
+            this.setState({profileName: response.Item.USERNAME});
+          } else {
+            this.setState({error: true});
+          }
+        });
+      }
+
+      getUserAccountBio(id, user.signInUserSession.accessToken).then(response => {
         if (response != -1) {
           this.setState({profileDescription: response.Item.USER_BIO});
         } else {
@@ -206,7 +220,7 @@ class Account extends Component {
     } else {
       this.setState(prevState => ({
         ...prevState,
-        showTab: <PostsTab userId={this.state.userId} token={this.state.token}/>
+        showTab: <PostsTab userId={this.state.userId} token={this.state.token} showUnresolved={this.state.viewerIsUser}/>
       }));
     }
   }
@@ -229,7 +243,7 @@ class Account extends Component {
                 }}
                 style={[styles.profileImage]}
               />
-              <EditImageComponent userId={this.state.userId}/>
+              {this.state.viewerIsUser ? <EditImageComponent userId={this.state.userId}/> : <></>}
             </View>
             <View style={styles.column}>
               <Text style={styles.profileName}>
@@ -250,11 +264,11 @@ class Account extends Component {
                 <Text style={styles.ratingsText}>
                   {!isMobile ? "ratings" : " "}
                 </Text>
-                <Button
+                { this.state.viewerIsUser ? <Button
                     title="Edit Profile"
                     onPress={this.onPressEdit}
                     style={styles.editButton}
-                  />
+                  /> : <></>}
               </View>
             </View>
           </View>
@@ -262,7 +276,7 @@ class Account extends Component {
           <View style={styles.tabContainer}>
             <div id="posts" className="selectedTab" onClick={() => {    
               document.getElementById("ratings").className = "tab";
-              document.getElementById("messages").className = "tab";
+              document.getElementById("messages") ? document.getElementById("messages").className = "tab" : null;
               document.getElementById("posts").className = "selectedTab";
               this.updateShowTabs(false, false, true);
               }}>
@@ -270,20 +284,20 @@ class Account extends Component {
             </div>
             <div id="ratings" className="tab" onClick={() => {    
               document.getElementById("ratings").className = "selectedTab";
-              document.getElementById("messages").className = "tab";
+              document.getElementById("messages") ? document.getElementById("messages").className = "tab" : null;
               document.getElementById("posts").className = "tab";
               this.updateShowTabs(true, false, false);
             }}>
                 Ratings
             </div>
-            <div id="messages" className="tab" onClick={() => {    
+            {this.state.viewerIsUser ? <div id="messages" className="tab" onClick={() => {    
               document.getElementById("ratings").className = "tab";
-              document.getElementById("messages").className = "selectedTab";
+              document.getElementById("messages") ? document.getElementById("messages").className = "tab" : null;
               document.getElementById("posts").className = "tab";
               this.updateShowTabs(false, true, false);
               }}>
                 Messages
-            </div>
+            </div> : <></>}
           </View>
           {this.state.showTab}
           <Overlay
