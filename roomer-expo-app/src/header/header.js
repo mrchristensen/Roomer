@@ -21,7 +21,7 @@ class Header extends Component {
 
         this.state = {
             isLoggedIn: false,
-            userInfo: null,
+            userInfo: {Username: ""},
             signInClick: false,
             showAddPostOverlay: false,
             isHome: true,
@@ -177,7 +177,7 @@ class Header extends Component {
                         })} />
                 </Overlay>
                 <Overlay isVisible={this.state.showAddPostOverlay} onBackdropPress={this.onClickFindAPlace}>
-                    <AddPost props={{onPress: this.onClickFindAPlace}}/>
+                    <AddPost props={{onPress: this.onClickFindAPlace, userID: this.state.userInfo.Username }}/>
                 </Overlay>
             </div>
         );

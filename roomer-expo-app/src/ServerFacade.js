@@ -50,16 +50,18 @@ export async function getUserEmail(userID, loginToken) {
   }
 }
 
-export async function addPost(userId, isoPost, location, housingType, minCost, maxCost, tags, startDate, endDate, loginToken) {
+export async function addPost(userId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken) {
   try {
     //TODO: login token in the authorization header
-    console.log(userId, isoPost, location, housingType, minCost, maxCost, tags, startDate, endDate, loginToken);
+    console.log(userId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken);
 
     let response = await axios.post(API_GATEWAY + '/addpost', {
       userId: userId, 
       isoPost: isoPost, 
       location: location, 
       housingType: housingType, 
+      roomType: roomType,
+      layout: layout,
       minCost: minCost, 
       maxCost: maxCost, 
       tags: tags, 
@@ -96,13 +98,14 @@ export async function getUserAccountBio(userID, loginToken) {
   }
 }
 
-export async function getUserAccountPosts(userId, pageSize, lastPostId, loginToken) {
+export async function getUserAccountPosts(userId, pageSize, lastPostId, showUnresolved, loginToken) {
   try {
 
     let response = await axios.post(API_GATEWAY + '/getuserposts', {
       userId: userId,
       pageSize: pageSize,
       lastPostId: lastPostId,
+      showUnresolved: showUnresolved,
     },{
       headers: {
         'Authorization': loginToken,
