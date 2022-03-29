@@ -40,26 +40,25 @@ const AddPost = ({props}) => {
   let markerRef = React.createRef();
   const [location,setLocation] = useState("Provo");
 
-  const [previewISO, setPreview] = useState(<ExpandedISO props={{iso: {
-      status: "unresolved", 
-      postedDate: Date.now().toString(),
-      startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
-      endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
-      userID: userID,
-      _id: -1,
-      housingType: homeTypeValue,
-      minCost: min,
-      maxCost: max,
-      location: location,
-      isoPost: message,
-      tags: selectedTags
-    }, onPress: () => {}}} key={previewISO}/>);
+  const [previewISO, setPreview] = useState({
+    status: "unresolved", 
+    postedDate: "",
+    startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
+    endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
+    userID: userID,
+    _id: -1,
+    housingType: homeTypeValue,
+    minCost: min,
+    maxCost: max,
+    location: location,
+    isoPost: message,
+    tags: selectedTags
+  });
 
   useEffect(() => { 
-    console.log("setting preview ughhhh");
-    setPreview(<ExpandedISO props={{iso: {
+    setPreview({
         status: "unresolved", 
-        postedDate: Date.now().toString(),
+        postedDate: "",
         startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
         endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
         userID: userID,
@@ -70,7 +69,7 @@ const AddPost = ({props}) => {
         location: location,
         isoPost: message,
         tags: selectedTags
-      }, onPress: () => {}}} key={previewISO}/>);
+      });
   }, [dateRange, message, homeTypeValue, min, max, location, selectedTags]);
 
 
@@ -321,7 +320,7 @@ const AddPost = ({props}) => {
         </div>
         <View style={styles.isoBorderExpanded}>{}</View>
         <h3>Preview Post</h3>
-        {previewISO}
+        <ExpandedISO props={{iso: previewISO, onPress: () => {}}} key={previewISO}/>
       </View>
     </ScrollView >
   );

@@ -54,9 +54,10 @@ class ExpandedISO extends Component {
 
     //TODO: make this based on the actual login value
     const notLoggedIn = false;
+
+    console.log(props);
     
     this.state = {
-      props: props.props,
       emailValue: "",
       subjectValue: "",
       messageValue: "",
@@ -139,14 +140,14 @@ class ExpandedISO extends Component {
         ...prevState,
         notLoggedIn: false,
         contactMessage: "Contact",
-        viewerIsAuthor: user.username === this.state.props.iso.userID,
+        viewerIsAuthor: user.username === this.props.props.iso.userID,
         token: user.signInUserSession.accessToken,
       }));
 
-      if(user.username === this.state.props.iso.userID) {
+      if(user.username === this.props.props.iso.userID) {
         this.setState({name: user.attributes.name});
       } else {
-        getUsername(this.state.props.iso.userID).then(response => {
+        getUsername(this.props.props.iso.userID).then(response => {
           this.setState({name: response.Item.USERNAME});
         });
       }
@@ -171,7 +172,7 @@ class ExpandedISO extends Component {
 
     if(this.state.emailValue != "" && this.state.subjectValue != "" && this.state.messageValue != "") {
       //send email
-      let toEmailValue = await getUserEmail(this.state.props.iso.userID, this.state.token);
+      let toEmailValue = await getUserEmail(this.props.props.iso.userID, this.state.token);
       if (toEmailValue == -1) {
         //TODO: error handling
       } else {
@@ -179,22 +180,22 @@ class ExpandedISO extends Component {
       }
 
       //close expanded iso
-      this.state.props.onPress();
+      this.props.props.onPress();
     }
   }
 
   async handleOnChangeStatus(event) {
     event.preventDefault();
 
-    if(this.state.props.iso._id === -1) return;
+    if(this.props.props.iso._id === -1) return;
 
-    let error = this.state.props.iso.status === "resolved" 
-      ? await unresolvePostStatus(this.state.props.iso._id, this.state.token)
-      : await resolvePostStatus(this.state.props.iso._id, this.state.token);
+    let error = this.props.props.iso.status === "resolved" 
+      ? await unresolvePostStatus(this.props.props.iso._id, this.state.token)
+      : await resolvePostStatus(this.props.props.iso._id, this.state.token);
     if(error == -1) {
       //TODO: handlerror
     } else {
-      var newIsoProps = this.state.props;
+      var newIsoProps = this.props.props;
       newIsoProps.iso.status = newIsoProps.iso.status === "resolved" ? "unresolved" : "resolved";
       this.setState({
         statusResolveMessage: this.state.statusResolveMessage === "Re-Post" ? "Unpost" : "Re-Post",
@@ -203,7 +204,7 @@ class ExpandedISO extends Component {
     }
 
     //close expanded iso
-    this.state.props.onPress();
+    this.props.props.onPress();
   }
 
   handleEmailChange = (event) => {
@@ -225,21 +226,21 @@ class ExpandedISO extends Component {
           <View style={styles.profileImageWrapper}>
             <Image
               source={{
-                uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.iso.userID}`,
+                uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.props.props.iso.userID}`,
               }}
               style={[styles.profileImageExpanded]}
             />
-            <UserPageLink id={this.state.props.iso.userID} name={this.state.name} isOwner={this.state.viewerIsAuthor} exitCallback={this.state.props.onPress}/>
+            <UserPageLink id={this.props.props.iso.userID} name={this.state.name} isOwner={this.state.viewerIsAuthor} exitCallback={this.props.props.onPress}/>
           </View>
           <View style={[styles.isoContentContainerExpanded]}>
             <Text style={[styles.topInfoRowExpanded]}>
-            Type: {this.state.props.iso.housingType}
+            Type: {this.props.props.iso.housingType}
               {', Price: $'}
-              {this.state.props.iso.minCost}
+              {this.props.props.iso.minCost}
               {' - $'}
-              {this.state.props.iso.maxCost}
+              {this.props.props.iso.maxCost}
               {', Location: '}
-              {this.state.props.iso.location}
+              {this.props.props.iso.location}
             </Text>
             <Text style={[styles.datePostedRow]}>
               Posted: {this.state.postDate}
@@ -250,13 +251,13 @@ class ExpandedISO extends Component {
             {this.state.resolvedIndicator}
             <Text
               style={[styles.isoContentText]}>
-              {this.state.props.iso.isoPost}
+              {this.props.props.iso.isoPost}
             </Text>
             <View style={{flexDirection: !isMobile ? "row" : "column"}}>
               <FlatList
                 style={[styles.tagRowExpanded]}
                 contentContainerStyle={styles.tagRowContentContainer}
-                data={this.state.props.iso.tags}
+                data={this.props.props.iso.tags}
                 renderItem={({item}) => <TagItem props={item} />}
                 listKey={(item, index) => 'tag' + index.toString()}
               />
