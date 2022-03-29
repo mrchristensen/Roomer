@@ -63,8 +63,8 @@ class ExpandedISO extends Component {
       messageValue: "",
       notLoggedIn: notLoggedIn,
       contactMessage: notLoggedIn ? "You must login to contact this buyer" : "Contact",
-      postDate: epochToDateString(props.props.iso.postedDate),
-      moveDate: epochToDateString(props.props.iso.startDate),
+      // postDate: epochToDateString(props.props.iso.postedDate),
+      // moveDate: epochToDateString(props.props.iso.startDate),
       resolvedIndicator: props.props.iso.status === "resolved" ? 
       <View style={[styles.resolvedIcon]}>
         <Icon           
@@ -243,10 +243,10 @@ class ExpandedISO extends Component {
               {this.props.props.iso.location}
             </Text>
             <Text style={[styles.datePostedRow]}>
-              Posted: {this.state.postDate}
+              Posted: {epochToDateString(this.props.props.iso.postedDate)}
             </Text>
             <Text style={[styles.datePostedRow]}>
-              Move-in: {this.state.moveDate}
+              Move-in: {epochToDateString(this.props.props.iso.startDate) + " - " + epochToDateString(this.props.props.iso.endDate)}
             </Text>
             {this.state.resolvedIndicator}
             <Text
