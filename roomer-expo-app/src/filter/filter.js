@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import {
     StyleSheet,
-    View
+    View,
+    Dimensions
 } from 'react-native';
 import { useState } from 'react';
 import MapView from 'react-native-web-maps';
@@ -16,6 +17,8 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import DatePicker from 'react-modern-calendar-datepicker';
 import FilterTags from './filterTags';
 import './filter.css'
+
+const win = Dimensions.get("window");
 
 const useDidMountEffect = (func, deps) => {
     const didMount = useRef(false);
@@ -127,7 +130,6 @@ const Filter = (props) => {
 
     function setMap() {
         getCoordinates(location).then((response) => {
-            console.log(response);
             if (response.status == 200) {
                 let coordinates = response.data.results[0].geometry.location;
                 mapRef.current.animateToRegion({
@@ -146,7 +148,11 @@ const Filter = (props) => {
     }
 
     function confirmSelectedTags(updatedSelectedTags) {
-        setSelectedTags(updatedSelectedTags);
+        if (updatedSelectedTags.length == 0) {
+            setSelectedTags(null);
+        } else {
+            setSelectedTags(updatedSelectedTags);
+        }
     }
 
     function applyFilter() {
@@ -244,9 +250,6 @@ const Filter = (props) => {
                 </div>
             </div>
             <FilterTags confirmSelectedTags={confirmSelectedTags} />
-            {/* <div className='filter-button-container'>
-                <button className='filter-button' onClick={onApplyFilter}>Apply Filter</button>
-            </div> */}
         </View>
     );
 }
@@ -254,21 +257,20 @@ const Filter = (props) => {
 const styles = StyleSheet.create({
     filterContainer : {
         flexDirection: 'column',
-        backgroundColor: '#efede7',
-        width: '40%',
-        height: '100%'
+        backgroundColor: '#ffffff',
+        width: '30%',
+        height: "60%"
     },
     mapStyle: {
         width: '100%',
         height: '100%',
     },
     filterSlider: {
-        width: '22em',
+        width: '18em',
         height: 40,
         alignSelf: 'center'
     },
     sliderContainer: {
-        marginTop:15,
         alignItems: 'center'
     }
 });

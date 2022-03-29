@@ -135,6 +135,7 @@ class Feed extends Component {
           keyExtractor={(item) => item._id}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
         />
       );
     } else {
@@ -151,7 +152,7 @@ class Feed extends Component {
 const styles = StyleSheet.create({
   feedContainer: !isMobile ? {
     paddingRight: '2%',
-    height: win.height + 280,
+    height: win.height,
     width: '40%',
   } : {
     height: win.height,

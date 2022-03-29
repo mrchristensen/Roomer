@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     height: win.width * .15,
     borderRadius: win.width * .15 / 2,
     marginRight: 10,
+    marginLeft: 10
   },
   profileImageWrapper: {
     flexDirection: 'column',
