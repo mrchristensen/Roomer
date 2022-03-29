@@ -236,7 +236,7 @@ const Filter = (props) => {
                         </View>
                     </div>
                 </div>
-                <div className='date-container'>
+                <div className='date-container-filter'>
                     <h2 className='filter-body-header'>Move-In Date</h2>
                     <div className='date-body'>
                         <DatePicker 
