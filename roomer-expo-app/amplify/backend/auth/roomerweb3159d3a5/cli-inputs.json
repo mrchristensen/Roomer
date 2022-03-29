@@ -59,9 +59,10 @@
     "hostedUI": true,
     "hostedUIDomainName": "roomerwebc3a5033d-c3a5033d",
     "authProvidersUserPool": [
+      "Facebook",
       "Google"
     ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}}]",
+    "hostedUIProviderMeta": "[{\"ProviderName\":\"Facebook\",\"authorize_scopes\":\"email,public_profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"id\"}},{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:19006/\",\"https://roomerhasit.net\"],\"LogoutURLs\":[\"http://localhost:19006/\",\"https://roomerhasit.net\"]}",
     "authProviders": [],
     "parentStack": {

@@ -124,7 +124,7 @@ class RegisterMenu extends Component {
                     isGoogle={false}
                     buttonStyle={styles.facebookButtonStyle}
                     textStyle={styles.facebookButtonTextStyle}
-                    onPress={() => console.log(this.state.firstName + " " + this.state.lastName + " " + this.state.email + " " + this.state.password + " " + this.state.confPassword)}
+                    onPress={() => Auth.federatedSignIn({ provider: "Facebook"})}
                 />
             </View>
         )

@@ -59,8 +59,6 @@ class Header extends Component {
         this._isMounted = true;
 
         Auth.currentAuthenticatedUser().then(async user => {
-            console.log("\n\n\n\n\n\nCURRENT AUTHENTICATED USER\n\n\n\n\n\n")
-            console.log(user)
             let names = user["attributes"]["name"].split(" ");
             let parsedUser = {
                 Username: user["username"],
