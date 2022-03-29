@@ -270,6 +270,7 @@
   cursor: pointer;
   top: -5px;
   z-index: 0;
+  color: var(--ROOMER_GRAY);
 }
 
 .add-post-dropdown .dd-list-item:hover {
@@ -296,6 +297,7 @@
   text-align: center;
   width: 100%;
   font-size: .75em;
+  color: var(--ROOMER_GRAY);
 }
 
 h4 {
