@@ -135,6 +135,7 @@ class Feed extends Component {
           keyExtractor={(item) => item._id}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
         />
       );
     } else {

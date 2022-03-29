@@ -450,13 +450,13 @@
     }
 
     .tags-list {
-        width: 155px;
+        width: 156px;
         height: 100px;
         top: -20px;
     }
 
     .tags-list__tags li {
-        height: 5px;
+        height: 6px;
         margin-top: -18px;
         font-size: 8px;
         padding: 2px 5px 5px 5px;
