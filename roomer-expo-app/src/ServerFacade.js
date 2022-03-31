@@ -38,7 +38,7 @@ export async function getUserEmail(userID, loginToken) {
     let response = await axios.get(API_GATEWAY + '/getemail/' + userID,
     {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -53,7 +53,6 @@ export async function getUserEmail(userID, loginToken) {
 export async function addPost(userId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken) {
   try {
     //TODO: login token in the authorization header
-    console.log(userId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken);
 
     let response = await axios.post(API_GATEWAY + '/addpost', {
       userId: userId, 
@@ -69,7 +68,7 @@ export async function addPost(userId, isoPost, location, housingType, roomType, 
       endDate: endDate
     }, {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -86,7 +85,7 @@ export async function getUserAccountBio(userID, loginToken) {
     let response = await axios.get(API_GATEWAY + '/getbio/' + userID,
     {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -108,7 +107,7 @@ export async function getUserAccountPosts(userId, pageSize, lastPostId, showUnre
       showUnresolved: showUnresolved,
     },{
       headers: {
-        'Authorization': loginToken,
+        'Authorization': loginToken.jwtToken,
       }
     });
 
@@ -126,7 +125,7 @@ export async function resolvePostStatus(postId, loginToken) {
       postId: postId,
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -144,7 +143,7 @@ export async function unresolvePostStatus(postId, loginToken) {
       postId: postId,
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -163,7 +162,7 @@ export async function editUserAccountBio(userId, userBio, loginToken) {
       userBio: userBio
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
