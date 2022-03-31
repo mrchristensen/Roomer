@@ -21,7 +21,7 @@ class Header extends Component {
 
         this.state = {
             isLoggedIn: false,
-            userInfo: null,
+            userInfo: {Username: ""},
             signInClick: false,
             showAddPostOverlay: false,
             isHome: true,
@@ -98,7 +98,7 @@ class Header extends Component {
         name='search'
         type='feather'
         color={"#fff"}
-        style={{marginLeft: !isMobile ? 4 : 10}}
+        style={{marginLeft: !isMobile ? 4 : 2}}
         size={15}
     />
     </div>
@@ -154,7 +154,7 @@ class Header extends Component {
                         </div>
                     ) : (
                         <div className='header-options__right-not-logged-in'>
-                            <div className='options-wrapper'>
+                            <div className='options-wrapper__right'>
                                 <span className='options underline-hover-effect' onClick={(event) => {
                                     const url = "https://forms.gle/4VD4FtyyP1KvNLz38";
                                     window.open(url);
@@ -177,7 +177,7 @@ class Header extends Component {
                         })} />
                 </Overlay>
                 <Overlay isVisible={this.state.showAddPostOverlay} onBackdropPress={this.onClickFindAPlace}>
-                    <AddPost props={{onPress: this.onClickFindAPlace}}/>
+                    <AddPost props={{onPress: this.onClickFindAPlace, userID: this.state.userInfo.Username }}/>
                 </Overlay>
             </div>
         );

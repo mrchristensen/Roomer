@@ -18,7 +18,7 @@ import {
 import Feed from "../feed/feed";
 import Header from "../header/header";
 import Filter from "../filter/filter";
-import { responsiveWidth } from "react-native-responsive-dimensions";
+import FilterMobile from "../filter/filterMobile";
 
 const win = Dimensions.get("window");
 let isMobile = win.width < 600;
@@ -41,7 +41,7 @@ class App extends Component {
         fromFilter: false
       },
       isDarkMode: false, //useColorScheme() === 'dark',
-      loggedIn: true, //TODO: make this based off actual login value
+      loggedIn: true,
       updateFeedState: null
     };
   }
@@ -90,13 +90,13 @@ class App extends Component {
           <View style={[styles.sectionContainer]}>
             <Header />
             <View style={[styles.bodyContainer]}>
-              <Feed 
-                props={this.state.feedProps} 
-                setUpdateFeedState={this.setUpdateFeedState}
-              />
               <Filter 
                 filterValuesSet={this.filterValuesSet} 
                 updateFeedState={this.state.updateFeedState}
+              />
+              <Feed 
+                props={this.state.feedProps} 
+                setUpdateFeedState={this.setUpdateFeedState}
               />
             </View>
           </View>
@@ -112,11 +112,11 @@ class App extends Component {
             <View style={[styles.sectionContainer]}>
               <Header />
               <View style={[styles.bodyContainer]}>
-                {/* <FilterMobile filterValuesSet={this.filterValuesSet} /> */}
+                <FilterMobile />
                 <Feed 
                   props={this.state.feedProps} 
-                  setUpdateFeedState={this.setUpdateFeedState}/>
-                <View style={[styles.extraBoxContainer]} />
+                  setUpdateFeedState={this.setUpdateFeedState}
+                />
               </View>
             </View>
           </ScrollView>
@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         minWidth: 1024,
-        overflow: "hidden"
+        overflow: "hidden",
+        fontFamily: 'sans-serif'
       }
     : {
         marginTop: 0,
@@ -139,10 +140,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         width: win.width,
+        fontFamily: 'sans-serif'
       },
   bodyContainer: !isMobile
     ? {
-        height: "100%",
+        height: "50%",
         width: "100%",
         flex: 1,
         flexDirection: "row",
@@ -150,72 +152,7 @@ const styles = StyleSheet.create({
     : {
         marginTop: 5,
         flexDirection: "column",
-      },
-  extraBoxContainer: !isMobile
-    ? {
-        width: "25%",
-        borderRadius: 60,
-        border: "2px solid #000",
-      }
-    : {
-        width: 0,
-        height: 0,
-      },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
-  },
-  highlight: {
-    fontWeight: "700",
-  },
-  headerContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 75,
-    zIndex: 1,
-  },
-  roomerLogoContainer: {
-    justifyContent: "flex-start",
-  },
-  roomerLogo: {
-    width: 130,
-    height: 75,
-    left: -11,
-    resizeMode: "cover",
-  },
-  menuContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    height: 150,
-    marginTop: 20,
-  },
-  userImageContainer: {
-    justifyContent: "center",
-  },
-  userImage: {
-    height: 45,
-    width: 45,
-    right: 20,
-  },
-  hamburgerMenuContainer: {
-    justifyContent: "flex-end",
-  },
-  hamburgerMenuIcon: {
-    width: 40,
-    height: 40,
-    top: 15,
-  },
-  mainContainer: {
-    width: responsiveWidth(92),
-  },
+    },
 });
 
 registerRootComponent(App);

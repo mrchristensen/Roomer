@@ -7,7 +7,14 @@ class FilterTags extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tags: [],
+            tags: [
+                "Gym",
+                "South Campus",
+                "Mixed Housing",
+                "Social",
+                "In Unit Laundry",
+                "Parking Spot"
+            ],
             selectedTags: []
         }
     }
@@ -21,7 +28,9 @@ class FilterTags extends Component {
             this.props.confirmSelectedTags(this.state.selectedTags);
         } else {
             let index = this.state.selectedTags.indexOf(tag);
+            console.log(index);
             this.state.selectedTags.splice(index, 1);
+            console.log(this.state.selectedTags);
             this.setState({
                 selectedTags: this.state.selectedTags
             })
@@ -83,8 +92,14 @@ class FilterTags extends Component {
 class Tag extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isSelected: true
+        if (props.tag) {
+            this.state = {
+                isSelected: false
+            }
+        } else {
+            this.state = {
+                isSelected: true
+            }
         }
     }
 
@@ -102,6 +117,7 @@ class Tag extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isSelected != this.state.isSelected) {
+            console.log("Here")
             this.props.updateSelectedTags(this.props.tag, this.state.isSelected);
         }
     }

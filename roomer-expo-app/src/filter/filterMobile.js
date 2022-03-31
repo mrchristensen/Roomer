@@ -1,13 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  CheckBox,
-  TextInput,
-  Button,
-  Picker
 } from 'react-native';
 import {useState} from 'react';
 import {
@@ -16,225 +11,245 @@ import {
   CollapseBody,
 } from 'accordion-collapse-react-native';
 import Slider from '@react-native-community/slider';
+import Dropdown from './filterDropDown';
+import'./filter.css'
+import { IconContext } from 'react-icons';
 import { responsiveWidth } from "react-native-responsive-dimensions";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BsCurrencyDollar } from "react-icons/bs";
+import DatePicker from 'react-modern-calendar-datepicker';
+import { AiTwotoneCalendar } from "react-icons/ai"
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+import FilterTags from './filterTags';
+
+const useDidMountEffect = (func, deps) => {
+  const didMount = useRef(false);
+
+  useEffect(() => {
+      if (didMount.current) {
+          func();
+      } else {
+          didMount.current = true;
+      }
+  }, deps);
+}
 
 const FilterMobile = (props) => {
-  const [isSelectedHouse, setSelectionHouse] = useState(false);
-  const [isSelectedApartment, setSelectionApartment] = useState(false);
-  // const [location, onChangeLocation] = React.useState(null);
-  const [location,setLocation] = useState("provo");
-  const [date, onChangeDate] = useState(null);
-  const [keyword, onChangeKeyWord] = useState(null);
   const [price, setSliderPrice] = useState(100);
+  const [location, setLocation] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [homeTypeValue, setHomeType] = useState("");
+  const [roomTypeValue, setRoomType] = useState("");
+  const [layoutValue, setLayout] = useState("");
+  const [selectedTags, setSelectedTags] = useState(null);
 
-  function getFilterValues() {
-    return {
-      selectApartment: isSelectedApartment,
-      selectHouse: isSelectedHouse,
-      price: price,
-      location: location,
-      date: date
-    };
+  let filterValues = {
+    homeType: null,
+    location: null,
+    price: null,
+    moveInDate: null,
+    tags: null,
+    roomType: null,
+    layout: null
+  };
+
+
+  const homeType = [
+    {
+        id: 0,
+        title: 'Apartment',
+        selected: false,
+        key: 'home-type'
+    },
+    {
+        id: 1,
+        title: 'House',
+        selected: false,
+        key: 'home-type'
+    },
+  ] 
+
+  const layoutList = [
+    {
+        id: 0,
+        title: 'Studio',
+        selected: false,
+        key: 'layout'
+    },
+    {
+        id: 1,
+        title: '1-Room',
+        selected: false,
+        key: 'layout'
+    },
+    {
+        id: 2,
+        title: 'Shared',
+        selected: false,
+        key: 'layout'
+    }
+  ]
+
+  const roomType = [
+    {
+        id: 0,
+        title: 'Private Room',
+        selected: false,
+        key: 'room-type'
+    },
+    {
+        id: 1,
+        title: 'Shared Room',
+        selected: false,
+        key: 'room-type'
+    }
+  ] 
+
+  function applyPriceToFilter() {
+    applyFilter();
   }
 
-  function onSet() {
-    props.filterValuesSet(getFilterValues());
+  function numberWithCommas(x) {
+    setSliderPrice(x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","))
   }
+
+  function setHomeTypeProperties(item) {
+    if (item.key == "home-type") {
+        setHomeType(item.title);
+    } else if (item.key == "room-type") {
+        setRoomType(item.title);
+    } else if (item.key == "layout") {
+        setLayout(item.title)
+    }
+  }
+
+  function confirmSelectedTags(updatedSelectedTags) {
+    setSelectedTags(updatedSelectedTags);
+  }
+
+  function applyFilter() {
+    filterValues.homeType = homeTypeValue;
+    filterValues.location = location;
+    filterValues.price = (typeof(price) == "string" ? parseInt(price.replaceAll(/,/g, '')): price);
+    filterValues.moveInDate = startDate;
+    filterValues.tags = selectedTags;
+    filterValues.roomType = roomTypeValue;
+    filterValues.layout - layoutValue;
+    // props.filterValuesSet(filterValues);
+    console.log(filterValues);
+  }
+
+  useDidMountEffect(applyFilter, [homeTypeValue, location, price, startDate, selectedTags, roomTypeValue, layoutValue]);
 
   return (
     <Collapse>
       <CollapseHeader>
         <View style={styles.filterMobileButton}>
-          <Text>Set Filter</Text>
+          <Text style={styles.buttonText}>Search Filter</Text>
         </View>
       </CollapseHeader>
       <CollapseBody style={styles.collapseBody}>
-        <View style={styles.filterMobileContainer}>
-        <TextInput 
-        style={styles.filterMainTextInputKeyWord}
-        onChangeText={onChangeKeyWord}
-        value={keyword}
-        placeholder="Filter buyer listings..."/>
-          <View style={styles.mainCheckboxContainer}>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelectedHouse}
-                onValueChange={setSelectionHouse}
-                style={styles.checkbox}
+        <div className='home-type-container'>
+          <h2 className='filter-header'>Home Type</h2>
+          <Dropdown
+            title='Select Home Type'
+            list={homeType}
+            setHomeTypeProperties={setHomeTypeProperties}
+          />
+          <h2 className='filter-header'>Layout</h2>
+          <Dropdown 
+            title='Select Layout'
+            list={layoutList}
+            setHomeTypeProperties={setHomeTypeProperties}
+          />
+          <h2 className='filter-header'>Room Type</h2>
+          <Dropdown 
+            title='Select Room Type'
+            list={roomType}
+            setHomeTypeProperties={setHomeTypeProperties}
+          />
+        </div>
+        <div className='location-container'>
+          <h2 className='filter-header'>Location</h2>
+          <div className='location-search-container'>
+            <form className='location-input' onSubmit={(e) => onSubmitLocation(e)}>
+                <input type="text" placeholder="Enter a location" onChange={(e) => setLocation(e.target.value)}/>
+                  <button type='submit' className='location-button'>
+                    <IconContext.Provider value={{className: "search-icon"}}>
+                      <AiOutlineSearch />
+                    </IconContext.Provider>
+                  </button>
+            </form>
+          </div>
+        </div>
+        <div className='price-container'>
+          <h2 className='filter-header'>Price</h2>
+            <div className='price-body-container'>
+              <IconContext.Provider value={{className: "dollar-icon"}}>
+                <BsCurrencyDollar />
+              </IconContext.Provider>
+              <input className='price-input' type='text' value={price}/>
+                <View style={styles.sliderContainer}>
+                  <Slider
+                    style={styles.filterSlider}
+                    minimumValue={100}
+                    maximumValue={8000}
+                    thumbTintColor="#5c6565"
+                    minimumTrackTintColor="#a3a39d"
+                    maximumTrackTintColor="#a3a39d"
+                    step={50}
+                    onValueChange={(sliderValue) => numberWithCommas(sliderValue)}
+                    onSlidingComplete={applyPriceToFilter}
+                  />
+                </View>
+            </div>
+        </div>
+        <div className='date-container'>
+          <h2 className='filter-header'>Move-In Date</h2>
+            <div className='date-body'>
+              <DatePicker 
+                value={startDate}
+                onChange={setStartDate}
               />
-              <Text style={styles.label}>House</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelectedApartment}
-                onValueChange={setSelectionApartment}
-                style={styles.checkbox}
-              />
-              <Text style={styles.label}>Apartment</Text>
-            </View>
-          </View>
-          <View style={styles.sliderContainer}>
-            <View style={styles.priceTextContainer}>
-              <Text style={styles.sliderText}>${price}</Text>
-            </View>
-            <Slider
-              style={styles.filterSlider}
-              minimumValue={100}
-              maximumValue={8000}
-              thumbTintColor="#A9A9A9"
-              minimumTrackTintColor="#202121"
-              maximumTrackTintColor="#A9A9A9"
-              step={100}
-              onValueChange={(sliderValue) => setSliderPrice(sliderValue)}
-            />
-            <View style={styles.priceLabelContainer}>
-              <Text>$100</Text>
-              <Text style={styles.maxPrice}>$8,000</Text>
-            </View>
-          </View>
-          <SafeAreaView style={styles.filterTextInputContainer}>
-            <Picker
-              style={styles.pickerStyles}
-              selectedValue={location}
-              onValueChange={(itemValue, itemIndex) => {
-                setLocation(itemValue);
-              }}>
-              <Picker.Item label="Provo" value="provo" />
-              <Picker.Item label="Orem" value="orem" />
-            </Picker>
-            {/* <TextInput
-              style={styles.filterTextInput}
-              onChangeText={onChangeLocation}
-              value={location}
-              placeholder="Location"
-            /> */}
-            <TextInput
-              style={styles.filterTextInputDate}
-              onChangeText={onChangeDate}
-              value={date}
-              placeholder="Date YY-MM-DD"
-            />
-          </SafeAreaView>
-          <View style={styles.filterButtonContainer}>
-            <Button 
-              title="Set filter" 
-              onPress={() => onSet()}
-            />
-          </View>
-        </View>
+              <IconContext.Provider value={{className: "calendar-icon"}}>
+                <AiTwotoneCalendar />
+              </IconContext.Provider>
+              </div>
+        </div>
+        <FilterTags confirmSelectedTags={confirmSelectedTags} />
       </CollapseBody>
     </Collapse>
   );
 };
 
 const styles = StyleSheet.create({
-  mainCheckboxContainer: {
-    marginTop: 10,
-    flexDirection: 'column',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  checkbox: {
-    alignSelf: 'center',
-    width: 20,
-    height: 20,
-  },
   filterMobileButton: {
-    color: '#ffffff',
     borderStyle: 'solid',
-    borderWidth: 3,
-    borderColor: '#000000',
+    backgroundColor: '#1e2419',
     borderRadius: 20,
+    borderColor: '#b3b4b1',
+    borderWidth: 2,
     width: responsiveWidth(30),
     alignItems: 'center',
+    marginLeft: 10,
+    marginBottom: 2
   },
-  filterMobileContainer: {
-    marginTop: 10,
-    height: 360,
-    width: responsiveWidth(96.5),
-    backgroundColor: '#e3e2e1',
-    paddingLeft: 10,
-    alignItems: 'center',
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: '500'
   },
   collapseBody: {
-    marginRight: 50,
-  },
-  filterTextInput: {
-    borderWidth: 2,
-    width: 200,
-    height: 20,
-    padding: 5,
-    borderRadius: 5,
-  },
-  filterTextInputContainer: {
-    marginTop: 20,
-  },
-  datePicker: {
-    width: 50,
-  },
-  filterTextInputDate: {
-    marginTop: 10,
-    borderWidth: 2,
-    width: 200,
-    height: 20,
-    padding: 5,
-    borderRadius: 5,
-  },
-  filterButtonContainer: {
     width: '100%',
-    height: '30%',
-    justifyContent: 'center',
+    backgroundColor: '#dcdcdc',
+    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
   },
-  label: {
-    marginLeft: 8,
-    fontSize: 15,
-  },
   filterSlider: {
-    width: 200,
-    height: 40,
+        width: 145,
+        height: 20,
+        alignSelf: 'center'
   },
-  priceLabelContainer: {
-    flexDirection: 'row',
-    marginTop: 0,
-  },
-  maxPrice: {
-    paddingLeft: 120,
-  },
-  filterMainTextInputKeyWord: {
-    marginTop: 10,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 3,
-    width: '80%',
-  },
-  pickerStyles: {
-    borderWidth: 2,
-    width: 200,
-    height: 23,
-    borderRadius: 5,
-    borderColor: 'black'
-  },
-  sliderText: {
-    fontSize: 8,
-    textAlign: 'center',
-    fontWeight: 'bold'
-  },
-  priceTextContainer: {
-    backgroundColor: "#FFFFFF",
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    borderRadius: 30 / 2,
-    alignSelf: 'center'
-  },
-  sliderContainer: {
-    marginTop: 10
-  }
 });
 
 export default FilterMobile;

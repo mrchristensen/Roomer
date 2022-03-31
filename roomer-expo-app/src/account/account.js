@@ -158,7 +158,7 @@ class Account extends Component {
     Auth.currentAuthenticatedUser().then(user => {
       let id = this.state.viewerIsUser ? user.username : this.state.userId;
       this.setState({
-        showTab: <PostsTab userId={id} token={user.signInUserSession.accessToken}/>, 
+        showTab: <PostsTab userId={id} token={user.signInUserSession.accessToken} showUnresolved={this.state.viewerIsUser}/>, 
         imageUrl: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${id}`,
         token: user.signInUserSession.accessToken,
       });
@@ -220,7 +220,7 @@ class Account extends Component {
     } else {
       this.setState(prevState => ({
         ...prevState,
-        showTab: <PostsTab userId={this.state.userId} token={this.state.token}/>
+        showTab: <PostsTab userId={this.state.userId} token={this.state.token} showUnresolved={this.state.viewerIsUser}/>
       }));
     }
   }

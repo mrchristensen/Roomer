@@ -1,48 +1,138 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   View,
-  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  CheckBox,
   Text,
-  FlatList,
-  Picker
 } from 'react-native';
-import { AiFillPlusCircle, AiOutlineSearch } from 'react-icons/ai';
+import { AiTwotoneCalendar, AiOutlineSearch } from 'react-icons/ai';
+import { Icon } from 'react-native-elements';
+import { IconContext } from 'react-icons';
 import MapView from 'react-native-web-maps';
-import 'react-dates/initialize';
+import DatePicker from 'react-modern-calendar-datepicker';
+import 'react-modern-calendar-datepicker/lib/DatePicker.css';
+import '../filter/filterDropDown.css';
+import '../filter/filter.css';
 import './AddPost.css';
-import 'react-dates/lib/css/_datepicker.css';
-import { DateRangePicker } from 'react-dates';
 import { getCoordinates, addPost } from '../ServerFacade';
+import Dropdown from '../filter/filterDropDown';
 import {Auth} from 'aws-amplify';
+import FilterTags from '../filter/filterTags';
+import ExpandedISO from '../feed/expandedIso';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
 
-const TagItem = ({props}) => {
-  return <Text style={[styles.tag]}>{props}</Text>;
-};
-
 const AddPost = ({props}) => {
   
-  const [isSelectedHouse, setSelectionHouse] = useState(false);
-  const [isSelectedApartment, setSelectionApartment] = useState(false);
-  // const [location, onChangeLocation] = useState("");
   const [min, onChangeMin] = useState(0);
   const [max, onChangeMax] = useState(0);
-  const [startDate, onChangeStartDate] = useState(null);
-  const [endDate, onChangeEndDate] = useState(null);
-  const [focusedInput, onChangeFocusedInput] = useState(null);
+  const [dateRange, onChangeDateRange] = useState({from: null, to: null});
+  const [homeTypeValue, setHomeType] = useState("");
+  const [roomTypeValue, setRoomType] = useState("");
+  const [layoutValue, setLayout] = useState("");
   const [message, onChangeMessage] = useState("");
-  const [tag, onChangeTag] = useState("");
-  const [tagList, onChangeTagList] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(null);
+  const [userID, setUserID] = useState(props.userID);
   let mapRef = React.createRef();
   let markerRef = React.createRef();
   const [location,setLocation] = useState("Provo");
+
+  const [previewISO, setPreview] = useState({
+    status: "unresolved", 
+    postedDate: "",
+    startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
+    endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
+    userID: userID,
+    _id: -1,
+    housingType: homeTypeValue,
+    minCost: min,
+    maxCost: max,
+    location: location,
+    isoPost: message,
+    tags: selectedTags
+  });
+
+  useEffect(() => { 
+    setPreview({
+        status: "unresolved", 
+        postedDate: "",
+        startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
+        endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
+        userID: userID,
+        _id: -1,
+        housingType: homeTypeValue,
+        minCost: min,
+        maxCost: max,
+        location: location,
+        isoPost: message,
+        tags: selectedTags
+      });
+  }, [dateRange, message, homeTypeValue, min, max, location, selectedTags]);
+
+
+  const homeType = [
+    {
+        id: 0,
+        title: 'Apartment',
+        selected: false,
+        key: 'home-type'
+    },
+    {
+        id: 1,
+        title: 'House',
+        selected: false,
+        key: 'home-type'
+    },
+  ] 
+
+  const layoutList = [
+      {
+          id: 0,
+          title: 'Studio',
+          selected: false,
+          key: 'layout'
+      },
+      {
+          id: 1,
+          title: '1-Room',
+          selected: false,
+          key: 'layout'
+      },
+      {
+          id: 2,
+          title: 'Shared',
+          selected: false,
+          key: 'layout'
+      }
+  ]
+
+  const roomType = [
+      {
+          id: 0,
+          title: 'Private Room',
+          selected: false,
+          key: 'room-type'
+      },
+      {
+          id: 1,
+          title: 'Shared Room',
+          selected: false,
+          key: 'room-type'
+      }
+  ] 
+
+  function setHomeTypeProperties(item) {
+    if (item.key == "home-type") {
+        setHomeType(item.title);
+    } else if (item.key == "room-type") {
+        setRoomType(item.title);
+    } else if (item.key == "layout") {
+        setLayout(item.title)
+    }
+  }
 
   let intialRegion = {
     latitude: 40.2338,
@@ -55,6 +145,11 @@ const AddPost = ({props}) => {
     latitude: intialRegion.latitude,
     longitude: intialRegion.longitude
   };
+
+  function onSubmitLocation(e) {
+    e.preventDefault();
+    setMap();
+}
 
   function setMap() {
     if (location == "") return;
@@ -81,10 +176,10 @@ const AddPost = ({props}) => {
     if (user == null) {
       //TODO: handle error
     } else {
-      let type = isSelectedHouse && isSelectedApartment ? "House or Apartment" : isSelectedHouse ? "House" : isSelectedApartment ? "Apartment" : "";
-      let startDateFormatted = new Date(startDate.locale("en").add(1, 'd').format("MMM DD, YYYY HH:MM"));
-      let endDateFormatted = new Date(endDate.locale("en").add(1, 'd').format("MMM DD, YYYY HH:MM"));
-      let success = await addPost(user.username, message, location, type, min, max, tagList, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken);
+      let startDateFormatted = new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day);
+      let endDateFormatted = new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day);
+
+      let success = await addPost(user.username, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken);
       
       if (success == -1) {
         //TODO: handle error
@@ -94,12 +189,8 @@ const AddPost = ({props}) => {
     }
   }
 
-  function addToTagList() {
-    if(tag === "") return;
-    let newTagList = tagList;
-    newTagList.push(tag);
-    onChangeTagList(newTagList);
-    onChangeTag("");
+  function confirmSelectedTags(updatedSelectedTags) {
+    setSelectedTags(updatedSelectedTags);
   }
 
   return (
@@ -110,213 +201,168 @@ const AddPost = ({props}) => {
       <TouchableOpacity
         onPress={props.onPress}
         style={styles.touchableIconContainer}>
-        <Image
-          source={{
-            uri: 'https://img.icons8.com/material-outlined/24/000000/cancel--v1.png',
-          }}
-          style={[styles.cancelIcon]}
+        <Icon           
+          name='close'
+          type='antdesign'
+          color={ROOMER_GRAY}
         />
       </TouchableOpacity>
       <View style={styles.addPostContainer}>
         <h3>Add Post</h3>
     
         <div className="postform-box">
-          <View style={styles.mainCheckboxContainer}>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelectedHouse}
-                onValueChange={setSelectionHouse}
-                style={styles.checkbox}
-                color={'#7AC4CD'}
-              />
-              <Text style={styles.label}>House</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelectedApartment}
-                onValueChange={setSelectionApartment}
-                style={styles.checkbox}
-                color={'#7AC4CD'}
-              />
-              <Text style={styles.label}>Apartment</Text>
-            </View>
+          <View style={styles.textBox}>
+            <Text>{"Price"}</Text>
+            <Text>{"Move-In Date"}</Text>
           </View>
-          <div className="datePickerContainer">
-            <DateRangePicker
-              startDate={startDate} // momentPropTypes.momentObj or null,
-              startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-              endDate={endDate} // momentPropTypes.momentObj or null,
-              endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-              onDatesChange={({ startDate, endDate }) => {onChangeStartDate(startDate); onChangeEndDate(endDate);}} // PropTypes.func.isRequired,
-              focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-              onFocusChange={focusedInput => onChangeFocusedInput(focusedInput)} // PropTypes.func.isRequired,
-              startDatePlaceholderText={"Move-in start date"}
-              endDatePlaceholderText={"Move-in end date"}
-            /> 
-          </div>
-          <form onSubmit = {handleOnSubmit}>
-            <div className="range-container">
-              <label>
-                Price Min $
-              </label>
-              <input 
-                type="text"
-                value={min}
-                onChange={(event) => {onChangeMin(event.target.value)}}
-                placeholder="" />
-              <label>
-                Price Max $
-              </label>
-              <input 
-                type="text"
-                value={max}
-                onChange={(event) => {onChangeMax(event.target.value)}}
-                placeholder="" />
+          <form onSubmit={handleOnSubmit}>
+            <div className={'price-date-wrapper'}>
+              <div className="range-container">
+                <div className="value-box">
+                  <span className='dollar-prefix'>$</span>
+                  <input 
+                    type="text"
+                    value={min}
+                    onChange={(event) => {onChangeMin(event.target.value)}}
+                    placeholder=""/>
+                </div>
+                <label>
+                  {" - "}
+                </label>
+                <div className="value-box">
+                  <span className='dollar-prefix'>$</span>
+                  <input 
+                    type="text"
+                    value={max}
+                    onChange={(event) => {onChangeMax(event.target.value)}}
+                    placeholder="" />
+                </div>
+              </div>
+              <div className='date-wrapper'>
+                <DatePicker 
+                  value={dateRange}
+                  onChange={onChangeDateRange}
+                />
+                <IconContext.Provider value={{className: "calendar-icon"}}>
+                  <AiTwotoneCalendar />
+                </IconContext.Provider>
+              </div>
             </div>
-            <View style={styles.filterMainMapContainer}>
-              <View style={styles.mapContainer}>
-                <MapView
-                  ref = {mapRef}
-                  style={styles.mapStyle}
-                  initialRegion={intialRegion}
-                >
-                  <MapView.Marker
-                  ref = {markerRef}
-                  coordinate={markerCoordinate}
-                  />
-                </MapView>
-              </View>
-              {/* <TextInput
-                  style={styles.filterMainTextInputLocation}
-                  onChangeText={onChangeLocation}
-                  value={location}
-                  placeholder="Location"
-                /> */}
-              <Picker
-                style={styles.pickerStyles}
-                selectedValue={location}
-                onValueChange={(itemValue, itemIndex) => {
-                  setLocation(itemValue);
-                }}>
-                <Picker.Item label="Provo" value="Provo" />
-                <Picker.Item label="Orem" value="Orem" />
-              </Picker>
-              <AiOutlineSearch
-                className="searchIcon"
-                onClick={setMap}
-                color={'#7AC4CD'} />
+            <View style={styles.typeTextBox}>
+              <Text>Home Type</Text>
+              <Text>Layout</Text>
+              <Text>Room Type</Text>
             </View>
+            <View style={styles.typeDropdownBox}>
+              <div className='add-post-dropdown'>
+              <Dropdown
+                title='Select'
+                list={homeType}
+                setHomeTypeProperties={setHomeTypeProperties}
+              />
+              </div>
+              <div className='add-post-dropdown'>
+              <Dropdown 
+                title='Select'
+                list={layoutList}
+                setHomeTypeProperties={setHomeTypeProperties}
+              />
+              </div>
+              <div className='add-post-dropdown'>
+              <Dropdown 
+                title='Select'
+                list={roomType}
+                setHomeTypeProperties={setHomeTypeProperties}
+              />
+              </div>
+            </View>
+            <h4>Description</h4>
             <textarea
               type="text"
               value={message}
               onChange={(event) => {onChangeMessage(event.target.value)}}
               placeholder="Add a message to your post..." />
-            <div className="tag-container">
-              <label>
-                Tags
-              </label>
-              <input 
-                type="text"
-                value={tag}
-                onChange={(event) => {onChangeTag(event.target.value)}}
-                placeholder="Add tags" />
-              <AiFillPlusCircle 
-                className="addTagIcon"
-                onClick={addToTagList}
-                color={'#7AC4CD'} />
+          </form>
+          <div className={!isMobile ? 'tag-map-wrapper' : 'tag-map-wrapper_mobile'}>
+            <div className='tag-map-sub-wrapper'>
+            <FilterTags confirmSelectedTags={confirmSelectedTags} />
             </div>
-            <div className="tag-container">
-              <FlatList
-                style={[styles.tagRow]}
-                data={tagList}
-                renderItem={({item}) => <TagItem props={item} />}
-                listKey={(item, index) => 'tag' + index.toString()}
-                flexDirection={'row'}
-                horizontal={true}
-              />
+            <div className='tag-map-sub-wrapper'>
+              <div className='location-container'>
+                <h2 className='filter-body-header'>Location</h2>
+                <div className='location-search-container'>
+                  <form className='location-input' onSubmit={(e) => onSubmitLocation(e)}>
+                    <input type="text" placeholder="Enter a location" onChange={(e) => setLocation(e.target.value)}/>
+                    <button type='submit' className='location-button'>
+                      <IconContext.Provider value={{className: "search-icon"}}>
+                        <AiOutlineSearch />
+                      </IconContext.Provider>
+                    </button>
+                  </form>
+                </div>
+                <div className='map-container'>
+                  <MapView
+                    ref = {mapRef}
+                    style={styles.mapStyle}
+                    initialRegion={intialRegion}
+                  />
+                </div>
+              </div>
             </div>
+          </div>
+          <div className='submitBtnWrapper'>
             <input
               type="submit"
               value="Post"
-              className="submitBtn" />
-          </form>
+              className="submitBtn"
+              onClick={handleOnSubmit} />
+          </div>
         </div>
+        <View style={styles.isoBorderExpanded}>{}</View>
+        <h3>Preview Post</h3>
+        <ExpandedISO props={{iso: previewISO, onPress: () => {}}} key={previewISO}/>
       </View>
     </ScrollView >
   );
 };
 
+const ROOMER_GRAY = "#1f241a";
+const ROOMER_BLUE = "#5587a2";
+
 const styles = StyleSheet.create({
-  tag: {
-    backgroundColor: '#7AC4CD',
-    marginRight: 7,
-    padding: 5,
-    paddingLeft: 10,
-    borderRadius: 2,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    border: '2px solid #8CDEE7',
-    marginBottom: 5,
-  },
-  tagRow: {
-    flexDirection: 'row',
-    width: '100%',
-    flexWrap: 'wrap',
-  },
   addPostContainer: {
     flexDirection: 'column',
-    alignItems: 'center',
+    marginHorizontal: !isMobile ? 100 : .05 * win.width,
+    fontFamily: 'sans-serif'
   },
   addPostScrollview: {
     width: !isMobile ? 800 : win.width,
     height: !isMobile ? win.height - 200 : win.height,
   },
+  textBox: {
+    color: ROOMER_GRAY,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: !isMobile ? 600 : .9 * win.width,
+    marginBottom: 10,
+  },
+  typeTextBox: {
+    color: ROOMER_GRAY,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: !isMobile ? 600 : .9 * win.width,
+    marginTop: 20,
+  },
+  typeDropdownBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: !isMobile ? 600 : .9 * win.width,
+  },
   touchableIconContainer: {
     alignItems: "flex-end"
-  },
-  cancelIcon: {
-    height: 20,
-    width: 20,
-    margin: 10,
-  },
-  filterContainer: {
-    height: 500,
-    width: '25%',
-    backgroundColor: '#e3e2e1',
-    alignItems: 'center',
-  },
-  filterHeader: {
-    marginTop: 10,
-    borderStyle: 'solid',
-    borderWidth: 3,
-    borderColor: '#000000',
-    width: '60%',
-    borderRadius: 10,
-    textAlign: 'center',
-  },
-  mainCheckboxContainer: {
-    width: '100%',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  checkbox: {
-    alignSelf: 'center',
-    width: 20,
-    height: 20,
-  },
-  mapContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    alignSelf: 'flex-start',
-    marginRight: 20,
   },
   mapStyle: {
     width: '100%',
@@ -326,86 +372,13 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 15,
   },
-  filterSlider: {
-    width: 400,
-    height: 40,
-  },
-  priceLabelContainer: {
-    flexDirection: 'row',
-    width: 400,
-    marginTop: 0,
-    justifyContent: 'space-between',
-  },
-  maxPrice: {
-    paddingLeft: 120,
-  },
-  datePickerContainer: {
-    justifyContent: 'center',
-  },
-  filterMainTextInputLocation: {
-    width: '82%',
-    padding: '.5rem 2% .5rem 2%',
-    fontSize: 15,
-  },
-  filterMainMapContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    marginTop: 20,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  filterMainCalendarContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  filterMainTextInputDate: {
+  isoBorderExpanded: {
+    width: !isMobile ? 360 : win.width * .8,
+    borderColor: ROOMER_GRAY,
+    borderBottomWidth: 1,
     height: 25,
-    width: '82%',
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: 'black',
+    marginLeft: !isMobile ? 120 : "10%",
   },
-  filterMainTextInputContainerDate: {
-    top: 12,
-    left: 17,
-  },
-  filterMainCalendarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    overflow: 'hidden',
-    alignSelf: 'flex-start',
-    borderWidth: 1,
-    borderColor: 'black',
-    right: 8,
-    top: -38,
-    backgroundColor: '#fada5e',
-  },
-  filterMainButtonContainer: {
-    width: '100%',
-    height: '30%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom: 40,
-  },
-  filterMainTextInputKeyWord: {
-    marginTop: 20,
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 3,
-    width: '80%',
-  },
-  pickerStyles: {
-    height: 29,
-    width: '20%',
-    borderWidth: 1,
-    borderColor: '#8CDEE7',
-    padding: 'auto',
-    borderRadius: 5
-  }
 });
 
 
