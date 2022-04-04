@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     filterContainer : {
         flexDirection: 'column',
         backgroundColor: '#ffffff',
-        width: '30%',
+        width: 425,
         height: "60%"
     },
     mapStyle: {

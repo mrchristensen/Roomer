@@ -1,7 +1,7 @@
 .filter-header-container {
     width: 100%;
     background-color: #d5d4d2;
-    height: 12%;
+    height: 38px;
     box-shadow: 0 6px 2px -2px #c4c3be;
     margin-bottom: 10px;
 }
@@ -24,8 +24,8 @@
     background-color: #ffffff;
     border-radius: 25px;
     margin-top: 5px;
-    height: 175px;
-    width: 93%;
+    height: 162px;
+    width: 368px;
     box-shadow: 0px 2px 10px 0px #c4c3be; 
     display: flex;
     flex-direction: column;
@@ -44,7 +44,7 @@
     border-radius: 25px;
     margin-top: 5px;
     height: 180px;
-    width: 93%;
+    width: 368px;
     box-shadow: 0px 2px 10px 0px #c4c3be; 
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@
 }
 
 .location-input input {
-    width: 98%;
+    width: 339px;
     height: 30px;
     border: 2px solid #b3b4b1;
     border-radius: 30px;
@@ -95,7 +95,7 @@
     right: 25px;
     color: #5b5a5a;
     height: 45px;
-    width: 30px;
+    width: 25px;
 }
 
 .price-container {
@@ -103,7 +103,7 @@
     border-radius: 18px;
     margin-top: 5px;
     height: 60px;
-    width: 93%;
+    width: 368px;
     box-shadow: 0px 2px 10px 0px #c4c3be; 
     display: flex;
     flex-direction: column;
@@ -140,7 +140,7 @@
     position: absolute;
     height: 30px;
     width: 16px;
-    left: 24px;
+    left: 9px;
     top: 4px;
     color: #8d9089;
 }
@@ -149,8 +149,8 @@
     background-color: #ffffff;
     border-radius: 18px;
     margin-top: 5px;
-    height: 72px;
-    width: 93%;
+    height: 63px;
+    width: 368px;
     box-shadow: 0px 2px 10px 0px #c4c3be; 
     display: flex;
     flex-direction: column;
@@ -224,8 +224,8 @@
 .tags-container {
     background-color: #ffffff;
     border-radius: 18px;
-    height: 200px;
-    width: 93%;
+    height: 193px;
+    width: 368px;
     box-shadow: 0px 2px 10px 0px #c4c3be; 
     display: flex;
     flex-direction: column;
@@ -248,7 +248,7 @@
 
 .tags-input input {
     width: 98%;
-    height: 35px;
+    height: 30px;
     border: 2px solid #b3b4b1;
     border-radius: 30px;
     outline: none;
@@ -260,11 +260,11 @@
 
 .search-icon-tags {
     position: absolute;
-    top: -43px;
+    top: -40px;
     right: 14px;
     color: #000000;
     height: 45px;
-    width: 35px;
+    width: 25px;
 }
 
 .tags-list {
@@ -346,39 +346,41 @@
 
     .home-type-container {
         height: 150px;
-        width: 60%;
+        width: 75%;
+        border-radius: 20px;
+        margin-top: 5px;
     }
 
     .location-container {
         height: 62px;
-        width: 60%;
-        border-radius: 16px;
+        width: 75%;
+        border-radius: 15px;
     }
 
     .location-input {
-        width: 63%;
+        width: 75%;
         margin-top: -1px;
         height: 22px;
     }
 
     .location-input input {
-        width: 150px;
+        width: 210px;
         height: 20px;
         font-size: 12px;
     }
 
     .search-icon {
         top: -7px;
-        right: 41px;
+        right: 45px;
         height: 37px;
         width: 20px;
     }
 
     .price-container {
         border-radius: 15px;
-        margin-top: 10px;
+        margin-top: 5px;
         height: 55px;
-        width: 60%;
+        width: 75%;
     }
 
     .dollar-icon {
@@ -389,7 +391,7 @@
     }
 
     .price-input {
-        width: 18%;
+        width: 14%;
         height: 16px;
         border-radius: 6px;
         margin-top: -5px;
@@ -398,9 +400,9 @@
     }
 
     .date-container-filter {
-        border-radius: 18px;
+        border-radius: 16px;
         height: 58px;
-        width: 60%;
+        width: 75%;
     }
 
     .date-body {
@@ -430,38 +432,40 @@
     }
 
     .tags-container {
-        width: 60%;
+        width: 75%;
         height: 140px;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 
     .tags-input {
-        width: 68%;
+        width: 75%;
         margin-top: 3px;
     }
 
     .tags-input input {
-        width: 150px;
-        height: 15px;
+        width: 210px;
+        height: 17px;
         font-size: 12px;
     }
 
     .search-icon-tags {
-        top: -33px;
+        top: -35px;
         right: 7px;
         width: 17px;
     }
 
     .tags-list {
-        width: 156px;
-        height: 100px;
-        top: -20px;
+        width: 216px;
+        height: 108px;
+        top: -21px;
     }
 
     .tags-list__tags li {
-        height: 6px;
-        margin-top: -18px;
-        font-size: 8px;
-        padding: 2px 5px 5px 5px;
+        height: 10px;
+        margin-top: -15px;
+        font-size: 9px;
+        padding: 3px 5px 5px 5px;
     }
 
     .tags-list__tags li button {

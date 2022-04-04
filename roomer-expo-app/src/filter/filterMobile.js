@@ -244,9 +244,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: 6
   },
   filterSlider: {
-        width: 145,
+        width: 204,
         height: 20,
         alignSelf: 'center'
   },
