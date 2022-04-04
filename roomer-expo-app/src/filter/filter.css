@@ -1,9 +1,10 @@
 .filter-header-container {
-    width: 100%;
+    width: 90%;
     background-color: #d5d4d2;
     height: 38px;
     box-shadow: 0 6px 2px -2px #c4c3be;
     margin-bottom: 10px;
+    align-self: center;
 }
 
 .filter-header {
