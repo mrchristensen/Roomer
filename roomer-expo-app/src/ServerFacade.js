@@ -2,7 +2,7 @@ import axios from 'axios';
 const AWS = require('aws-sdk');
 
 const API_GATEWAY =
-  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Sprint_4';
+  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Production';
 
 const GEOCODE_API = 
   'https://maps.googleapis.com/maps/api/geocode/json';
