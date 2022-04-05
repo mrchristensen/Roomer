@@ -34,8 +34,9 @@ const AddPost = ({props}) => {
   const [roomTypeValue, setRoomType] = useState("");
   const [layoutValue, setLayout] = useState("");
   const [message, onChangeMessage] = useState("");
-  const [selectedTags, setSelectedTags] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [userID, setUserID] = useState(props.userID);
+  const [tagUpdate, triggerTagUpdate] = useState(false);
   let mapRef = React.createRef();
   let markerRef = React.createRef();
   const [location,setLocation] = useState("Provo");
@@ -55,7 +56,7 @@ const AddPost = ({props}) => {
     tags: selectedTags
   });
 
-  useEffect(() => { 
+  useEffect(() => {
     setPreview({
         status: "unresolved", 
         postedDate: "",
@@ -70,7 +71,7 @@ const AddPost = ({props}) => {
         isoPost: message,
         tags: selectedTags
       });
-  }, [dateRange, message, homeTypeValue, min, max, location, selectedTags]);
+  }, [dateRange, message, homeTypeValue, min, max, location, tagUpdate]);
 
 
   const homeType = [
@@ -158,7 +159,7 @@ const AddPost = ({props}) => {
         let coordinates = response.data.results[0].geometry.location;
         markerCoordinate.latitude = coordinates.lat;
         markerCoordinate.longitude = coordinates.lng;
-        console.log(mapRef.current);
+
         mapRef.current.animateToRegion({
           latitude: coordinates.lat,
           longitude: coordinates.lng,
@@ -190,6 +191,7 @@ const AddPost = ({props}) => {
   }
 
   function confirmSelectedTags(updatedSelectedTags) {
+    triggerTagUpdate(!tagUpdate);
     setSelectedTags(updatedSelectedTags);
   }
 
@@ -373,11 +375,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   isoBorderExpanded: {
-    width: !isMobile ? 360 : win.width * .8,
+    width: !isMobile ? 360 : "100%",
     borderColor: ROOMER_GRAY,
     borderBottomWidth: 1,
     height: 25,
-    marginLeft: !isMobile ? 120 : "10%",
+    marginLeft: !isMobile ? 120 : 0,
   },
 });
 

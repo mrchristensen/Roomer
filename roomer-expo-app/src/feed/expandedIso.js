@@ -24,6 +24,7 @@ const TagItem = ({props}) => {
 };
 
 function epochToDateString(epoch) {
+  if(epoch === null || !epoch) return "";
   var d = new Date(epoch);
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   return d.toLocaleDateString("en-US", options);
@@ -54,8 +55,6 @@ class ExpandedISO extends Component {
 
     //TODO: make this based on the actual login value
     const notLoggedIn = false;
-
-    console.log(props);
     
     this.state = {
       emailValue: "",
@@ -63,8 +62,6 @@ class ExpandedISO extends Component {
       messageValue: "",
       notLoggedIn: notLoggedIn,
       contactMessage: notLoggedIn ? "You must login to contact this buyer" : "Contact",
-      // postDate: epochToDateString(props.props.iso.postedDate),
-      // moveDate: epochToDateString(props.props.iso.startDate),
       resolvedIndicator: props.props.iso.status === "resolved" ? 
       <View style={[styles.resolvedIcon]}>
         <Icon           
@@ -82,7 +79,7 @@ class ExpandedISO extends Component {
     this.handleOnChangeStatus = this.handleOnChangeStatus.bind(this);
     this.ActionItem = this.ActionItem.bind(this);
 
-    this.ownerActions = [
+    this.ownerActions = this.props.props.iso._id === -1 ? [] : [
       {
         name: this.state.statusResolveMessage,
         icon: <Icon 
@@ -342,11 +339,11 @@ const styles = StyleSheet.create({
     marginLeft: "8%",
   },
   isoBorderExpanded: {
-    width: !isMobile ? 360 : win.width * .8,
+    width: !isMobile ? 360 : win.width * .9,
     borderColor: ROOMER_GRAY,
     borderBottomWidth: 1,
     height: 25,
-    marginLeft: !isMobile ? 70 : "10%",
+    marginLeft: !isMobile ? 70 : 0,
   },
   rowContainer: !isMobile ? {
     flexDirection: 'row',
@@ -362,7 +359,7 @@ const styles = StyleSheet.create({
   isoContentContainerExpanded: {
     flexDirection: 'column',
     paddingTop: !isMobile ? 0 : 10,
-    width: !isMobile ? 650 : win.width,
+    width: !isMobile ? 650 : win.width*.9,
   },
   profileImage: !isMobile ? {
     width: 140,
@@ -418,20 +415,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
   },
-  tagRow: {
-    flexDirection: 'row',
-    width: '100%',
-    flexWrap: 'wrap',
-    paddingBottom: !isMobile ? 0 : 20,
-  },
   tagRowExpanded: {
     flexDirection: 'row',
-    width: !isMobile ? 500 : win.width,
+    width: !isMobile ? 500 : win.width*.9,
     flexWrap: 'wrap',
     paddingBottom: !isMobile ? 0 : 20,
+    marginHorizontal: !isMobile ? 0 : win.width*.05,
   },
   tagRowContentContainer: {
-    justifyContent: !isMobile ? 'flex-start' : 'center',
+    flexDirection: 'row',
+    width: !isMobile ? 500 : win.width*.9,
+    flexWrap: 'wrap',
   },
   actionRow: {
     flexDirection: 'row',
