@@ -204,7 +204,7 @@ const FilterMobile = (props) => {
                 </View>
             </div>
         </div>
-        <div className='date-container'>
+        <div className='date-container-filter'>
           <h2 className='filter-header'>Move-In Date</h2>
             <div className='date-body'>
               <DatePicker 
@@ -244,9 +244,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    marginTop: 6
   },
   filterSlider: {
-        width: 145,
+        width: 204,
         height: 20,
         alignSelf: 'center'
   },

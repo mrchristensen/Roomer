@@ -8,8 +8,8 @@
 .dd-header {
     margin-top: 5px;
     width: 90%;
-    height: 31px;
-    background-color: #1e2419;
+    height: 25px;
+    background-color: #dcdcdc;
     border-radius: 7px;
     padding: 0;
     outline: 0;
@@ -24,9 +24,9 @@
     justify-items: center;
     justify-content: center;
     font-family: sans-serif;
-    font-size: 18px;
-    margin-top: -6px;
-    color: #ffffff;
+    font-size: 15px;
+    margin-top: -10px;
+    color: #000000;
 }
 
 .dd-header-title-text {
@@ -44,28 +44,28 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 35px;
+    top: 30px;
 }
 
 .dd-list-item {
-    width: 362px;
-    height: 35px;
-    background-color: #1e2419;
+    width: 329.2px;
+    height: 25px;
+    background-color: #dcdcdc;
     border: 1px solid #9ca2a2;
     border-radius: 7px;
     padding: 0;
     z-index: 1;
     outline: none;
     cursor: pointer;
-    color: #ffffff;
+    color: #000000;
 }
 
 @media (max-width: 400px) {
     .dd-header {
         margin-top: 0px;
-        width: 150px;
-        height: 20px;
-        border-radius: 7px;
+        width: 265px;
+        height: 19px;
+        border-radius: 4px;
         padding: 0px;
         outline: 0;
         cursor: pointer;
@@ -97,9 +97,9 @@
     }
 
     .dd-list-item {
-        width: 150px;
-        height: 20px;
-        border-radius: 7px;
+        width: 265px;
+        height: 19px;
+        border-radius: 4px;
         padding: 0;
         z-index: 1;
         outline: none;

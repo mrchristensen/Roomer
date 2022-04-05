@@ -236,7 +236,7 @@ const Filter = (props) => {
                         </View>
                     </div>
                 </div>
-                <div className='date-container'>
+                <div className='date-container-filter'>
                     <h2 className='filter-body-header'>Move-In Date</h2>
                     <div className='date-body'>
                         <DatePicker 
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     filterContainer : {
         flexDirection: 'column',
         backgroundColor: '#ffffff',
-        width: '30%',
+        width: 425,
         height: "60%"
     },
     mapStyle: {
