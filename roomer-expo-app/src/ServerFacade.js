@@ -2,7 +2,7 @@ import axios from 'axios';
 const AWS = require('aws-sdk');
 
 const API_GATEWAY =
-  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Sprint_4';
+  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Production';
 
 const GEOCODE_API = 
   'https://maps.googleapis.com/maps/api/geocode/json';
@@ -193,8 +193,6 @@ export async function getCoordinates(location) {
 }
 
 export async function createUser(userID, userEmail, username) {
-  console.log('Creating user in db')
-
   try {
     let response = await axios.post(API_GATEWAY + '/adduser', {
       userID: userID,
@@ -210,7 +208,6 @@ export async function createUser(userID, userEmail, username) {
 }
 
 export async function getUsername (userID) {
-  console.log('Getting username in db')
 
   try {
     let response = await axios.get(API_GATEWAY + '/getusername/' + userID);
@@ -221,3 +218,47 @@ export async function getUsername (userID) {
   }
 
 }
+
+export async function addMessage(userID, postID, messageSubject, messageBody, recipientId, loginToken) {
+  try {
+    let response = await axios.post(API_GATEWAY + '/addmessage', {
+      userId: userID,
+      postId: postID,
+      messageSubject: messageSubject,
+      messageBody: messageBody,
+      recipientId: recipientId,
+    },{
+      headers: {
+        'Authorization': loginToken.jwtToken,
+      }
+    });
+
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export async function getUserMessages(userId, pageSize, lastPostId, lastPostDate, loginToken) {
+  try {
+
+    let response = await axios.post(API_GATEWAY + '/getmessages', {
+      userId: userId,
+      pageSize: pageSize,
+      lastPostId: lastPostId,
+      lastPostDate: lastPostDate,
+    },{
+      headers: {
+        'Authorization': loginToken.jwtToken,
+      }
+    });
+
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return -1;
+  }
+}
+

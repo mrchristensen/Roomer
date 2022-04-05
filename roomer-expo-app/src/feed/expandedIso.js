@@ -14,7 +14,7 @@ import { NavigationContext } from "react-navigation";
 import './Form.css';
 import { sendSESEmail } from '../AWS';
 import {Auth} from 'aws-amplify';
-import { resolvePostStatus, unresolvePostStatus, getUserEmail, getUsername } from '../ServerFacade';
+import { resolvePostStatus, unresolvePostStatus, getUserEmail, getUsername, addMessage, getUserMessages } from '../ServerFacade';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -142,6 +142,7 @@ class ExpandedISO extends Component {
         contactMessage: "Contact",
         viewerIsAuthor: user.username === this.props.props.iso.userID,
         token: user.signInUserSession.accessToken,
+        viewerId: user.username,
       }));
 
       if(user.username === this.props.props.iso.userID) {
@@ -177,6 +178,10 @@ class ExpandedISO extends Component {
         //TODO: error handling
       } else {
         sendSESEmail(toEmailValue, this.state.emailValue, this.state.subjectValue, this.state.messageValue);
+        let addMessageError = await addMessage(this.state.viewerId, this.props.props.iso._id, this.state.subjectValue, this.state.messageValue, this.props.props.iso.userID, this.state.token);
+        if(addMessageError == -1) {
+          //TODO: error handling
+        }
       }
 
       //close expanded iso

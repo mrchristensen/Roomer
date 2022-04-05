@@ -10,6 +10,7 @@ import {
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { Rating } from 'react-native-ratings';
 import "./Account.css";
+import {getUserMessages} from '../ServerFacade';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
