@@ -144,9 +144,8 @@ const styles = StyleSheet.create({
       },
   bodyContainer: !isMobile
     ? {
-        height: "50%",
+        height: win.height,
         width: "100%",
-        flex: 1,
         flexDirection: "row",
       }
     : {
