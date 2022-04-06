@@ -68,7 +68,6 @@ export async function addProfileImage(userId) {
     if (err) {
       throw err;
     }
-    console.log(`File uploaded successfully. ${data.Location}`);
   });
 }
 

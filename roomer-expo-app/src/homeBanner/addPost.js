@@ -16,7 +16,7 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import '../filter/filterDropDown.css';
 import '../filter/filter.css';
 import './AddPost.css';
-import { getCoordinates, addPost } from '../ServerFacade';
+import { getCoordinates, addPost, editPost } from '../ServerFacade';
 import Dropdown from '../filter/filterDropDown';
 import {Auth} from 'aws-amplify';
 import FilterTags from '../filter/filterTags';
@@ -26,20 +26,33 @@ const win = Dimensions.get("window");
 const isMobile = win.width < 600;
 
 const AddPost = ({props}) => {
+
+  function epochToDateObj(epoch) {
+    if(epoch === null || !epoch) return null;
+    var d = new Date(epoch);
+    return {year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate()};
+  }
   
-  const [min, onChangeMin] = useState(0);
-  const [max, onChangeMax] = useState(0);
-  const [dateRange, onChangeDateRange] = useState({from: null, to: null});
-  const [homeTypeValue, setHomeType] = useState("");
-  const [roomTypeValue, setRoomType] = useState("");
-  const [layoutValue, setLayout] = useState("");
-  const [message, onChangeMessage] = useState("");
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [min, onChangeMin] =  useState(props.iso ? props.iso.minCost : 0);
+  const [max, onChangeMax] = useState(props.iso ? props.iso.maxCost : 0);
+  const [dateRange, onChangeDateRange] = useState(props.iso 
+    ? {from: epochToDateObj(props.iso.startDate), to: epochToDateObj(props.iso.endDate)} 
+    : {from: null, to: null});
+  const [homeTypeValue, setHomeType] = useState(props.iso ? props.iso.housingType : "Select");
+  const [roomTypeValue, setRoomType] = useState(props.iso ? props.iso.roomType : "Select");
+  const [layoutValue, setLayout] = useState(props.iso ? props.iso.layout : "Select");
+  const [message, onChangeMessage] = useState(props.iso ? props.iso.isoPost : "");
+  const [selectedTags, setSelectedTags] = useState(props.iso ? props.iso.tags : []);
   const [userID, setUserID] = useState(props.userID);
   const [tagUpdate, triggerTagUpdate] = useState(false);
   let mapRef = React.createRef();
-  let markerRef = React.createRef();
-  const [location,setLocation] = useState("Provo");
+  const [location, setLocation] = useState(props.iso ? props.iso.location : "Provo");
+  const [intialRegion, setInitialRegion] = useState(props.iso ? props.initialRegion : {
+    latitude: 40.2338,
+    longitude: -111.6585,
+    latitudeDelta: 0.04,
+    longitudeDelta: 0.05,
+  });
 
   const [previewISO, setPreview] = useState({
     status: "unresolved", 
@@ -72,7 +85,6 @@ const AddPost = ({props}) => {
         tags: selectedTags
       });
   }, [dateRange, message, homeTypeValue, min, max, location, tagUpdate]);
-
 
   const homeType = [
     {
@@ -135,30 +147,16 @@ const AddPost = ({props}) => {
     }
   }
 
-  let intialRegion = {
-    latitude: 40.2338,
-    longitude: -111.6585,
-    latitudeDelta: 0.04,
-    longitudeDelta: 0.05,
-  };
-
-  let markerCoordinate = {
-    latitude: intialRegion.latitude,
-    longitude: intialRegion.longitude
-  };
-
   function onSubmitLocation(e) {
     e.preventDefault();
     setMap();
-}
+  }
 
   function setMap() {
     if (location == "") return;
     getCoordinates(location).then(response => {
       if (response.status == 200) {
         let coordinates = response.data.results[0].geometry.location;
-        markerCoordinate.latitude = coordinates.lat;
-        markerCoordinate.longitude = coordinates.lng;
 
         mapRef.current.animateToRegion({
           latitude: coordinates.lat,
@@ -180,13 +178,15 @@ const AddPost = ({props}) => {
       let startDateFormatted = new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day);
       let endDateFormatted = new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day);
 
-      let success = await addPost(user.username, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken);
+      let success = props.iso 
+          ? await editPost(user.username, props.iso._id, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken)
+          : await addPost(user.username, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken);
       
-      if (success == -1) {
-        //TODO: handle error
-      }
-      
-      window.location.reload();
+        if (success == -1) {
+          //TODO: handle error
+        }
+        
+        window.location.reload();
     }
   }
 
@@ -200,7 +200,7 @@ const AddPost = ({props}) => {
       contentInsetAdjustmentBehavior="automatic"
       style={styles.addPostScrollview}
       showsHorizontalScrollIndicator={false}>
-      <TouchableOpacity
+      {props.iso ? <></> : <TouchableOpacity
         onPress={props.onPress}
         style={styles.touchableIconContainer}>
         <Icon           
@@ -208,9 +208,9 @@ const AddPost = ({props}) => {
           type='antdesign'
           color={ROOMER_GRAY}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <View style={styles.addPostContainer}>
-        <h3>Add Post</h3>
+        {props.iso ? <h3>Edit Post</h3> : <h3>Add Post</h3>}
     
         <div className="postform-box">
           <View style={styles.textBox}>
@@ -258,21 +258,21 @@ const AddPost = ({props}) => {
             <View style={styles.typeDropdownBox}>
               <div className='add-post-dropdown'>
               <Dropdown
-                title='Select'
+                title={homeTypeValue}
                 list={homeType}
                 setHomeTypeProperties={setHomeTypeProperties}
               />
               </div>
               <div className='add-post-dropdown'>
               <Dropdown 
-                title='Select'
+                title={layoutValue}
                 list={layoutList}
                 setHomeTypeProperties={setHomeTypeProperties}
               />
               </div>
               <div className='add-post-dropdown'>
               <Dropdown 
-                title='Select'
+                title={roomTypeValue}
                 list={roomType}
                 setHomeTypeProperties={setHomeTypeProperties}
               />
@@ -287,14 +287,14 @@ const AddPost = ({props}) => {
           </form>
           <div className={!isMobile ? 'tag-map-wrapper' : 'tag-map-wrapper_mobile'}>
             <div className='tag-map-sub-wrapper'>
-            <FilterTags confirmSelectedTags={confirmSelectedTags} />
+            <FilterTags selectedTags={selectedTags} confirmSelectedTags={confirmSelectedTags} />
             </div>
             <div className='tag-map-sub-wrapper'>
               <div className='location-container'>
                 <h2 className='filter-body-header'>Location</h2>
                 <div className='location-search-container'>
                   <form className='location-input' onSubmit={(e) => onSubmitLocation(e)}>
-                    <input type="text" placeholder="Enter a location" onChange={(e) => setLocation(e.target.value)}/>
+                    <input type="text" placeholder={"Enter a location"} value={location} onChange={(e) => setLocation(e.target.value)}/>
                     <button type='submit' className='location-button'>
                       <IconContext.Provider value={{className: "search-icon"}}>
                         <AiOutlineSearch />
@@ -304,7 +304,7 @@ const AddPost = ({props}) => {
                 </div>
                 <div className='map-container'>
                   <MapView
-                    ref = {mapRef}
+                    ref={mapRef}
                     style={styles.mapStyle}
                     initialRegion={intialRegion}
                   />

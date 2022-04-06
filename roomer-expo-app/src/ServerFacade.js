@@ -23,7 +23,6 @@ export async function getFeed(pageSize, lastPostId, housingType, location, housi
       layout: layout
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -42,7 +41,6 @@ export async function getUserEmail(userID, loginToken) {
       }
     });
 
-    console.log(response);
     return response.data.Item.USER_EMAIL;
   } catch (error) {
     console.log(error);
@@ -72,7 +70,36 @@ export async function addPost(userId, isoPost, location, housingType, roomType, 
       }
     });
 
-    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    return -1;
+  }
+}
+
+export async function editPost(userId, postId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken) {
+  try {
+    //TODO: login token in the authorization header
+
+    let response = await axios.post(API_GATEWAY + '/editpost', {
+      userId: userId,
+      postID: postId,
+      isoPost: isoPost, 
+      location: location, 
+      housingType: housingType, 
+      roomType: roomType,
+      layout: layout,
+      minCost: minCost, 
+      maxCost: maxCost, 
+      tags: tags, 
+      startDate: startDate, 
+      endDate: endDate
+    }, {
+      headers: {
+        'Authorization': loginToken.jwtToken
+      }
+    });
+
     return response.data;
   } catch (error) {
     console.log(error);
@@ -89,7 +116,6 @@ export async function getUserAccountBio(userID, loginToken) {
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -111,7 +137,6 @@ export async function getUserAccountPosts(userId, pageSize, lastPostId, showUnre
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -129,7 +154,6 @@ export async function resolvePostStatus(postId, loginToken) {
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -147,7 +171,6 @@ export async function unresolvePostStatus(postId, loginToken) {
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -166,7 +189,6 @@ export async function editUserAccountBio(userId, userBio, loginToken) {
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -175,8 +197,6 @@ export async function editUserAccountBio(userId, userBio, loginToken) {
 }
 
 export async function getCoordinates(location) {
-  console.log('Getting coordinates for ' + location);
-
   try {
     let response = await axios.get(GEOCODE_API, {
       params: {
@@ -254,7 +274,6 @@ export async function getUserMessages(userId, pageSize, lastPostId, lastPostDate
       }
     });
 
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);

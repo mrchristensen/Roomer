@@ -14,7 +14,8 @@ import { NavigationContext } from "react-navigation";
 import './Form.css';
 import { sendSESEmail } from '../AWS';
 import {Auth} from 'aws-amplify';
-import { resolvePostStatus, unresolvePostStatus, getUserEmail, getUsername, addMessage, getUserMessages } from '../ServerFacade';
+import { resolvePostStatus, unresolvePostStatus, getUserEmail, getUsername, addMessage, getCoordinates } from '../ServerFacade';
+import AddPost from '../homeBanner/addPost';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -73,11 +74,14 @@ class ExpandedISO extends Component {
       viewerIsAuthor: false, 
       statusResolveMessage: props.props.iso.status === "resolved" ? "Re-Post" : "Unpost",
       name: "",
+      editMode: false,
+      coordinates: null,
     }
 
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleOnChangeStatus = this.handleOnChangeStatus.bind(this);
     this.ActionItem = this.ActionItem.bind(this);
+    this.selectEditMode = this.selectEditMode.bind(this);
 
     this.ownerActions = this.props.props.iso._id === -1 ? [] : [
       {
@@ -89,15 +93,15 @@ class ExpandedISO extends Component {
         />,
         onClick: this.handleOnChangeStatus
       },
-      /*{ TODO: implement edit post option
+      {
         name: "Edit",
         icon: <Icon  
           name='edit'
           type='feather'
           color={ROOMER_GRAY}
         />,
-        onClick: () => console.log("Edit")
-      },*/
+        onClick: this.selectEditMode
+      },
     ]
 
     this.nonOwnerActions = [
@@ -209,6 +213,21 @@ class ExpandedISO extends Component {
     this.props.props.onPress();
   }
 
+  async selectEditMode() {
+
+    let response = await getCoordinates(this.props.props.iso.location);
+    if(response.status == 200) {
+      let coordinateLocation = response.data.results[0].geometry.location;
+      this.setState({coordinates: {
+        latitude: coordinateLocation.lat,
+        longitude: coordinateLocation.lng,
+        latitudeDelta: 0.04,
+        longitudeDelta: 0.05
+      },
+      editMode: true});
+    }
+  }
+
   handleEmailChange = (event) => {
     this.setState({emailValue: event.target.value});
   }
@@ -222,8 +241,9 @@ class ExpandedISO extends Component {
   }
 
   render() {
-    return (
-      <View style={styles.expandedIsoContainer}>
+    return this.state.editMode 
+    ? (<AddPost props={{onPress: this.props.props.onPress, userID: this.state.viewerId, iso: this.props.props.iso, initialRegion: this.state.coordinates }}/>) 
+    : (<View style={styles.expandedIsoContainer}>
         <View style={styles.expandedIsoInfoContainer}>
           <View style={styles.profileImageWrapper}>
             <Image

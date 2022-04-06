@@ -51,10 +51,8 @@ class App extends Component {
     let moveInDate = null;
     if (filterValues.moveInDate != null) {
       moveInDate = new Date(filterValues.moveInDate.year, filterValues.moveInDate.month - 1, filterValues.moveInDate.day);
-      console.log(moveInDate);
       moveInDate.setHours(0, 0, 0)
     }
-    console.log(filterValues.tags)
     this.setState({
       feedProps: {
         pageSize: 10,

@@ -15,7 +15,7 @@ class FilterTags extends Component {
                 "In Unit Laundry",
                 "Parking Spot"
             ],
-            selectedTags: []
+            selectedTags: props.selectedTags ? props.selectedTags : []
         }
     }
 
