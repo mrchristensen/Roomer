@@ -53,6 +53,7 @@ class Feed extends Component {
         if (response != -1) {
           this.setState({
             page: response,
+            lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
             isEnd: response.length === 0
           });
         }
@@ -103,6 +104,13 @@ class Feed extends Component {
     getFeed(
       this.state.pageSize,
       this.state.lastPostId,
+      this.state.housingType, 
+      this.state.location, 
+      this.state.housingPrice, 
+      this.state.moveInDate, 
+      this.state.tags, 
+      this.state.roomType, 
+      this.state.layout
     ).then(response => {
 
       if (response != -1) {
