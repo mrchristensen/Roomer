@@ -8,14 +8,21 @@ class FilterTags extends Component {
         super(props);
         this.state = {
             tags: [
-                "Gym",
-                "South Campus",
-                "Mixed Housing",
-                "Social",
-                "In Unit Laundry",
-                "Parking Spot"
+                { tagValue: "Gym", fromUser: false },
+                { tagValue: "South Campus", fromUser: false },
+                { tagValue: "Mixed Housing", fromUser: false },
+                { tagValue: "Social", fromUser: false },
+                { tagValue: "In Unit Laundry", fromUser: false },
+                { tagValue: "Parking Spot", fromUser: false }
             ],
-            selectedTags: []
+            selectedTags: [],
+            previousSelectedTagLen: 0
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.previousSelectedTagLen != prevState.previousSelectedTagLen) {
+            this.props.confirmSelectedTags(this.state.selectedTags);
         }
     }
 
@@ -23,18 +30,16 @@ class FilterTags extends Component {
         if (isSelected) {
             this.state.selectedTags.push(tag);
             this.setState({
-                selectedTags: this.state.selectedTags
+                selectedTags: this.state.selectedTags,
+                previousSelectedTagLen: this.state.selectedTags.length
             });
-            this.props.confirmSelectedTags(this.state.selectedTags);
         } else {
             let index = this.state.selectedTags.indexOf(tag);
-            console.log(index);
             this.state.selectedTags.splice(index, 1);
-            console.log(this.state.selectedTags);
             this.setState({
-                selectedTags: this.state.selectedTags
+                selectedTags: this.state.selectedTags,
+                previousSelectedTagLen: this.state.selectedTags.length
             })
-            this.props.confirmSelectedTags(this.state.selectedTags);
         }
     }
 
@@ -51,11 +56,12 @@ class FilterTags extends Component {
     inputKeyDown(e) {
         const val = e.target.value;
         if (e.key === 'Enter' && val) {
-            if (this.state.tags.find(tag => tag.toLowerCase() === val.toLowerCase())) {
+            if (this.state.tags.find(tag => tag.tagValue.toLowerCase() === val.toLowerCase())) {
                 return;
             }
-            this.setState({ tags: [...this.state.tags, val]});
-            this.updateSelectedTags(val, true);
+            let newTag = { tagValue: val, fromUser: true };
+            this.setState({ tags: [...this.state.tags, newTag]});
+            this.updateSelectedTags(newTag, true);
             this.tagInput.value = null;
         } else if (e.key === 'Backspace' && !val) {
             this.removeTag(this.state.tags.length - 1);
@@ -92,7 +98,7 @@ class FilterTags extends Component {
 class Tag extends Component {
     constructor(props) {
         super(props);
-        if (props.tag) {
+        if (!props.tag.fromUser) {
             this.state = {
                 isSelected: false
             }
@@ -117,7 +123,6 @@ class Tag extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isSelected != this.state.isSelected) {
-            console.log("Here")
             this.props.updateSelectedTags(this.props.tag, this.state.isSelected);
         }
     }
@@ -125,13 +130,13 @@ class Tag extends Component {
     render() {
         return (
             this.state.isSelected ? (
-                <li key={this.props.tag}  onClick={() => { this.removeTag(); }}>
-                    {this.props.tag}
+                <li key={this.props.tag.tagValue}  onClick={() => { this.removeTag(); }}>
+                    {this.props.tag.tagValue}
                     <button type="button">x</button>
                 </li>
             ) : (
-                <li key={this.props.tag} onClick={() => { this.removeTag(this.props.tag); }} className='tag__not-selected'>
-                    {this.props.tag}
+                <li key={this.props.tag.tagValue} onClick={() => { this.removeTag(this.props.tag); }} className='tag__not-selected'>
+                    {this.props.tag.tagValue}
                 </li>
             )
         )
