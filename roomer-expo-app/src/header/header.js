@@ -1,11 +1,5 @@
 import React, { Component, useState } from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  ImageBackground,
-  Text,
-} from "react-native";
+import { Dimensions, StyleSheet, ImageBackground, Text } from "react-native";
 import bannerImage from "./banner.jpeg";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 import "./header.css";
@@ -238,23 +232,34 @@ class Header extends Component {
               Post what you are in search of{"\n"}Find your buyer here
             </Text>
 
-            <div style={{ position: "absolute", bottom: "25%", right: "2%" }}>
-              <span
-                className="icon-wrapper"
-                style={{
-                  backgroundColor: ROOMER_GRAY,
-                  padding: 8,
-                  borderRadius: 10,
-                }}
+            {this.state.isLoggedIn ? (
+              <div
+                style={{ position: "absolute", bottom: "25%", right: ".5%" }}
+                className="options"
+                onClick={this.onClickFindAPlace}
               >
-                <Text style={styles.buttonText}>
-                  I'm looking for a place to rent{"  "}
-                </Text>
-                <Icon name="search" type="feather" color={"#fff"} size={16} />
-              </span>
-            </div>
+                <span
+                  className="icon-wrapper"
+                  style={{
+                    backgroundColor: ROOMER_GRAY,
+                    padding: 8,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Text style={styles.buttonText}>
+                    I'm looking for a place to rent{" "}
+                  </Text>
+                  <Icon name="plus" type="feather" color={"#fff"} size={16} />
+                </span>
+              </div>
+            ) : (
+              <></>
+            )}
 
-            <div style={{ position: "absolute", bottom: "10%", right: "2%" }}>
+            <div
+              style={{ position: "absolute", bottom: "10%", right: ".5%" }}
+              className="options"
+            >
               <span
                 className="icon-wrapper"
                 style={{
@@ -264,7 +269,7 @@ class Header extends Component {
                 }}
               >
                 <Text style={styles.buttonText}>I'm looking for a buyer </Text>
-                <Icon name="plus" type="feather" color={"#fff"} size={16} />
+                <Icon name="search" type="feather" color={"#fff"} size={16} />
               </span>
             </div>
           </ImageBackground>
