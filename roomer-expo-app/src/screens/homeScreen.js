@@ -17,6 +17,7 @@ import {
 } from "react-native";
 import Feed from "../feed/feed";
 import Header from "../header/header";
+import HeaderBanner from "../header/headerBanner";
 import Filter from "../filter/filter";
 import FilterMobile from "../filter/filterMobile";
 
@@ -38,41 +39,44 @@ class App extends Component {
         tags: null,
         roomType: null,
         layout: null,
-        fromFilter: false
+        fromFilter: false,
       },
       isDarkMode: false, //useColorScheme() === 'dark',
       loggedIn: true,
-      updateFeedState: null
+      updateFeedState: null,
     };
   }
 
   filterValuesSet = (filterValues) => {
-    
     let moveInDate = null;
     if (filterValues.moveInDate != null) {
-      moveInDate = new Date(filterValues.moveInDate.year, filterValues.moveInDate.month - 1, filterValues.moveInDate.day);
-      moveInDate.setHours(0, 0, 0)
+      moveInDate = new Date(
+        filterValues.moveInDate.year,
+        filterValues.moveInDate.month - 1,
+        filterValues.moveInDate.day
+      );
+      moveInDate.setHours(0, 0, 0);
     }
     this.setState({
       feedProps: {
         pageSize: 10,
         housingType: filterValues.homeType,
         location: filterValues.location,
-        housingPrice: ((filterValues.price == 100) ? null:  filterValues.price),
+        housingPrice: filterValues.price == 100 ? null : filterValues.price,
         moveInDate: moveInDate,
         tags: filterValues.tags,
         roomType: filterValues.roomType,
         layout: filterValues.layout,
-        fromFilter: true
-      }
+        fromFilter: true,
+      },
     });
   };
 
   setUpdateFeedState = (func) => {
     this.setState({
-      updateFeedState: func
+      updateFeedState: func,
     });
-  }
+  };
 
   componentDidUpdate() {
     this.state.updateFeedState(this.state.feedProps);
@@ -87,13 +91,14 @@ class App extends Component {
           />
           <View style={[styles.sectionContainer]}>
             <Header />
+            {/* <HeaderBanner /> */}
             <View style={[styles.bodyContainer]}>
-              <Filter 
-                filterValuesSet={this.filterValuesSet} 
+              <Filter
+                filterValuesSet={this.filterValuesSet}
                 updateFeedState={this.state.updateFeedState}
               />
-              <Feed 
-                props={this.state.feedProps} 
+              <Feed
+                props={this.state.feedProps}
                 setUpdateFeedState={this.setUpdateFeedState}
               />
             </View>
@@ -111,8 +116,8 @@ class App extends Component {
               <Header />
               <View style={[styles.bodyContainer]}>
                 <FilterMobile />
-                <Feed 
-                  props={this.state.feedProps} 
+                <Feed
+                  props={this.state.feedProps}
                   setUpdateFeedState={this.setUpdateFeedState}
                 />
               </View>
@@ -130,7 +135,7 @@ const styles = StyleSheet.create({
         width: "100%",
         minWidth: 1024,
         overflow: "hidden",
-        fontFamily: 'sans-serif'
+        fontFamily: "sans-serif",
       }
     : {
         marginTop: 0,
@@ -138,7 +143,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         width: win.width,
-        fontFamily: 'sans-serif'
+        fontFamily: "sans-serif",
       },
   bodyContainer: !isMobile
     ? {
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
     : {
         marginTop: 5,
         flexDirection: "column",
-    },
+      },
 });
 
 registerRootComponent(App);

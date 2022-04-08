@@ -1,220 +1,243 @@
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 div {
-    position: relative;
+  position: relative;
 }
 .header-container {
-    height: 65px;
-    background-color: #1e2419;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  height: 65px;
+  background-color: #1e2419;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@media (min-width:1300px) {
-    .header-container {
-        /* max-width: 1440px; */
-    }
+.header-banner {
+  height: 65px;
+  width: 100%;
+  /* background-color: #1e2419; */
+  /* display: flex; */
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (min-width: 1300px) {
+  .header-container {
+    /* max-width: 1440px; */
+  }
+}
+
+.bannerImage {
+  width: 100%;
+  /* background-image: url(https://provohousing.org/wp-content/uploads/2020/03/Office-Building.jpg); */
+  background-image: "banner.jpeg";
+  height: 405px;
+  background-position: center;
 }
 
 .bare-header-container {
-    height: 65px;
-    background-color: #1e2419;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  height: 65px;
+  background-color: #1e2419;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .roomer-logo-container {
-    margin: 12px 0;
+  margin: 12px 0;
 }
 
 .roomer-logo-link {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .roomer-logo {
-    width: 100px;
+  width: 100px;
 }
 
 .header-options__left {
-    margin: 22px;
+  margin: 22px;
 }
 
 .header-options__right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 22px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 22px;
 }
 
 .header-options__right-not-logged-in {
-    display: flex;
-    flex-direction: row;
-    margin: 22px;
+  display: flex;
+  flex-direction: row;
+  margin: 22px;
 }
 
 .options {
-    color: #ffffff;
-    font-family: sans-serif;
-    font-size: 14px;
-    margin-right: 15px;
-    cursor: pointer;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin-right: 15px;
+  cursor: pointer;
 }
 
 .options-feedback {
-    color: #ffffff;
-    font-family: sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: none;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .options-right {
-    color: #ffffff;
-    font-family: sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: none;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .options-wrapper__right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .options-wrapper {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .underline-hover-effect {
-    display: inline-block;
-    padding-bottom: 0.25rem;
-    position: relative;
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  position: relative;
 }
 
 .underline-home-effect {
-    display: inline-block;
-    padding-bottom: 0.25rem;
-    position: relative;
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  position: relative;
 }
 
 .underline-home-effect::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #185168;
-    transition: width 0.25s ease-out;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #185168;
+  transition: width 0.25s ease-out;
 }
 
 .underline-hover-effect::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background-color: #227395;
-    transition: width 0.25s ease-out;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #227395;
+  transition: width 0.25s ease-out;
 }
 
 .underline-hover-effect:hover::before {
-    width: 100%;
-    left: 0;
-    right: auto;
+  width: 100%;
+  left: 0;
+  right: auto;
 }
 
 .underline-home-effect:hover::before {
-    width: 100%;
-    left: 0;
-    right: auto;
-    background-color: #227395;
+  width: 100%;
+  left: 0;
+  right: auto;
+  background-color: #227395;
 }
 
 .icon-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 @media (max-width: 601px) {
-    .header-container {
-        max-width: 601px;
-    }
+  .header-container {
+    max-width: 601px;
+  }
 
-    .roomer-logo-container {
-        padding: 0;
-    }
+  .roomer-logo-container {
+    padding: 0;
+  }
 
-    .header-options__right-not-logged-in {
-        left: 7%;
-    }
+  .header-options__right-not-logged-in {
+    left: 7%;
+  }
 }
 
-@media (max-width: 500px) {    
-    .header-container {
-        max-width: 500px;
-        height: 80px;
-    }
+@media (max-width: 500px) {
+  .header-container {
+    max-width: 500px;
+    height: 80px;
+  }
 
-    .roomer-logo-container {
-        margin: 18px 0;
-        padding: 0 2% 0 0;
-    }
+  .roomer-logo-container {
+    margin: 18px 0;
+    padding: 0 2% 0 0;
+  }
 
-    .options-wrapper__right {
-        display: flex;
-        flex-direction: column;
-        left: 10%;
-    }
+  .options-wrapper__right {
+    display: flex;
+    flex-direction: column;
+    left: 10%;
+  }
 
-    .options-feedback {
-        left: 18%;
-        margin-right: 62%;
-    }
+  .options-feedback {
+    left: 18%;
+    margin-right: 62%;
+  }
 }
 
-@media (max-width: 400px) {  
-    .header-container {
-        max-width: 400px;
-        height: 80px;
-    }
+@media (max-width: 400px) {
+  .header-container {
+    max-width: 400px;
+    height: 80px;
+  }
 
-    .roomer-logo-container {
-        margin: 25px 0;
-        padding: 0;
-        left: 9%;
-    }
+  .roomer-logo-container {
+    margin: 25px 0;
+    padding: 0;
+    left: 9%;
+  }
 
-    .roomer-logo {
-        width: 80px;
-    }
+  .roomer-logo {
+    width: 80px;
+  }
 
-    .header-options__left {
-        margin: 5px;
-    }
+  .header-options__left {
+    margin: 5px;
+  }
 
-    .options {
-        font-size: 12px;
-        margin-right: 3px;
-    }
+  .options {
+    font-size: 12px;
+    margin-right: 3px;
+  }
 
-    .options-feedback {
-        font-size: 12px;
-    }
+  .options-feedback {
+    font-size: 12px;
+  }
 
-    .header-options__right-not-logged-in {
-        left: 1%;
-    }
+  .header-options__right-not-logged-in {
+    left: 1%;
+  }
 }
