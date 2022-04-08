@@ -1,5 +1,11 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useContext } from "react";
 import { Dimensions, StyleSheet, ImageBackground, Text } from "react-native";
+import {
+  NavigationContext,
+  withNavigation,
+  NavigationActions,
+  Link,
+} from "react-navigation";
 import bannerImage from "./banner.jpeg";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 import "./header.css";
@@ -9,6 +15,7 @@ import { Icon } from "react-native-elements";
 import AuthenticationCard from "../authentication/AuthenticationCard.js";
 import { Auth } from "aws-amplify";
 import AddPost from "../homeBanner/addPost";
+import { ConsoleLogger } from "@aws-amplify/core";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -17,6 +24,7 @@ const ROOMER_GRAY = "#1f241a";
 
 class Header extends Component {
   _isMounted = false;
+  mountedContext = null;
 
   constructor(props) {
     super(props);
@@ -54,8 +62,19 @@ class Header extends Component {
     this.setState({ showAddPostOverlay: !this.state.showAddPostOverlay });
   };
 
+  onClickFindABuyer = () => {
+    //Todo: fix this navigation call
+    // https://stackoverflow.com/questions/55896644/react-usecontext-throws-invalid-hook-call-error
+    // https://stackoverflow.com/questions/56663785/invalid-hook-call-hooks-can-only-be-called-inside-of-the-body-of-a-function-com
+    // https://stackoverflow.com/questions/62317412/react-native-stack-navigation-with-class-component
+    // https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
+    const navigation = useContext(NavigationContext);
+    navigation.navigate("Home");
+  };
+
   componentDidMount() {
     this._isMounted = true;
+    this.mountedContext = this.context;
 
     Auth.currentAuthenticatedUser()
       .then((user) => {
@@ -134,7 +153,10 @@ class Header extends Component {
                 <></>
               )}
               {this.state.isHome ? (
-                <span className="options underline-home-effect">
+                <span
+                  className="options underline-home-effect"
+                  onClick={this.onClickFindABuyer}
+                >
                   {this.findABuyerIcon}
                 </span>
               ) : (
@@ -259,6 +281,7 @@ class Header extends Component {
             <div
               style={{ position: "absolute", bottom: "10%", right: ".5%" }}
               className="options"
+              onClick={this.onClickFindABuyer}
             >
               <span
                 className="icon-wrapper"
