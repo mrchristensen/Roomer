@@ -228,7 +228,13 @@ class Account extends Component {
     } else if (messages) {
       this.setState((prevState) => ({
         ...prevState,
-        showTab: <MessagesTab messagesSent={this.state.messagesSent} />,
+        showTab: (
+          <MessagesTab
+            userId={this.state.userId}
+            token={this.state.token}
+            messagesSent={this.state.messagesSent}
+          />
+        ),
       }));
     } else {
       this.setState((prevState) => ({
