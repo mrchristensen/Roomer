@@ -100,14 +100,14 @@ class SignInMenu extends Component {
             isGoogle={true}
             buttonStyle={styles.googleButtonStyle}
             textStyle={styles.googleButtonTextStyle}
-            onPress={() => Auth.federatedSignIn({ provider: "Google"})}
+            onPress={() => console.log(this.state.firstName + " " + this.state.lastName + " " + this.state.email + " " + this.state.password + " " + this.state.confPassword)}
           />
           <OAuthAuthenticationButton
             text="Facebook"
             isGoogle={false}
             buttonStyle={styles.facebookButtonStyle}
             textStyle={styles.facebookButtonTextStyle}
-            onPress={() => Auth.federatedSignIn({ provider: "Facebook"})}
+            onPress={() => console.log(this.state.firstName + " " + this.state.lastName + " " + this.state.email + " " + this.state.password + " " + this.state.confPassword)}
           />
         </View> 
       )

@@ -9,8 +9,6 @@ import AuthenticationCard from '../authentication/AuthenticationCard.js'
 import { Auth } from 'aws-amplify'
 import AddPost from '../homeBanner/addPost';
 import HomeIcon from './homeIcon';
-import { getUsername, createUser } from '../ServerFacade';
-import { addProfileImage } from '../AWS';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -60,20 +58,14 @@ class Header extends Component {
     componentDidMount() {
         this._isMounted = true;
 
-        Auth.currentAuthenticatedUser().then(async user => {
+        Auth.currentAuthenticatedUser().then(user => {
             let names = user["attributes"]["name"].split(" ");
             let parsedUser = {
                 Username: user["username"],
-                FirstName: names[0] !== null ? names[0] : "", 
-                LastName: names[1] !== null ? names[1] : "",
+                FirstName: names[0],
+                LastName: names[1],
                 Email: user["attributes"]["email"]
             }
-            let response = await getUsername(parsedUser["Username"])
-            if (Object.keys(response).length === 0) {
-                await createUser(parsedUser["Username"], parsedUser["Email"], parsedUser["FirstName"] + " " + parsedUser["LastName"]);
-                await addProfileImage(parsedUser["Username"]);
-            }
-
             if (this._isMounted) {
                 this.setState(prevState => ({
                     ...prevState,
