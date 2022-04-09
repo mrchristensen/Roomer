@@ -14,6 +14,7 @@ import { useFilePicker } from "use-file-picker";
 import { Overlay, Icon } from "react-native-elements";
 import { updateProfileImage } from "../AWS";
 import "./Account.css";
+<<<<<<< HEAD
 import MessagesTab from "./messagesTab";
 import PostsTab from "./postsTab";
 import RatingsTab from "./ratingsTab";
@@ -24,6 +25,15 @@ import {
 } from "../ServerFacade";
 import { Auth } from "aws-amplify";
 import Header from "../header/Header";
+=======
+import MessagesTab from './messagesTab';
+import PostsTab from './postsTab';
+import RatingsTab from './ratingsTab';
+import { getUserAccountBio, editUserAccountBio, getUsername } from '../ServerFacade';
+import {Auth} from 'aws-amplify';
+import BareHeader from '../header/bareHeader';
+import Header from '../header/header';
+>>>>>>> main
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;

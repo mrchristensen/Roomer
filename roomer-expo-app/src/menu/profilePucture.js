@@ -17,7 +17,7 @@ const ProfilePicture = (props) => {
     Auth.currentAuthenticatedUser().then(user => {
       setImageUrl(`https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${user.username}`);
     }).catch(() => {
-      setImageUrl("https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png");
+        setImageUrl("https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png");
     });
 
     return (

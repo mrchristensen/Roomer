@@ -1,13 +1,12 @@
 {
   "auth": {
-    "roomerweb3159d3a5": {
+    "roomeramplifyprojecta9e61420": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
-        "socialProviders": [],
-        "usernameAttributes": [
+        "loginMechanisms": [
           "EMAIL"
         ],
         "signupAttributes": [

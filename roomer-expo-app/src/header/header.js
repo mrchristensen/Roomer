@@ -1,11 +1,6 @@
 import React, { Component, useState, useContext } from "react";
 import { Dimensions, StyleSheet, ImageBackground, Text } from "react-native";
-import {
-  NavigationContext,
-  withNavigation,
-  NavigationActions,
-  Link,
-} from "react-navigation";
+import {NavigationContext} from "react-navigation";
 import bannerImage from "./banner.jpeg";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 import "./header.css";
@@ -15,7 +10,16 @@ import { Icon } from "react-native-elements";
 import AuthenticationCard from "../authentication/AuthenticationCard.js";
 import { Auth } from "aws-amplify";
 import AddPost from "../homeBanner/addPost";
-import { ConsoleLogger } from "@aws-amplify/core";
+import React, {Component} from 'react';
+import {Dimensions} from 'react-native';
+import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
+import './header.css'
+import RoomerLogo from './roomer.svg'
+import ProfilePicture from '../menu/profilePucture';
+import {Icon} from 'react-native-elements';
+import AuthenticationCard from '../authentication/AuthenticationCard.js'
+import { Auth } from 'aws-amplify'
+import AddPost from '../homeBanner/addPost';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -165,9 +169,51 @@ class Header extends Component {
       });
   }
 
+<<<<<<< HEAD
   componentWillUnmount() {
     this._isMounted = false;
   }
+=======
+    onClickFindAPlace = () => {
+        this.setState({showAddPostOverlay: !this.state.showAddPostOverlay});
+    }
+    
+
+    componentDidMount() {
+        this._isMounted = true;
+
+        Auth.currentAuthenticatedUser().then(user => {
+            let names = user["attributes"]["name"].split(" ");
+            let parsedUser = {
+                Username: user["username"],
+                FirstName: names[0],
+                LastName: names[1],
+                Email: user["attributes"]["email"]
+            }
+            if (this._isMounted) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    isLoggedIn: true,
+                    userInfo: parsedUser,
+                    signInClick: false,
+                    isHome: true,
+                    firstName: parsedUser.FirstName
+                }));
+            }
+        }).catch(() => {
+            if (this._isMounted) {
+                    this.setState(prevState => ({
+                    ...prevState,
+                    isLoggedIn: false,
+                    userInfo: null,
+                    signInClick: false,
+                    isHome: true,
+                    firstName: null
+                }));
+            }
+        });
+    }
+>>>>>>> main
 
   render() {
     return (
@@ -285,6 +331,7 @@ class Header extends Component {
               Post what you are in search of{"\n"}Find your buyer here
             </Text>
 
+<<<<<<< HEAD
             {this.state.isLoggedIn ? (
               <div
                 style={{ position: "absolute", bottom: "25%", right: ".5%" }}
@@ -308,6 +355,18 @@ class Header extends Component {
             ) : (
               <></>
             )}
+=======
+    homeIcon = <div className='icon-wrapper'>
+        { !isMobile ? "Home" : ""}
+        <Icon
+        name='home'
+        type='feather'
+        color={"#fff"}
+        style={{marginLeft: !isMobile ? 4 : 2}}
+        size={15}
+        />
+    </div>
+>>>>>>> main
 
             <div
               style={{ position: "absolute", bottom: "10%", right: ".5%" }}
