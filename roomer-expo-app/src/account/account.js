@@ -23,7 +23,7 @@ import {
   getUsername,
 } from "../ServerFacade";
 import { Auth } from "aws-amplify";
-import Header from "../header/Header";
+import Header from "../header/header";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;

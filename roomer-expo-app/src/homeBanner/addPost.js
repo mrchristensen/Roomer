@@ -186,7 +186,7 @@ const AddPost = ({props}) => {
           //TODO: handle error
         }
         
-        window.location.reload();
+       window.location.reload();
     }
   }
 
