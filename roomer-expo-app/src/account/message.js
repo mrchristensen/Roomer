@@ -67,40 +67,29 @@ class Message extends Component {
         <View style={[styles.rowContainer]}>
           <Image
             source={{
-              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.userID}`,
+              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.recipientID}`,
             }}
             style={[styles.profileImage]}
           />
           <View style={[styles.isoContentContainer]}>
             <Text style={[styles.topInfoRow]}>
-              x: {this.state.props.housingType}
-              {", Price: $"}
-              {this.state.props.minCost}
-              {" - $"}
-              {this.state.props.maxCost}
-              {", Location: "}
-              {this.state.props.location}
+              To: {serverfacade.getUserName(this.state.props.recipientID)}
+              {"\n"}
+              Subject: {this.state.props.message_subject}
             </Text>
             <Text style={[styles.datePostedRow]}>
-              Move-in: {this.state.moveDate}
+              Sent: {this.state.sentDate}
             </Text>
-            {this.state.resolvedIndicator}
             <Text
               style={[styles.isoContentText]}
               numberOfLines={2}
               ellipsizeMode={"tail"}
             >
-              {this.state.props.isoPost}
+              {this.state.props.messageBody}
             </Text>
-            <FlatList
-              style={[styles.tagRow]}
-              data={this.state.props.tags}
-              renderItem={({ item }) => <TagItem props={item} />}
-              listKey={(item, index) => "tag" + index.toString()}
-            />
-            <TouchableOpacity style={styles.detailsText} onPress={this.onPress}>
+            {/* <TouchableOpacity style={styles.detailsText} onPress={this.onPress}>
               <>Details/Contact</>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         <View style={styles.isoBorder}>{}</View>
