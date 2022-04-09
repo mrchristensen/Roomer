@@ -3,6 +3,7 @@ import {
     View,
     Text, 
     TextInput,
+    ActivityIndicator
 } from 'react-native';
 import CognitoAuthenticationButton from './CognitoAuthenticationButton';
 import OAuthAuthenticationButton from './OAuthAuthenticationButton';
@@ -26,11 +27,13 @@ class SignInMenu extends Component {
         this.state = {
             email: "",
             password: "",
-            exitMenu: props.exitMenu
+            exitMenu: props.exitMenu,
+            showProgressIndicator: false,
         }
     }
 
     async cognitoSignIn(username, password) {
+      this.setState({showProgressIndicator: true});
       if (username === "" || password === "") {
         alert('Please enter a valid email and password');
       } else {
@@ -50,8 +53,10 @@ class SignInMenu extends Component {
           }
           this.state.exitMenu(parsedUser);
         } catch (error) {
+          alert('An error occured signing you in. Please verify that you are using the correct username and password.')
         }
       }
+      this.setState({showProgressIndicator: false});
     }
 
     render() {
@@ -80,11 +85,12 @@ class SignInMenu extends Component {
               this.cognitoSignIn(this.state.email, this.state.password)
             }}
           />
-          <HyperlinkText
+          {/* <HyperlinkText
             text="Forgot Password?"
             style={styles.hyperLinkStyle}
             onPress={() => console.log('TODO: IMPLMENT FORGOT PASSWORD')}
-          />  
+          />   */}
+          <ActivityIndicator size="large" animating={this.state.showProgressIndicator}/>
           <View style={{
             borderBottomColor: 'black',
             borderBottomWidth: .5,

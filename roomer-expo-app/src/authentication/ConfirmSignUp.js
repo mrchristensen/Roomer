@@ -3,6 +3,7 @@ import {
     View,
     Text, 
     TextInput,
+    ActivityIndicator
 } from 'react-native';
 import CognitoAuthenticationButton from './CognitoAuthenticationButton';
 import styles from './MenuStyles'
@@ -15,11 +16,13 @@ class ConfirmSignUp extends Component {
         this.state= {
             email: "",
             code: "",
-            changeDisplayMenu: props.changeMenu
+            changeDisplayMenu: props.changeMenu,
+            showProgressIndicator: false,
         }
     }
 
     async confirmSignUp(username, code) {
+        this.setState({showProgressIndicator: true});
         try {
           let response = await Auth.confirmSignUp(username, code);
           if (response === 'SUCCESS') {
@@ -27,9 +30,10 @@ class ConfirmSignUp extends Component {
           }
         } catch (error) {
           alert(
-            "Unable to confirm Sign Up. Please make sure you've entered the correct confirmation code.",
+            "Unable to confirm Sign Up. Please make sure you've entered a valid email address and the correct confirmation code.",
           );
         }
+        this.setState({showProgressIndicator: false});
       }
 
     render() {
@@ -59,6 +63,7 @@ class ConfirmSignUp extends Component {
                     placeholder='Enter Confirmation Code'
                     style={styles.textInputStyle}
                     onChangeText={(newValue)=>this.setState({code: newValue})}/>
+                <ActivityIndicator size="large" animating={this.state.showProgressIndicator}/>
                 <CognitoAuthenticationButton
                     text="Confirm"
                     buttonStyle={styles.cognitoButtonStyle}
