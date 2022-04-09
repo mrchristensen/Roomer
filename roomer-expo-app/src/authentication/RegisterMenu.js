@@ -117,14 +117,14 @@ class RegisterMenu extends Component {
                     isGoogle={true}
                     buttonStyle={styles.googleButtonStyle}
                     textStyle={styles.googleButtonTextStyle}
-                    onPress={() => console.log(this.state.firstName + " " + this.state.lastName + " " + this.state.email + " " + this.state.password + " " + this.state.confPassword)}
+                    onPress={() => Auth.federatedSignIn({ provider: "Google"})}
                 />
                 <OAuthAuthenticationButton
                     text="Facebook"
                     isGoogle={false}
                     buttonStyle={styles.facebookButtonStyle}
                     textStyle={styles.facebookButtonTextStyle}
-                    onPress={() => console.log(this.state.firstName + " " + this.state.lastName + " " + this.state.email + " " + this.state.password + " " + this.state.confPassword)}
+                    onPress={() => Auth.federatedSignIn({ provider: "Facebook"})}
                 />
             </View>
         )
