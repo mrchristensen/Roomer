@@ -22,6 +22,71 @@ const isMobile = win.width < 600;
 
 const ROOMER_GRAY = "#1f241a";
 
+const OnClickFindABuyerHeader = (props) => {
+
+  const findABuyerIcon = (
+    <div className="icon-wrapper">
+      {!isMobile ? "Find a Buyer" : ""}
+      <Icon
+        name="search"
+        type="feather"
+        color={"#fff"}
+        style={{ marginLeft: !isMobile ? 4 : 2 }}
+        size={15}
+      />
+    </div>
+  );
+  
+  const navigation = useContext(NavigationContext);
+  let isHome = true;
+
+  return isHome ? (
+    <span
+      className="options underline-home-effect"
+      onClick={() => {
+        if(navigation.state.routeName !== "Home") {
+          navigation.navigate("Home")
+        }
+      }}
+    >
+      {findABuyerIcon}
+    </span>
+  ) : (
+    <span 
+      className="options underline-hover-effect"
+      onClick={() => {
+        if(navigation.state.routeName !== "Home") {
+          navigation.navigate("Home")
+        }
+      }}
+    >
+      {findABuyerIcon}
+    </span>
+  )
+};
+
+const OnClickFindABuyerBanner = (props) => {
+
+  const navigation = useContext(NavigationContext);
+
+  return <span
+  className="icon-wrapper"
+  style={{
+    backgroundColor: ROOMER_GRAY,
+    padding: 8,
+    borderRadius: 10,
+  }}
+  onClick={() => {
+    if(navigation.state.routeName !== "Home") {
+      navigation.navigate("Home")
+    }
+  }}
+  >
+    <Text style={styles.buttonText}>I'm looking for a buyer </Text>
+    <Icon name="search" type="feather" color={"#fff"} size={16} />
+  </span>
+}
+
 class Header extends Component {
   _isMounted = false;
   mountedContext = null;
@@ -60,16 +125,6 @@ class Header extends Component {
 
   onClickFindAPlace = () => {
     this.setState({ showAddPostOverlay: !this.state.showAddPostOverlay });
-  };
-
-  onClickFindABuyer = () => {
-    //Todo: fix this navigation call
-    // https://stackoverflow.com/questions/55896644/react-usecontext-throws-invalid-hook-call-error
-    // https://stackoverflow.com/questions/56663785/invalid-hook-call-hooks-can-only-be-called-inside-of-the-body-of-a-function-com
-    // https://stackoverflow.com/questions/62317412/react-native-stack-navigation-with-class-component
-    // https://stackoverflow.com/questions/45089386/what-is-the-best-way-to-redirect-a-page-using-react-router
-    const navigation = useContext(NavigationContext);
-    navigation.navigate("Home");
   };
 
   componentDidMount() {
@@ -114,19 +169,6 @@ class Header extends Component {
     this._isMounted = false;
   }
 
-  findABuyerIcon = (
-    <div className="icon-wrapper">
-      {!isMobile ? "Find a Buyer" : ""}
-      <Icon
-        name="search"
-        type="feather"
-        color={"#fff"}
-        style={{ marginLeft: !isMobile ? 4 : 2 }}
-        size={15}
-      />
-    </div>
-  );
-
   render() {
     return (
       <div>
@@ -152,18 +194,7 @@ class Header extends Component {
               ) : (
                 <></>
               )}
-              {this.state.isHome ? (
-                <span
-                  className="options underline-home-effect"
-                  onClick={this.onClickFindABuyer}
-                >
-                  {this.findABuyerIcon}
-                </span>
-              ) : (
-                <span className="options underline-hover-effect">
-                  {this.findABuyerIcon}
-                </span>
-              )}
+              <OnClickFindABuyerHeader isHome={this.state.isHome}/>
             </div>
           </div>
           <div className="roomer-logo-container">
@@ -281,19 +312,8 @@ class Header extends Component {
             <div
               style={{ position: "absolute", bottom: "10%", right: ".5%" }}
               className="options"
-              onClick={this.onClickFindABuyer}
             >
-              <span
-                className="icon-wrapper"
-                style={{
-                  backgroundColor: ROOMER_GRAY,
-                  padding: 8,
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={styles.buttonText}>I'm looking for a buyer </Text>
-                <Icon name="search" type="feather" color={"#fff"} size={16} />
-              </span>
+              <OnClickFindABuyerBanner/>
             </div>
           </ImageBackground>
         </div>
