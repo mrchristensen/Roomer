@@ -19,9 +19,16 @@ class FilterTags extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.previousSelectedTagLen != prevState.previousSelectedTagLen) {
+            this.props.confirmSelectedTags(this.state.selectedTags);
+        }
+    }
+
     updateSelectedTags = (tag, isSelected) => {
         if (isSelected) {
-            this.state.selectedTags.push(tag);
+            this.state.selectedTags.push(tag.tagValue);
+            console.log(this.state.selectedTags);
             this.setState({
                 selectedTags: this.state.selectedTags,
                 previousSelectedTagLen: this.state.selectedTags.length

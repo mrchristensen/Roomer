@@ -156,6 +156,7 @@ const Filter = (props) => {
     }
 
     function applyFilter() {
+        console.log(filterValues);
         filterValues.homeType = homeTypeValue;
         filterValues.location = location;
         filterValues.price = (typeof(price) == "string" ? parseInt(price.replaceAll(/,/g, '')): price);
