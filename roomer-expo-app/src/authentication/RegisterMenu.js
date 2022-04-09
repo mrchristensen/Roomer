@@ -53,7 +53,8 @@ class RegisterMenu extends Component {
 
             this.state.changeDisplayMenu('Confirm')
           } catch (error) {
-              alert('An error occured in the singup proccess. Please verify that you are using a unique email and a valid password.')
+            console.log(error)
+            alert('An error occured in the singup proccess. Please verify that you are using a unique email and a valid password.')
           }
         }
         this.setState({showProgressIndicator: false});

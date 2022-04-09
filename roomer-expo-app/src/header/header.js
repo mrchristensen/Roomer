@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext } from "react";
+import React, { Component, useContext } from "react";
 import { Dimensions, StyleSheet, ImageBackground, Text } from "react-native";
 import {NavigationContext} from "react-navigation";
 import bannerImage from "./banner.jpeg";
@@ -10,16 +10,6 @@ import { Icon } from "react-native-elements";
 import AuthenticationCard from "../authentication/AuthenticationCard.js";
 import { Auth } from "aws-amplify";
 import AddPost from "../homeBanner/addPost";
-import React, {Component} from 'react';
-import {Dimensions} from 'react-native';
-import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
-import './header.css'
-import RoomerLogo from './roomer.svg'
-import ProfilePicture from '../menu/profilePucture';
-import {Icon} from 'react-native-elements';
-import AuthenticationCard from '../authentication/AuthenticationCard.js'
-import { Auth } from 'aws-amplify'
-import AddPost from '../homeBanner/addPost';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
