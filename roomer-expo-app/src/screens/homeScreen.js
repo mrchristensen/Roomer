@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { registerRootComponent } from "expo";
 import {
   SafeAreaView,
@@ -20,6 +20,7 @@ import Header from "../header/header";
 import HeaderBanner from "../header/headerBanner";
 import Filter from "../filter/filter";
 import FilterMobile from "../filter/filterMobile";
+import { NavigationContext } from "react-navigation";
 
 const win = Dimensions.get("window");
 let isMobile = win.width < 600;

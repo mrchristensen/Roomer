@@ -440,7 +440,7 @@
     }
 
     .tags-input {
-        width: 75%;
+        width: 218px;
         margin-top: 3px;
     }
 
@@ -458,7 +458,7 @@
 
     .tags-list {
         width: 216px;
-        height: 108px;
+        height: 100px;
         top: -21px;
     }
 

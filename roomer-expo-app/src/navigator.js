@@ -22,7 +22,6 @@ const Navigator = createStackNavigator(
     Profile: {
       screen: Account,
       path: "profile",
-      // https://stackoverflow.com/questions/43729944/how-to-set-headermode-on-some-routes-but-not-others-react-navigation
       navigationOptions: {
         header: null,
       },

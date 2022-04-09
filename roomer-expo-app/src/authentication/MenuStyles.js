@@ -6,6 +6,7 @@ import {
 const styles = StyleSheet.create({
     menuStyle: {
         width: 270,
+        maxHeight: 500,
     },
     cognitoButtonStyle: {
         backgroundColor: 'black',
