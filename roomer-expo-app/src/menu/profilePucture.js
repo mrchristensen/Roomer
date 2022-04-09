@@ -15,10 +15,10 @@ const ProfilePicture = (props) => {
     const [imageUrl, setImageUrl] = useState("https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png");
 
     Auth.currentAuthenticatedUser().then(user => {
-      console.log(user);
-      setImageUrl(`https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${user.username}`);
+        console.log(user);
+        setImageUrl(`https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${user.username}`);
     }).catch(() => {
-      setImageUrl("https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png");
+        setImageUrl("https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png");
     });
 
     return (

@@ -20,6 +20,7 @@ import RatingsTab from './ratingsTab';
 import { getUserAccountBio, editUserAccountBio, getUsername } from '../ServerFacade';
 import {Auth} from 'aws-amplify';
 import BareHeader from '../header/bareHeader';
+import Header from '../header/header';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -230,7 +231,7 @@ class Account extends Component {
     if(!this.state.error) {
       return (
         <>
-        <BareHeader/>
+        <Header />
         <ScrollView 
           contentInsetAdjustmentBehavior="automatic"
           style={styles.accountContainer}

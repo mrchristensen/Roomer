@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {Dimensions} from 'react-native';
 import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
 import './header.css'
@@ -8,6 +8,7 @@ import {Icon} from 'react-native-elements';
 import AuthenticationCard from '../authentication/AuthenticationCard.js'
 import { Auth } from 'aws-amplify'
 import AddPost from '../homeBanner/addPost';
+import HomeIcon from './homeIcon';
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -53,6 +54,7 @@ class Header extends Component {
         this.setState({showAddPostOverlay: !this.state.showAddPostOverlay});
     }
     
+
     componentDidMount() {
         this._isMounted = true;
 
@@ -92,15 +94,15 @@ class Header extends Component {
         this._isMounted = false;
     }
 
-    findABuyerIcon = <div className='icon-wrapper'>
-        { !isMobile ? "Find a Buyer" : ""}
-        <Icon           
-        name='search'
+    homeIcon = <div className='icon-wrapper'>
+        { !isMobile ? "Home" : ""}
+        <Icon
+        name='home'
         type='feather'
         color={"#fff"}
         style={{marginLeft: !isMobile ? 4 : 2}}
         size={15}
-    />
+        />
     </div>
 
     render() {
