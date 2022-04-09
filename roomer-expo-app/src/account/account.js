@@ -38,7 +38,7 @@ function EditImageComponent(props) {
 
   React.useEffect(() => {
     if (!loading && filesContent.length != 0 && errors.length == 0) {
-      updateProfileImage(props.userId, filesContent[0].content);
+      updateProfileImage(props.userId, filesContent[0].content, props.renderCallback);
     }
   }, [loading]);
 
@@ -262,13 +262,16 @@ class Account extends Component {
             <View style={!isMobile ? styles.row : styles.userHeader}>
               <View style={[styles.imageColumn]}>
                 <Image
+                  key={Date.now()}
                   source={{
                     uri: this.state.imageUrl,
                   }}
                   style={[styles.profileImage]}
                 />
                 {this.state.viewerIsUser ? (
-                  <EditImageComponent userId={this.state.userId} />
+                  <EditImageComponent userId={this.state.userId} renderCallback={() => {
+                    console.log("calling render callback");
+                    this.setState({})}}/>
                 ) : (
                   <></>
                 )}

@@ -118,7 +118,7 @@
 }
 
 .price-input {
-    width: 12%;
+    width: 60px;
     height: 19px;
     border-radius: 9px;
     border: 2px solid #b3b4b1;
@@ -141,7 +141,7 @@
     position: absolute;
     height: 30px;
     width: 16px;
-    left: 9px;
+    left: 12px;
     top: 4px;
     color: #8d9089;
 }

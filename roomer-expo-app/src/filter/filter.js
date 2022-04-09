@@ -221,7 +221,7 @@ const Filter = (props) => {
                         <IconContext.Provider value={{className: "dollar-icon"}}>
                             <BsCurrencyDollar />
                         </IconContext.Provider>
-                        <input className='price-input' type='text' value={price}/>
+                        <input className='price-input' type='text' value={price} readOnly={true}/>
                         <View style={styles.sliderContainer}>
                             <Slider
                                 style={styles.filterSlider}
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     filterSlider: {
-        width: '18em',
+        width: 270,
         height: 40,
         alignSelf: 'center'
     },

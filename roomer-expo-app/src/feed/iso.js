@@ -61,6 +61,7 @@ class ISO extends Component {
       <View style={[styles.isoContainer]}>
         <View style={[styles.rowContainer]}>
           <Image
+            key={Date.now()}
             source={{
               uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.userID}`,
             }}
@@ -242,6 +243,7 @@ const styles = StyleSheet.create({
     color: ROOMER_BLUE,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginRight: 30,
     alignItems: 'center',
   },
   touchableIconContainer: {

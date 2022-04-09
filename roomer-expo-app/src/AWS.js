@@ -72,7 +72,7 @@ export async function addProfileImage(userId) {
 }
 
 //updates S3 file for this user with new image
-export function updateProfileImage(userId, imageInfo) {
+export function updateProfileImage(userId, imageInfo, renderCallback) {
 
   const base64Data = Buffer.from(imageInfo.replace(/^data:image\/\w+;base64,/, ""), 'base64');
 
@@ -90,6 +90,6 @@ export function updateProfileImage(userId, imageInfo) {
     if (err) {
       throw err;
     }
-    location.reload();
+    renderCallback();
   });
 }

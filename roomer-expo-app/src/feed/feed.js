@@ -34,6 +34,7 @@ class Feed extends Component {
   }
 
   updateState = (updatedFeedProps) => {
+    if(!this._isMounted) return;
     this.setState({
       pageSize: updatedFeedProps.pageSize,
       lastPostId: null,
@@ -50,7 +51,7 @@ class Feed extends Component {
     if (this.state.fromFilter) {
       this.state.fromFilter = false;
       getFeed(this.state.pageSize, this.state.lastPostId, this.state.housingType, this.state.location, this.state.housingPrice, this.state.moveInDate, this.state.tags, this.state.roomType, this.state.layout).then(response => {
-        if (response != -1) {
+        if (response != -1 && this._isMounted) {
           this.setState({
             page: response,
             lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
@@ -113,23 +114,25 @@ class Feed extends Component {
       this.state.layout
     ).then(response => {
 
-      if (response != -1) {
-        let newPage = this.state.page.concat(response);
+      if (this._isMounted) {
+        if (response != -1) {
+          let newPage = this.state.page.concat(response);
 
-        this.setState({
-          pageSize: this.state.pageSize,
-          lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
-          page: newPage,
-          loading: false,
-          isEnd: response.length === 0,
-          error: false,
-        });
+          this.setState({
+            pageSize: this.state.pageSize,
+            lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
+            page: newPage,
+            loading: false,
+            isEnd: response.length === 0,
+            error: false,
+          });
 
-      } else {
-        this.setState(prevState => ({
-          ...prevState,
-          error: true
-        }));
+        } else {
+          this.setState(prevState => ({
+            ...prevState,
+            error: true
+          }));
+        }
       }
     });
   };

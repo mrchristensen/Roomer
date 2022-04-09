@@ -1,6 +1,6 @@
-import React, { Component, useContext } from "react";
+import React, { Component, useContext, useState, useEffect } from "react";
 import { Dimensions, StyleSheet, ImageBackground, Text } from "react-native";
-import {NavigationContext} from "react-navigation";
+import { NavigationContext } from "react-navigation";
 import bannerImage from "./banner.jpeg";
 import { Overlay } from "react-native-elements/dist/overlay/Overlay";
 import "./header.css";
@@ -32,7 +32,12 @@ const OnClickFindABuyerHeader = (props) => {
   );
   
   const navigation = useContext(NavigationContext);
-  let isHome = true;
+  const [isHome, setIsHome] = useState(true);
+
+  useEffect(
+    () => {
+      if(navigation) setIsHome(navigation.state.routeName === "Home");
+    }, [navigation]);
 
   return isHome ? (
     <span
@@ -79,7 +84,23 @@ const OnClickFindABuyerBanner = (props) => {
     <Text style={styles.buttonText}>I'm looking for a buyer </Text>
     <Icon name="search" type="feather" color={"#fff"} size={16} />
   </span>
-}
+};
+
+const RoomerLogoLink = (props) => {
+  const navigation = useContext(NavigationContext);
+  return (
+    <a className="roomer-logo-link">
+      <img 
+        className="roomer-logo" 
+        src={RoomerLogo} 
+        alt="Roomer logo"
+        onClick={() => {
+          if(navigation.state.routeName !== "Home") {
+            navigation.navigate("Home")
+          }
+        }} />
+    </a>);
+};
 
 class Header extends Component {
   _isMounted = false;
@@ -227,9 +248,7 @@ class Header extends Component {
             </div>
           </div>
           <div className="roomer-logo-container">
-            <a className="roomer-logo-link">
-              <img className="roomer-logo" src={RoomerLogo} alt="Roomer logo" />
-            </a>
+            <RoomerLogoLink/>
           </div>
           {this.state.isLoggedIn ? (
             <div className="header-options__right">
