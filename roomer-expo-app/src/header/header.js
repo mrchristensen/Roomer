@@ -93,7 +93,6 @@ class Header extends Component {
       userInfo: { Username: "" },
       signInClick: false,
       showAddPostOverlay: false,
-      isHome: true,
       firstName: null,
     };
   }
@@ -140,7 +139,6 @@ class Header extends Component {
             isLoggedIn: true,
             userInfo: parsedUser,
             signInClick: false,
-            isHome: true,
             firstName: parsedUser.FirstName,
           }));
         }
@@ -152,7 +150,6 @@ class Header extends Component {
             isLoggedIn: false,
             userInfo: null,
             signInClick: false,
-            isHome: true,
             firstName: null,
           }));
         }
@@ -185,7 +182,6 @@ class Header extends Component {
                   isLoggedIn: true,
                   userInfo: parsedUser,
                   signInClick: false,
-                  isHome: true,
                   firstName: parsedUser.FirstName
               }));
           }
@@ -196,7 +192,6 @@ class Header extends Component {
                   isLoggedIn: false,
                   userInfo: null,
                   signInClick: false,
-                  isHome: true,
                   firstName: null
               }));
           }
@@ -228,7 +223,7 @@ class Header extends Component {
               ) : (
                 <></>
               )}
-              <OnClickFindABuyerHeader isHome={this.state.isHome}/>
+              <OnClickFindABuyerHeader/>
             </div>
           </div>
           <div className="roomer-logo-container">
@@ -288,7 +283,6 @@ class Header extends Component {
                   signInClick: false,
                   isLoggedIn: true,
                   userInfo: user,
-                  isHome: true,
                   firstName: user.FirstName,
                 })
               }
