@@ -53,7 +53,7 @@ class Feed extends Component {
         if (response != -1) {
           this.setState({
             page: response,
-            isEnd: true
+            isEnd: response.length === 0
           });
         }
       });
@@ -90,6 +90,7 @@ class Feed extends Component {
   }
 
   onEndReached = () => {
+
     if (this.state.isEnd) {
       return;
     }
@@ -135,6 +136,7 @@ class Feed extends Component {
           keyExtractor={(item) => item._id}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
         />
       );
     } else {
@@ -151,7 +153,7 @@ class Feed extends Component {
 const styles = StyleSheet.create({
   feedContainer: !isMobile ? {
     paddingRight: '2%',
-    height: win.height + 280,
+    // height: win.height,
     width: '40%',
   } : {
     height: win.height,

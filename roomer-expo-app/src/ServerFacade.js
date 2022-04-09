@@ -2,7 +2,7 @@ import axios from 'axios';
 const AWS = require('aws-sdk');
 
 const API_GATEWAY =
-  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Sprint_4';
+  'https://API_GATEWAY.execute-api.us-east-2.amazonaws.com/Production';
 
 const GEOCODE_API = 
   'https://maps.googleapis.com/maps/api/geocode/json';
@@ -38,7 +38,7 @@ export async function getUserEmail(userID, loginToken) {
     let response = await axios.get(API_GATEWAY + '/getemail/' + userID,
     {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -50,16 +50,17 @@ export async function getUserEmail(userID, loginToken) {
   }
 }
 
-export async function addPost(userId, isoPost, location, housingType, minCost, maxCost, tags, startDate, endDate, loginToken) {
+export async function addPost(userId, isoPost, location, housingType, roomType, layout, minCost, maxCost, tags, startDate, endDate, loginToken) {
   try {
     //TODO: login token in the authorization header
-    console.log(userId, isoPost, location, housingType, minCost, maxCost, tags, startDate, endDate, loginToken);
 
     let response = await axios.post(API_GATEWAY + '/addpost', {
       userId: userId, 
       isoPost: isoPost, 
       location: location, 
       housingType: housingType, 
+      roomType: roomType,
+      layout: layout,
       minCost: minCost, 
       maxCost: maxCost, 
       tags: tags, 
@@ -67,7 +68,7 @@ export async function addPost(userId, isoPost, location, housingType, minCost, m
       endDate: endDate
     }, {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -84,7 +85,7 @@ export async function getUserAccountBio(userID, loginToken) {
     let response = await axios.get(API_GATEWAY + '/getbio/' + userID,
     {
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -96,16 +97,17 @@ export async function getUserAccountBio(userID, loginToken) {
   }
 }
 
-export async function getUserAccountPosts(userId, pageSize, lastPostId, loginToken) {
+export async function getUserAccountPosts(userId, pageSize, lastPostId, showUnresolved, loginToken) {
   try {
 
     let response = await axios.post(API_GATEWAY + '/getuserposts', {
       userId: userId,
       pageSize: pageSize,
       lastPostId: lastPostId,
+      showUnresolved: showUnresolved,
     },{
       headers: {
-        'Authorization': loginToken,
+        'Authorization': loginToken.jwtToken,
       }
     });
 
@@ -123,7 +125,7 @@ export async function resolvePostStatus(postId, loginToken) {
       postId: postId,
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -141,7 +143,7 @@ export async function unresolvePostStatus(postId, loginToken) {
       postId: postId,
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -160,7 +162,7 @@ export async function editUserAccountBio(userId, userBio, loginToken) {
       userBio: userBio
     },{
       headers: {
-        'Authorization': loginToken
+        'Authorization': loginToken.jwtToken
       }
     });
 
@@ -207,7 +209,7 @@ export async function createUser(userID, userEmail, username) {
 
 }
 
-export async function getUsername(userID) {
+export async function getUsername (userID) {
   console.log('Getting username in db')
 
   try {
