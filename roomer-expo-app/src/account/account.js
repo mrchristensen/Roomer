@@ -270,7 +270,6 @@ class Account extends Component {
                 />
                 {this.state.viewerIsUser ? (
                   <EditImageComponent userId={this.state.userId} renderCallback={() => {
-                    console.log("calling render callback");
                     this.setState({})}}/>
                 ) : (
                   <></>
