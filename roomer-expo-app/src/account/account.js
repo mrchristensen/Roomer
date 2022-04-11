@@ -38,12 +38,16 @@ function EditImageComponent(props) {
 
   React.useEffect(() => {
     if (!loading && filesContent.length != 0 && errors.length == 0) {
-      updateProfileImage(props.userId, filesContent[0].content, props.renderCallback);
+      updateProfileImage(
+        props.userId,
+        filesContent[0].content,
+        props.renderCallback
+      );
     }
   }, [loading]);
 
   return (
-    <Text style={[styles.uploadPictureText]} onPress={openFileSelector}>
+    <Text style={[styles.button]} onPress={openFileSelector}>
       Change profile picture
     </Text>
   );
@@ -148,7 +152,7 @@ class Account extends Component {
           content: "I hated Sally. Super flakey and mean.",
         },
       ],
-      messagesSent: [],
+      // messagesSent: [],
       showTab: null,
       showEditOverlay: false,
       viewerIsUser: props.navigation.state.params.owner == "1",
@@ -232,7 +236,7 @@ class Account extends Component {
           <MessagesTab
             userId={this.state.userId}
             token={this.state.token}
-            messagesSent={this.state.messagesSent}
+            // messagesSent={this.state.messagesSent}
           />
         ),
       }));
@@ -269,19 +273,24 @@ class Account extends Component {
                   style={[styles.profileImage]}
                 />
                 {this.state.viewerIsUser ? (
-                  <EditImageComponent userId={this.state.userId} renderCallback={() => {
-                    this.setState({})}}/>
+                  <View style={[styles.pad]}>
+                    <EditImageComponent
+                      userId={this.state.userId}
+                      renderCallback={() => {
+                        this.setState({});
+                      }}
+                    />
+                  </View>
                 ) : (
                   <></>
                 )}
               </View>
               <View style={styles.column}>
-                <Text style={styles.profileName}>{this.state.profileName}</Text>
-                <Text style={[styles.profileDescription]}>
-                  {this.state.profileDescription}
-                </Text>
-                <View style={!isMobile ? styles.row : styles.column}>
-                  <Rating
+                <View style={!isMobile ? styles.rowBetween : styles.column}>
+                  <Text style={styles.profileName}>
+                    {this.state.profileName}
+                  </Text>
+                  {/* <Rating
                     type="star"
                     ratingCount={5}
                     startingValue={this.state.rating}
@@ -291,17 +300,24 @@ class Account extends Component {
                   />
                   <Text style={styles.ratingsText}>
                     {!isMobile ? "ratings" : " "}
-                  </Text>
+                  </Text> */}
                   {this.state.viewerIsUser ? (
-                    <Button
-                      title="Edit Profile"
-                      onPress={this.onPressEdit}
-                      style={styles.editButton}
-                    />
+                    <Text style={[styles.button]} onPress={this.onPressEdit}>
+                      Edit
+                    </Text>
                   ) : (
+                    // <Button
+                    //   title="Edit Profile"
+                    //   onPress={this.onPressEdit}
+                    //   style={styles.button}
+                    // />
                     <></>
                   )}
                 </View>
+
+                <Text style={[styles.profileDescription]}>
+                  {this.state.profileDescription}
+                </Text>
               </View>
             </View>
 
@@ -311,9 +327,9 @@ class Account extends Component {
                 className="selectedTab"
                 onClick={() => {
                   document.getElementById("ratings").className = "tab";
-                  document.getElementById("messages")
-                    ? (document.getElementById("messages").className = "tab")
-                    : null;
+                  if (this.state.viewerIsUser) {
+                    document.getElementById("messages").className = "tab";
+                  }
                   document.getElementById("posts").className = "selectedTab";
                   this.updateShowTabs(false, false, true);
                 }}
@@ -325,9 +341,9 @@ class Account extends Component {
                 className="tab"
                 onClick={() => {
                   document.getElementById("ratings").className = "selectedTab";
-                  document.getElementById("messages")
-                    ? (document.getElementById("messages").className = "tab")
-                    : null;
+                  if (this.state.viewerIsUser) {
+                    document.getElementById("messages").className = "tab";
+                  }
                   document.getElementById("posts").className = "tab";
                   this.updateShowTabs(true, false, false);
                 }}
@@ -340,9 +356,8 @@ class Account extends Component {
                   className="tab"
                   onClick={() => {
                     document.getElementById("ratings").className = "tab";
-                    document.getElementById("messages")
-                      ? (document.getElementById("messages").className = "tab")
-                      : null;
+                    document.getElementById("messages").className =
+                      "selectedTab";
                     document.getElementById("posts").className = "tab";
                     this.updateShowTabs(false, true, false);
                   }}
@@ -424,6 +439,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: !isMobile ? "flex-start" : "center",
   },
+  rowBetween: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: !isMobile ? "space-between" : "center",
+    width: "100%",
+  },
   column: {
     flexDirection: "column",
     alignItems: !isMobile ? "flex-start" : "center",
@@ -447,10 +468,19 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: "row",
+    justifyContent: "center",
   },
-  uploadPictureText: {
-    textDecorationLine: "underline",
+  button: {
+    // textDecorationLine: "underline",
     cursor: "pointer",
+    backgroundColor: ROOMER_GRAY,
+    padding: 8,
+    borderRadius: 10,
+    // fontSize: 18,
+    color: "white",
+  },
+  pad: {
+    padding: 12,
   },
   imageColumn: {
     flexDirection: "column",

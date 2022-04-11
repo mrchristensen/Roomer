@@ -130,8 +130,8 @@ class MessagesTab extends Component {
 
 const styles = StyleSheet.create({
   postsContainer: {
-    // margin: '2%',
-    height: win.height,
+    margin: "2%",
+    // height: win.height, //TODO: uncommenting this will make pagination work, but will make it look ugly
   },
 });
 
