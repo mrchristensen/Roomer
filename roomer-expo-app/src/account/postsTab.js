@@ -49,6 +49,7 @@ class PostsTab extends Component {
   }
 
   onEndReached = () => {
+    console.log("onEndReached\nthis.state.isEnd: " + this.state.isEnd);
     if (this.state.isEnd) {
       return;
     }
@@ -99,8 +100,8 @@ class PostsTab extends Component {
 
 const styles = StyleSheet.create({
   postsContainer: {
-    // margin: '2%',
-    //  height: win.height  //TODO: uncommenting this will make pagination work, but will make it look ugly
+    margin: "2%",
+    height: win.height / 1.5,
   },
 });
 
