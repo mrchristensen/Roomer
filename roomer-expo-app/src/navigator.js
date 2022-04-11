@@ -14,21 +14,21 @@ const Navigator = createStackNavigator(
   {
     Home: {
       screen: HomeScreen,
-      path: "home",
+      path: "home/",
       navigationOptions: {
         header: null,
       },
     },
     Profile: {
       screen: Account,
-      path: "profile",
+      path: "profile/",
       navigationOptions: {
         header: null,
       },
     },
     Feedback: {
       screen: FeedbackScreen,
-      path: "feedback",
+      path: "feedback/",
       navigationOptions: {
         header: null,
       },
