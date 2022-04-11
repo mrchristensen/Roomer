@@ -196,8 +196,8 @@ class ExpandedISO extends Component {
     if(this.props.props.iso._id === -1) return;
 
     let error = this.props.props.iso.status === "resolved" 
-      ? await unresolvePostStatus(this.props.props.iso._id, this.state.token)
-      : await resolvePostStatus(this.props.props.iso._id, this.state.token);
+      ? await unresolvePostStatus(this.props.props.iso.userID, this.props.props.iso._id, this.state.token)
+      : await resolvePostStatus(this.props.props.iso.userID, this.props.props.iso._id, this.state.token);
     if(error == -1) {
       //TODO: handlerror
     } else {

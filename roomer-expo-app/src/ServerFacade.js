@@ -144,9 +144,10 @@ export async function getUserAccountPosts(userId, pageSize, lastPostId, showUnre
   }
 }
 
-export async function resolvePostStatus(postId, loginToken) {
+export async function resolvePostStatus(userId, postId, loginToken) {
   try {
     let response = await axios.post(API_GATEWAY + '/resolvepost', {
+      userId: userId,
       postId: postId,
     },{
       headers: {
@@ -161,9 +162,10 @@ export async function resolvePostStatus(postId, loginToken) {
   }
 }
 
-export async function unresolvePostStatus(postId, loginToken) {
+export async function unresolvePostStatus(userId, postId, loginToken) {
   try {
     let response = await axios.post(API_GATEWAY + '/unresolvepost', {
+      userId: userId,
       postId: postId,
     },{
       headers: {

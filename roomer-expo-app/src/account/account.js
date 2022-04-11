@@ -8,8 +8,6 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { Button } from "react-native-elements/dist/buttons/Button";
-import { Rating } from "react-native-ratings";
 import { useFilePicker } from "use-file-picker";
 import { Overlay, Icon } from "react-native-elements";
 import { updateProfileImage } from "../AWS";
@@ -62,6 +60,7 @@ class EditProfileOverlay extends Component {
       onPress: props.props.onPressEdit,
       onEdit: props.props.onEdit,
       userId: props.props.userId,
+      token: props.props.token
     };
 
     this.onChangeText = this.onChangeText.bind(this);
@@ -165,6 +164,8 @@ class Account extends Component {
     Auth.currentAuthenticatedUser()
       .then((user) => {
         let id = this.state.viewerIsUser ? user.username : this.state.userId;
+        console.log("view is user? ", this.state.viewerIsUser);
+        console.log("if viewer is user then id is: ", user.username, " else ", this.state.userId);
         this.setState({
           showTab: (
             <PostsTab
@@ -380,6 +381,7 @@ class Account extends Component {
                   onPressEdit: this.onPressEdit,
                   onEdit: this.onEdit,
                   userId: this.state.userId,
+                  token: this.state.token,
                 }}
               />
             </Overlay>
