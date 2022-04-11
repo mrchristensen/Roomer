@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { Overlay, Icon } from "react-native-elements";
 import "../feed/Form.css";
-import ExpandedISO from "../feed/expandedIso.js";
+import { getUsername } from "../ServerFacade";
+import { NavigationContext } from "react-navigation";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -26,39 +27,61 @@ function epochToDateString(epoch) {
   return d.toLocaleDateString("en-US", options);
 }
 
-//ISO post object as seen in feed, not the full view of it
+const UserPageLink = ({ id, name, isOwner }) => {
+  const navigation = useContext(NavigationContext);
+
+  return (
+    <TouchableOpacity
+      style={styles.detailsText}
+      onPress={() => {
+        navigation.navigate("Profile", {
+          owner: isOwner ? 1 : 0,
+          id: id,
+        });
+        // exitCallback();
+      }}
+    >
+      <>{name}</>
+    </TouchableOpacity>
+  );
+};
+
+//Messages shown in user's own profile/account page
 class Message extends Component {
-  onPress = () => {
-    //Expanded version of ISO
-    this.setState((prevState) => ({
-      ...prevState,
-      expanded: !this.state.expanded,
-    }));
-  };
+  // onPress = () => {
+  //   //Expanded version of ISO
+  //   this.setState((prevState) => ({
+  //     ...prevState,
+  //     expanded: !this.state.expanded,
+  //   }));
+  // };
 
   constructor(props) {
     super(props);
 
+    console.log("props of message");
+    console.log(props);
+
     this.state = {
       props: props.props,
-      postDate: epochToDateString(props.props.postedDate),
-      moveDate: epochToDateString(props.props.startDate),
-      expanded: false,
-      resolvedIndicator:
-        props.props.STATUS === "resolved" ? (
-          <View style={[styles.resolvedIcon]}>
-            <Icon
-              name="check-circle"
-              type="feather"
-              color={ROOMER_BLUE}
-              style={{ marginRight: 10 }}
-            />
-            {"   resolved"}
-          </View>
-        ) : (
-          <></>
-        ),
+      messageDate: epochToDateString(props.props.POST_DATE),
+      recipientID: props.props.RECIPIENT_ID,
+      messageSubject: props.props.MESSAGE_SUBJECT,
+      messageBody: props.props.MESSAGE_BODY,
+      recipientUsername: "",
     };
+
+    getUsername(this.state.recipientID).then((response) => {
+      console.log("getUsername response:");
+      console.log(response);
+      if (response != -1) {
+        this.setState({ recipientUsername: response.Item.USERNAME });
+        console.log("this.state.recipientUsername");
+        console.log(this.state.recipientUsername);
+      } else {
+        this.setState({ recipientUsername: this.state.recipientID });
+      }
+    });
   }
 
   render() {
@@ -67,25 +90,32 @@ class Message extends Component {
         <View style={[styles.rowContainer]}>
           <Image
             source={{
-              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.recipientID}`,
+              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.recipientID}`,
             }}
             style={[styles.profileImage]}
           />
           <View style={[styles.isoContentContainer]}>
+            <View style={[styles.toRecipient]}>
+              <Text style={[styles.topInfoRow]}>To: {"  "}</Text>
+              <UserPageLink
+                id={this.state.recipientID}
+                name={this.state.recipientUsername}
+                isOwner={false}
+              />
+            </View>
             <Text style={[styles.topInfoRow]}>
-              To: {serverfacade.getUserName(this.state.props.recipientID)}
-              {"\n"}
-              Subject: {this.state.props.message_subject}
+              Subject: {this.state.messageSubject}
             </Text>
             <Text style={[styles.datePostedRow]}>
-              Sent: {this.state.sentDate}
+              {" "}
+              Sent: {this.state.messageDate}
             </Text>
             <Text
               style={[styles.isoContentText]}
-              numberOfLines={2}
+              // numberOfLines={2}
               ellipsizeMode={"tail"}
             >
-              {this.state.props.messageBody}
+              {this.state.messageBody}
             </Text>
             {/* <TouchableOpacity style={styles.detailsText} onPress={this.onPress}>
               <>Details/Contact</>
@@ -93,27 +123,6 @@ class Message extends Component {
           </View>
         </View>
         <View style={styles.isoBorder}>{}</View>
-        <Overlay
-          overlayStyle={styles.overlayStyle}
-          isVisible={this.state.expanded}
-          onBackdropPress={this.onPress}
-        >
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.expandedScrollview}
-            // showsHorizontalScrollIndicator={false}
-          >
-            <TouchableOpacity
-              onPress={this.onPress}
-              style={styles.touchableIconContainer}
-            >
-              <Icon name="close" type="antdesign" color={ROOMER_GRAY} />
-            </TouchableOpacity>
-            <ExpandedISO
-              props={{ iso: this.state.props, onPress: this.onPress }}
-            />
-          </ScrollView>
-        </Overlay>
       </View>
     );
   }
@@ -153,6 +162,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "80%",
     paddingRight: "3%",
+  },
+  toRecipient: {
+    flexDirection: "row",
+    alignItems: "flex-start",
   },
   profileImage: !isMobile
     ? {
@@ -238,8 +251,9 @@ const styles = StyleSheet.create({
   detailsText: {
     color: ROOMER_BLUE,
     flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    fontWeight: "bold",
+    width: "100%",
+    fontSize: 14,
   },
   touchableIconContainer: {
     alignItems: "flex-end",
