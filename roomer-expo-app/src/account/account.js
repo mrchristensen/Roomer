@@ -164,8 +164,6 @@ class Account extends Component {
     Auth.currentAuthenticatedUser()
       .then((user) => {
         let id = this.state.viewerIsUser ? user.username : this.state.userId;
-        console.log("view is user? ", this.state.viewerIsUser);
-        console.log("if viewer is user then id is: ", user.username, " else ", this.state.userId);
         this.setState({
           showTab: (
             <PostsTab
