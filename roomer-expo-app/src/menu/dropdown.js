@@ -14,10 +14,18 @@ const Dropdown = (props) => {
     return (
         <div className='drop-down'>
             <div className='menu-item' onClick={(event) => {
-                navigation.navigate("Profile", {
+                if(navigation.state.routeName !== 'Profile') {
+                  navigation.navigate("Profile", {
                     owner: 1,
                     id: "",
-                });
+                  });
+                } else if (navigation.state.params.owner === '0') {
+                  navigation.navigate("Profile", {
+                    owner: 1,
+                    id: "",
+                  });
+                  location.reload()
+                }
             }}>
                 <span>
                     <Icon 

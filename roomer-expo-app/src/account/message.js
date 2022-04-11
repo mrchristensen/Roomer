@@ -38,7 +38,7 @@ const UserPageLink = ({ id, name, isOwner }) => {
           owner: isOwner ? 1 : 0,
           id: id,
         });
-        // exitCallback();
+        location.reload();
       }}
     >
       <>{name}</>
