@@ -59,9 +59,6 @@ class Message extends Component {
   constructor(props) {
     super(props);
 
-    console.log("props of message");
-    console.log(props);
-
     this.state = {
       props: props.props,
       messageDate: epochToDateString(props.props.POST_DATE),
@@ -72,12 +69,8 @@ class Message extends Component {
     };
 
     getUsername(this.state.recipientID).then((response) => {
-      console.log("getUsername response:");
-      console.log(response);
       if (response != -1) {
         this.setState({ recipientUsername: response.Item.USERNAME });
-        console.log("this.state.recipientUsername");
-        console.log(this.state.recipientUsername);
       } else {
         this.setState({ recipientUsername: this.state.recipientID });
       }

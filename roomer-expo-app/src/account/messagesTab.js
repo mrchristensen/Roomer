@@ -41,10 +41,6 @@ class MessagesTab extends Component {
       undefined,
       props.token
     ).then((response) => {
-      console.log("response from getUserMessage: ");
-      console.log(response);
-      console.log("response.Items[0].POST_ID");
-      console.log(response.Items[0].POST_ID);
       if (response != -1) {
         this.setState((prevState) => ({
           ...prevState,
@@ -81,12 +77,6 @@ class MessagesTab extends Component {
       this.state.lastMessageDate,
       this.state.token
     ).then((response) => {
-      console.log("response of second getUserMessages() call");
-      console.log(response);
-      console.log("this.state.lastMessageId");
-      console.log(this.state.lastMessageId);
-      console.log("this.state.lastMessageDate");
-      console.log(this.state.lastMessageDate);
       if (response != -1) {
         let newPage = this.state.messages.concat(response.Items);
 
