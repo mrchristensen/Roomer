@@ -24,13 +24,14 @@ class MessagesTab extends Component {
     this.state = {
       error: false, //sets to true if api call fails
       pageSize: 10,
-      lastPostId: null,
+      lastMessageId: null,
+      lastMessageDate: null,
       isEnd: false, //if end of user's posts list is reached
       userId: props.userId,
-      posts: [],
+      messages: [],
       scrolling: false,
       token: props.token,
-      showUnresolved: props.showUnresolved,
+      // showUnresolved: props.showUnresolved,
     };
 
     getUserMessages(
@@ -40,13 +41,23 @@ class MessagesTab extends Component {
       undefined,
       props.token
     ).then((response) => {
+      console.log("response from getUserMessage: ");
+      console.log(response);
+      console.log("response.Items[0].POST_ID");
+      console.log(response.Items[0].POST_ID);
       if (response != -1) {
         this.setState((prevState) => ({
           ...prevState,
-          lastPostId:
-            response.length > 0 ? response[response.length - 1]._id : null,
-          posts: response,
-          isEnd: response.length === 0,
+          lastMessageId:
+            response.Items.length > 0
+              ? response.Items[response.Items.length - 1].POST_ID
+              : null,
+          lastMessageDate:
+            response.Items.length > 0
+              ? response.Items[response.Items.length - 1].POST_DATE
+              : null,
+          messages: response.Items,
+          isEnd: response.Items.length === 0,
           error: false,
         }));
       } else {
@@ -63,24 +74,34 @@ class MessagesTab extends Component {
       return;
     }
 
-    getUserAccountPosts(
+    getUserMessages(
       this.state.userId,
       this.state.pageSize,
-      this.state.lastPostId,
-      this.state.lastPostDate,
+      this.state.lastMessageId,
+      this.state.lastMessageDate,
       this.state.token
     ).then((response) => {
+      console.log("response of second getUserMessages() call");
+      console.log(response);
+      console.log("this.state.lastMessageId");
+      console.log(this.state.lastMessageId);
+      console.log("this.state.lastMessageDate");
+      console.log(this.state.lastMessageDate);
       if (response != -1) {
-        let newPage = this.state.posts.concat(response);
+        let newPage = this.state.messages.concat(response.Items);
 
         this.setState({
           pageSize: this.state.pageSize,
-          lastPostId:
-            response.length > 0
-              ? response[response.length - 1]._id
-              : this.state.lastPostId,
-          posts: newPage,
-          isEnd: response.length === 0,
+          lastMessageId:
+            response.Items.length > 0
+              ? response.Items[response.Items.length - 1].POST_ID
+              : null,
+          lastMessageDate:
+            response.Items.length > 0
+              ? response.Items[response.Items.length - 1].POST_DATE
+              : null,
+          messages: newPage,
+          isEnd: response.Items.length === 0,
           error: false,
         });
       } else {
@@ -96,7 +117,7 @@ class MessagesTab extends Component {
     return (
       <FlatList
         style={[styles.postsContainer]}
-        data={this.state.posts}
+        data={this.state.messages}
         renderItem={({ item }) => <Message props={item} />}
         keyExtractor={(item) => item._id}
         showsHorizontalScrollIndicator={false}
