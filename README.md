@@ -4,6 +4,8 @@ Roomer is an app/website that reverses the housing market.  Buyers create in-sea
 
 This repo contains the final MVP prototype.  This prototype was created as the capstone project of 5 students over the course of two semesters.
 
+The final prototype can be viewed at: [https://www.roomerhasit.net/](https://www.roomerhasit.net/)
+
 ## Tech Stack
  - React Native (frontend)
  - Expo (continous integration and deployment)
