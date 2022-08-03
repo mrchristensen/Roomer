@@ -1,7 +1,3 @@
-# Note
-
-This is the project in it's final state, after we completed the capstone
-
 # Readme
 
 Documentation, Front and Backend files for Roomer Website.
