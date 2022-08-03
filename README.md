@@ -1,12 +1,25 @@
-# Readme
+# Roomer
 
-Documentation, Front and Backend files for Roomer Website.
+Roomer is an app/website that reverses the housing market.  Buyers create in-search-of posts (ISOs) of wanted housing.  IE: "Looking for a one bedroom apt in Bellevue..."
 
-roomer-expo-app/ contains all React Native files
+This repo contains the final MVP prototype.  This prototype was created as the capstone project of 5 students over the course of two semesters.
 
-Backend/ contains the lambda layer files used in AWS Lambda Layers
+## Tech Stack
+ - React Native (frontend)
+ - Expo (continous integration and deployment)
+ - AWS (backend)
+ - MongoDB (database)
+ - Figma (prototype)
 
-AWS Services:
+## Directories
+
+[roomer-expo-app/](roomer-expo-app/) contains all the React Native files for the front end. Expo is used to run and deploy the application.
+
+[Backend/](Backend/) contains the lambda layer files used in AWS Lambda Layers. [Backend/DAO/Dao](Backend/DAO/Dao) contains the code used for each Lambda Function.
+
+[Roomer.fig](Roomer.fig) contains the Figma file of the UX design and prototype.  This prototype can also be see online: [figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)
+
+## AWS Services
 
 Cognito
  - handles user authentication
