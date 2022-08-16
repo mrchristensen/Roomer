@@ -6,6 +6,8 @@ This repo contains the final MVP prototype.  This prototype was created as the c
 
 The final prototype can be viewed at: [https://www.roomerhasit.net/](https://www.roomerhasit.net/)
 
+The UX design can be see here: [https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)
+
 ## Tech Stack
  - React Native (frontend)
  - Expo (continous integration and deployment)
