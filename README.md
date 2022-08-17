@@ -1,6 +1,8 @@
 # Roomer
 
-Roomer is an app/website that reverses the housing market. Buyers create in-search-of posts (ISOs) of wanted housing. IE: "Looking for a one bedroom apt in Bellevue..."
+Roomer is an app/website that reverses the housing market. Buyers create in-search-of posts (ISOs) of wanted housing. IE: "Looking for a one bedroom apt in Bellevue..." Sellers can browse posts and message sellers about their open apartments/housing.
+
+[![](/misc-resources/homepage.JPG)](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)
 
 This repo contains the final MVP prototype. This prototype was created as the capstone project of 5 students over the course of two semesters.
 
@@ -16,6 +18,8 @@ The UX design can be see here: [https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlf
 - MongoDB (database)
 - Google Maps (map/POI)
 - Figma (prototype)
+
+![](misc-resources/tech-stack.jpg)
 
 ## Directories
 
@@ -50,8 +54,12 @@ API Gateway
 
 DynamoDB
 
-- Database for user table (not user credentials)
+- database for user table (not user credentials)
 
 EC2
 
 - an instance runs our MongoDB
+
+Simple Email Service
+
+- handles the messaging between users
