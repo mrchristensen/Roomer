@@ -16,7 +16,7 @@ _[roomer-expo-app/](roomer-expo-app/)_ contains all the React Native files for t
 
 _[Backend/](Backend/)_ contains the lambda layer files used in AWS Lambda Layers. [Backend/DAO/Dao](Backend/DAO/Dao) contains the code used for each Lambda Function.
 
-_[Roomer.fig](Roomer.fig)_ contains the Figma file of the UX design and prototype (which can be see online: [figma.com/file/Z2QJRuX5a0RZ6...](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)).
+_[Roomer.fig](Roomer.fig)_ contains the Figma file of the UX design and prototype (which can be see online: [figma.com/file/Z2QJRu...](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)).
 
 ## Tech Stack
 
