@@ -1,6 +1,13 @@
 # Roomer
 
-Roomer is an app/website that reverses the housing market. Buyers create in-search-of posts (ISOs) of wanted housing. IE: "Looking for a one bedroom apt in Bellevue..." Sellers can browse posts and message sellers about their open apartments/housing.
+Roomer is an app/website that reverses the housing market. Simply put, Roomer strives to connect sellers to buyers through a buyer-focused marketplace.
+
+For example, buyers create in-search-of posts (ISOs) of wanted housing.
+IE: "_I'm looking for a one bedroom apt in Bellevue that is dog friendly, etc etc..._"
+
+Sellers can browse those posts and message buyers about their open apartments/housing contracts.
+IE: "_Hey, I think my apartment might be perfect for you.
+We are located in the east side of Bellevue and have a dog friendly pet policy..._"
 
 [![](/misc-resources/README-homepage.jpg)](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)
 
