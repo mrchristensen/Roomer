@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -7,8 +7,8 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import { Button } from 'react-native-elements/dist/buttons/Button';
-import { Rating } from 'react-native-ratings';
+import { Button } from "react-native-elements/dist/buttons/Button";
+import { Rating } from "react-native-ratings";
 import "./Account.css";
 
 const win = Dimensions.get("window");
@@ -19,23 +19,21 @@ class RatingsTab extends Component {
     super(props);
 
     this.state = {
-      ratings: props.ratings
+      ratings: props.ratings,
     };
   }
 
   render() {
     return (
-      <View style={styles.ratingsTabContainer}>
-        User Ratings Coming Soon!
-      </View>
+      <View style={styles.ratingsTabContainer}>User Ratings Coming Soon!</View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  ratingsTabContainer: {   
+  ratingsTabContainer: {
     flexDirection: "column",
-    padding: '2%',
+    padding: "2%",
   },
 });
 

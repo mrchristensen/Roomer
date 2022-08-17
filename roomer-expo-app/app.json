@@ -3,9 +3,7 @@
     "name": "roomer-expo-app",
     "slug": "roomer-expo-app",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   },
   "name": "roomer-expo-app"
 }

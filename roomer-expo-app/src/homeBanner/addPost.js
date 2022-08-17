@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   View,
@@ -6,59 +6,89 @@ import {
   TouchableOpacity,
   ScrollView,
   Text,
-} from 'react-native';
-import { AiTwotoneCalendar, AiOutlineSearch } from 'react-icons/ai';
-import { Icon } from 'react-native-elements';
-import { IconContext } from 'react-icons';
-import MapView from 'react-native-web-maps';
-import DatePicker from 'react-modern-calendar-datepicker';
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import '../filter/filterDropDown.css';
-import '../filter/filter.css';
-import './AddPost.css';
-import { getCoordinates, addPost, editPost } from '../ServerFacade';
-import Dropdown from '../filter/filterDropDown';
-import {Auth} from 'aws-amplify';
-import FilterTags from '../filter/filterTags';
-import ExpandedISO from '../feed/expandedIso';
+} from "react-native";
+import { AiTwotoneCalendar, AiOutlineSearch } from "react-icons/ai";
+import { Icon } from "react-native-elements";
+import { IconContext } from "react-icons";
+import MapView from "react-native-web-maps";
+import DatePicker from "react-modern-calendar-datepicker";
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import "../filter/filterDropDown.css";
+import "../filter/filter.css";
+import "./AddPost.css";
+import { getCoordinates, addPost, editPost } from "../ServerFacade";
+import Dropdown from "../filter/filterDropDown";
+import { Auth } from "aws-amplify";
+import FilterTags from "../filter/filterTags";
+import ExpandedISO from "../feed/expandedIso";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
 
-const AddPost = ({props}) => {
-
+const AddPost = ({ props }) => {
   function epochToDateObj(epoch) {
-    if(epoch === null || !epoch) return null;
+    if (epoch === null || !epoch) return null;
     var d = new Date(epoch);
-    return {year: d.getFullYear(), month: d.getMonth()+1, day: d.getDate()};
+    return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
   }
-  
-  const [min, onChangeMin] =  useState(props.iso ? props.iso.minCost : 0);
+
+  const [min, onChangeMin] = useState(props.iso ? props.iso.minCost : 0);
   const [max, onChangeMax] = useState(props.iso ? props.iso.maxCost : 0);
-  const [dateRange, onChangeDateRange] = useState(props.iso 
-    ? {from: epochToDateObj(props.iso.startDate), to: epochToDateObj(props.iso.endDate)} 
-    : {from: null, to: null});
-  const [homeTypeValue, setHomeType] = useState(props.iso ? props.iso.housingType : "Select");
-  const [roomTypeValue, setRoomType] = useState(props.iso ? props.iso.roomType : "Select");
-  const [layoutValue, setLayout] = useState(props.iso ? props.iso.layout : "Select");
-  const [message, onChangeMessage] = useState(props.iso ? props.iso.isoPost : "");
-  const [selectedTags, setSelectedTags] = useState(props.iso ? props.iso.tags : []);
+  const [dateRange, onChangeDateRange] = useState(
+    props.iso
+      ? {
+          from: epochToDateObj(props.iso.startDate),
+          to: epochToDateObj(props.iso.endDate),
+        }
+      : { from: null, to: null }
+  );
+  const [homeTypeValue, setHomeType] = useState(
+    props.iso ? props.iso.housingType : "Select"
+  );
+  const [roomTypeValue, setRoomType] = useState(
+    props.iso ? props.iso.roomType : "Select"
+  );
+  const [layoutValue, setLayout] = useState(
+    props.iso ? props.iso.layout : "Select"
+  );
+  const [message, onChangeMessage] = useState(
+    props.iso ? props.iso.isoPost : ""
+  );
+  const [selectedTags, setSelectedTags] = useState(
+    props.iso ? props.iso.tags : []
+  );
   const [userID, setUserID] = useState(props.userID);
   const [tagUpdate, triggerTagUpdate] = useState(false);
   let mapRef = React.createRef();
-  const [location, setLocation] = useState(props.iso ? props.iso.location : "Provo");
-  const [intialRegion, setInitialRegion] = useState(props.iso ? props.initialRegion : {
-    latitude: 40.2338,
-    longitude: -111.6585,
-    latitudeDelta: 0.04,
-    longitudeDelta: 0.05,
-  });
+  const [location, setLocation] = useState(
+    props.iso ? props.iso.location : "Provo"
+  );
+  const [intialRegion, setInitialRegion] = useState(
+    props.iso
+      ? props.initialRegion
+      : {
+          latitude: 40.2338,
+          longitude: -111.6585,
+          latitudeDelta: 0.04,
+          longitudeDelta: 0.05,
+        }
+  );
 
   const [previewISO, setPreview] = useState({
-    status: "unresolved", 
+    status: "unresolved",
     postedDate: "",
-    startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
-    endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
+    startDate:
+      dateRange.from === null
+        ? null
+        : new Date(
+            dateRange.from.year,
+            dateRange.from.month - 1,
+            dateRange.from.day
+          ),
+    endDate:
+      dateRange.to === null
+        ? null
+        : new Date(dateRange.to.year, dateRange.to.month - 1, dateRange.to.day),
     userID: userID,
     _id: -1,
     housingType: homeTypeValue,
@@ -66,84 +96,98 @@ const AddPost = ({props}) => {
     maxCost: max,
     location: location,
     isoPost: message,
-    tags: selectedTags
+    tags: selectedTags,
   });
 
   useEffect(() => {
     setPreview({
-        status: "unresolved", 
-        postedDate: "",
-        startDate: dateRange.from === null ? null : new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day),
-        endDate: dateRange.to === null ? null : new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day),
-        userID: userID,
-        _id: -1,
-        housingType: homeTypeValue,
-        minCost: min,
-        maxCost: max,
-        location: location,
-        isoPost: message,
-        tags: selectedTags
-      });
+      status: "unresolved",
+      postedDate: "",
+      startDate:
+        dateRange.from === null
+          ? null
+          : new Date(
+              dateRange.from.year,
+              dateRange.from.month - 1,
+              dateRange.from.day
+            ),
+      endDate:
+        dateRange.to === null
+          ? null
+          : new Date(
+              dateRange.to.year,
+              dateRange.to.month - 1,
+              dateRange.to.day
+            ),
+      userID: userID,
+      _id: -1,
+      housingType: homeTypeValue,
+      minCost: min,
+      maxCost: max,
+      location: location,
+      isoPost: message,
+      tags: selectedTags,
+    });
   }, [dateRange, message, homeTypeValue, min, max, location, tagUpdate]);
 
   const homeType = [
     {
-        id: 0,
-        title: 'Apartment',
-        selected: false,
-        key: 'home-type'
+      id: 0,
+      title: "Apartment",
+      selected: false,
+      key: "home-type",
     },
     {
-        id: 1,
-        title: 'House',
-        selected: false,
-        key: 'home-type'
+      id: 1,
+      title: "House",
+      selected: false,
+      key: "home-type",
     },
-  ] 
+  ];
 
   const layoutList = [
-      {
-          id: 0,
-          title: 'Studio',
-          selected: false,
-          key: 'layout'
-      },
-      {
-          id: 1,
-          title: '1-Room',
-          selected: false,
-          key: 'layout'
-      },
-      {
-          id: 2,
-          title: 'Shared',
-          selected: false,
-          key: 'layout'
-      }
-  ]
+    {
+      id: 0,
+      title: "Studio",
+      selected: false,
+      key: "layout",
+    },
+    {
+      id: 1,
+      title: "1-Room",
+      selected: false,
+      key: "layout",
+    },
+    {
+      id: 2,
+      title: "Shared",
+      selected: false,
+      key: "layout",
+    },
+  ];
 
   const roomType = [
-      {
-          id: 0,
-          title: 'Private Room',
-          selected: false,
-          key: 'room-type'
-      },
-      {
-          id: 1,
-          title: 'Shared Room',
-          selected: false,
-          key: 'room-type'
-      }
-  ] 
+    {
+      id: 0,
+      title: "Private Room",
+      selected: false,
+      key: "room-type",
+    },
+    {
+      id: 1,
+      title: "Shared Room",
+      selected: false,
+      key: "room-type",
+    },
+  ];
 
   function setHomeTypeProperties(item) {
     if (item.key == "home-type") {
-        setHomeType(item.title);
+      setHomeType(item.title);
     } else if (item.key == "room-type") {
-        setRoomType(item.title);
+      setRoomType(item.title);
     } else if (item.key == "layout") {
-        setLayout(item.title)
+      setLayout(item.title);
     }
   }
 
@@ -154,7 +198,7 @@ const AddPost = ({props}) => {
 
   function setMap() {
     if (location == "") return;
-    getCoordinates(location).then(response => {
+    getCoordinates(location).then((response) => {
       if (response.status == 200) {
         let coordinates = response.data.results[0].geometry.location;
 
@@ -162,7 +206,7 @@ const AddPost = ({props}) => {
           latitude: coordinates.lat,
           longitude: coordinates.lng,
           latitudeDelta: 0.1,
-          longitudeDelta: 0.2
+          longitudeDelta: 0.2,
         });
       }
     });
@@ -175,18 +219,53 @@ const AddPost = ({props}) => {
     if (user == null) {
       //TODO: handle error
     } else {
-      let startDateFormatted = new Date(dateRange.from.year, dateRange.from.month-1, dateRange.from.day);
-      let endDateFormatted = new Date(dateRange.to.year, dateRange.to.month-1, dateRange.to.day);
+      let startDateFormatted = new Date(
+        dateRange.from.year,
+        dateRange.from.month - 1,
+        dateRange.from.day
+      );
+      let endDateFormatted = new Date(
+        dateRange.to.year,
+        dateRange.to.month - 1,
+        dateRange.to.day
+      );
 
-      let success = props.iso 
-          ? await editPost(user.username, props.iso._id, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken)
-          : await addPost(user.username, message, location, homeTypeValue, roomTypeValue, layoutValue, min, max, selectedTags, startDateFormatted, endDateFormatted, user.signInUserSession.accessToken);
-      
-        if (success == -1) {
-          //TODO: handle error
-        }
-        
-       window.location.reload();
+      let success = props.iso
+        ? await editPost(
+            user.username,
+            props.iso._id,
+            message,
+            location,
+            homeTypeValue,
+            roomTypeValue,
+            layoutValue,
+            min,
+            max,
+            selectedTags,
+            startDateFormatted,
+            endDateFormatted,
+            user.signInUserSession.accessToken
+          )
+        : await addPost(
+            user.username,
+            message,
+            location,
+            homeTypeValue,
+            roomTypeValue,
+            layoutValue,
+            min,
+            max,
+            selectedTags,
+            startDateFormatted,
+            endDateFormatted,
+            user.signInUserSession.accessToken
+          );
+
+      if (success == -1) {
+        //TODO: handle error
+      }
+
+      window.location.reload();
     }
   }
 
@@ -196,56 +275,59 @@ const AddPost = ({props}) => {
   }
 
   return (
-    <ScrollView 
+    <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       style={styles.addPostScrollview}
-      showsHorizontalScrollIndicator={false}>
-      {props.iso ? <></> : <TouchableOpacity
-        onPress={props.onPress}
-        style={styles.touchableIconContainer}>
-        <Icon           
-          name='close'
-          type='antdesign'
-          color={ROOMER_GRAY}
-        />
-      </TouchableOpacity>}
+      showsHorizontalScrollIndicator={false}
+    >
+      {props.iso ? (
+        <></>
+      ) : (
+        <TouchableOpacity
+          onPress={props.onPress}
+          style={styles.touchableIconContainer}
+        >
+          <Icon name="close" type="antdesign" color={ROOMER_GRAY} />
+        </TouchableOpacity>
+      )}
       <View style={styles.addPostContainer}>
         {props.iso ? <h3>Edit Post</h3> : <h3>Add Post</h3>}
-    
+
         <div className="postform-box">
           <View style={styles.textBox}>
             <Text>{"Price"}</Text>
             <Text>{"Move-In Date"}</Text>
           </View>
           <form onSubmit={handleOnSubmit}>
-            <div className={'price-date-wrapper'}>
+            <div className={"price-date-wrapper"}>
               <div className="range-container">
                 <div className="value-box">
-                  <span className='dollar-prefix'>$</span>
-                  <input 
+                  <span className="dollar-prefix">$</span>
+                  <input
                     type="text"
                     value={min}
-                    onChange={(event) => {onChangeMin(event.target.value)}}
-                    placeholder=""/>
+                    onChange={(event) => {
+                      onChangeMin(event.target.value);
+                    }}
+                    placeholder=""
+                  />
                 </div>
-                <label>
-                  {" - "}
-                </label>
+                <label>{" - "}</label>
                 <div className="value-box">
-                  <span className='dollar-prefix'>$</span>
-                  <input 
+                  <span className="dollar-prefix">$</span>
+                  <input
                     type="text"
                     value={max}
-                    onChange={(event) => {onChangeMax(event.target.value)}}
-                    placeholder="" />
+                    onChange={(event) => {
+                      onChangeMax(event.target.value);
+                    }}
+                    placeholder=""
+                  />
                 </div>
               </div>
-              <div className='date-wrapper'>
-                <DatePicker 
-                  value={dateRange}
-                  onChange={onChangeDateRange}
-                />
-                <IconContext.Provider value={{className: "calendar-icon"}}>
+              <div className="date-wrapper">
+                <DatePicker value={dateRange} onChange={onChangeDateRange} />
+                <IconContext.Provider value={{ className: "calendar-icon" }}>
                   <AiTwotoneCalendar />
                 </IconContext.Provider>
               </div>
@@ -256,53 +338,71 @@ const AddPost = ({props}) => {
               <Text>Room Type</Text>
             </View>
             <View style={styles.typeDropdownBox}>
-              <div className='add-post-dropdown'>
-              <Dropdown
-                title={homeTypeValue}
-                list={homeType}
-                setHomeTypeProperties={setHomeTypeProperties}
-              />
+              <div className="add-post-dropdown">
+                <Dropdown
+                  title={homeTypeValue}
+                  list={homeType}
+                  setHomeTypeProperties={setHomeTypeProperties}
+                />
               </div>
-              <div className='add-post-dropdown'>
-              <Dropdown 
-                title={layoutValue}
-                list={layoutList}
-                setHomeTypeProperties={setHomeTypeProperties}
-              />
+              <div className="add-post-dropdown">
+                <Dropdown
+                  title={layoutValue}
+                  list={layoutList}
+                  setHomeTypeProperties={setHomeTypeProperties}
+                />
               </div>
-              <div className='add-post-dropdown'>
-              <Dropdown 
-                title={roomTypeValue}
-                list={roomType}
-                setHomeTypeProperties={setHomeTypeProperties}
-              />
+              <div className="add-post-dropdown">
+                <Dropdown
+                  title={roomTypeValue}
+                  list={roomType}
+                  setHomeTypeProperties={setHomeTypeProperties}
+                />
               </div>
             </View>
             <h4>Description</h4>
             <textarea
               type="text"
               value={message}
-              onChange={(event) => {onChangeMessage(event.target.value)}}
-              placeholder="Add a message to your post..." />
+              onChange={(event) => {
+                onChangeMessage(event.target.value);
+              }}
+              placeholder="Add a message to your post..."
+            />
           </form>
-          <div className={!isMobile ? 'tag-map-wrapper' : 'tag-map-wrapper_mobile'}>
-            <div className='tag-map-sub-wrapper'>
-            <FilterTags selectedTags={selectedTags} confirmSelectedTags={confirmSelectedTags} />
+          <div
+            className={!isMobile ? "tag-map-wrapper" : "tag-map-wrapper_mobile"}
+          >
+            <div className="tag-map-sub-wrapper">
+              <FilterTags
+                selectedTags={selectedTags}
+                confirmSelectedTags={confirmSelectedTags}
+              />
             </div>
-            <div className='tag-map-sub-wrapper'>
-              <div className='location-container'>
-                <h2 className='filter-body-header'>Location</h2>
-                <div className='location-search-container'>
-                  <form className='location-input' onSubmit={(e) => onSubmitLocation(e)}>
-                    <input type="text" placeholder={"Enter a location"} value={location} onChange={(e) => setLocation(e.target.value)}/>
-                    <button type='submit' className='location-button'>
-                      <IconContext.Provider value={{className: "search-icon"}}>
+            <div className="tag-map-sub-wrapper">
+              <div className="location-container">
+                <h2 className="filter-body-header">Location</h2>
+                <div className="location-search-container">
+                  <form
+                    className="location-input"
+                    onSubmit={(e) => onSubmitLocation(e)}
+                  >
+                    <input
+                      type="text"
+                      placeholder={"Enter a location"}
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
+                    <button type="submit" className="location-button">
+                      <IconContext.Provider
+                        value={{ className: "search-icon" }}
+                      >
                         <AiOutlineSearch />
                       </IconContext.Provider>
                     </button>
                   </form>
                 </div>
-                <div className='map-container'>
+                <div className="map-container">
                   <MapView
                     ref={mapRef}
                     style={styles.mapStyle}
@@ -312,19 +412,23 @@ const AddPost = ({props}) => {
               </div>
             </div>
           </div>
-          <div className='submitBtnWrapper'>
+          <div className="submitBtnWrapper">
             <input
               type="submit"
               value="Post"
               className="submitBtn"
-              onClick={handleOnSubmit} />
+              onClick={handleOnSubmit}
+            />
           </div>
         </div>
         <View style={styles.isoBorderExpanded}>{}</View>
         <h3>Preview Post</h3>
-        <ExpandedISO props={{iso: previewISO, onPress: () => {}}} key={previewISO}/>
+        <ExpandedISO
+          props={{ iso: previewISO, onPress: () => {} }}
+          key={previewISO}
+        />
       </View>
-    </ScrollView >
+    </ScrollView>
   );
 };
 
@@ -333,9 +437,9 @@ const ROOMER_BLUE = "#5587a2";
 
 const styles = StyleSheet.create({
   addPostContainer: {
-    flexDirection: 'column',
-    marginHorizontal: !isMobile ? 100 : .05 * win.width,
-    fontFamily: 'sans-serif'
+    flexDirection: "column",
+    marginHorizontal: !isMobile ? 100 : 0.05 * win.width,
+    fontFamily: "sans-serif",
   },
   addPostScrollview: {
     width: !isMobile ? 800 : win.width,
@@ -343,32 +447,32 @@ const styles = StyleSheet.create({
   },
   textBox: {
     color: ROOMER_GRAY,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: !isMobile ? 600 : .9 * win.width,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: !isMobile ? 600 : 0.9 * win.width,
     marginBottom: 10,
   },
   typeTextBox: {
     color: ROOMER_GRAY,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: !isMobile ? 600 : .9 * win.width,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: !isMobile ? 600 : 0.9 * win.width,
     marginTop: 20,
   },
   typeDropdownBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: !isMobile ? 600 : .9 * win.width,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    width: !isMobile ? 600 : 0.9 * win.width,
   },
   touchableIconContainer: {
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   mapStyle: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   label: {
     marginLeft: 8,
@@ -382,6 +486,5 @@ const styles = StyleSheet.create({
     marginLeft: !isMobile ? 120 : 0,
   },
 });
-
 
 export default AddPost;

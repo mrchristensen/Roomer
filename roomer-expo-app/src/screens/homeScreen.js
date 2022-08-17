@@ -116,7 +116,7 @@ class App extends Component {
             <View style={[styles.sectionContainer]}>
               <Header />
               <View style={[styles.bodyContainer]}>
-                <FilterMobile 
+                <FilterMobile
                   filterValuesSet={this.filterValuesSet}
                   updateFeedState={this.state.updateFeedState}
                 />

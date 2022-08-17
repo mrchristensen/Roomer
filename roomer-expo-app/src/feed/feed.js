@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {Dimensions, FlatList, StyleSheet, Text} from 'react-native';
-import {getFeed} from '../ServerFacade';
-import ISO from './iso';
+import React, { Component } from "react";
+import { Dimensions, FlatList, StyleSheet, Text } from "react-native";
+import { getFeed } from "../ServerFacade";
+import ISO from "./iso";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -27,14 +27,14 @@ class Feed extends Component {
       isEnd: false,
       error: false,
       fromFilter: false,
-      setUpdateFeedState: props.setUpdateFeedState
+      setUpdateFeedState: props.setUpdateFeedState,
     };
-    
-    this.state.setUpdateFeedState(this.updateState)
+
+    this.state.setUpdateFeedState(this.updateState);
   }
 
   updateState = (updatedFeedProps) => {
-    if(!this._isMounted) return;
+    if (!this._isMounted) return;
     this.setState({
       pageSize: updatedFeedProps.pageSize,
       lastPostId: null,
@@ -43,19 +43,32 @@ class Feed extends Component {
       housingPrice: updatedFeedProps.housingPrice,
       moveInDate: updatedFeedProps.moveInDate,
       tags: updatedFeedProps.tags,
-      fromFilter: true
-    })
-  }
+      fromFilter: true,
+    });
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.fromFilter) {
       this.state.fromFilter = false;
-      getFeed(this.state.pageSize, this.state.lastPostId, this.state.housingType, this.state.location, this.state.housingPrice, this.state.moveInDate, this.state.tags, this.state.roomType, this.state.layout).then(response => {
+      getFeed(
+        this.state.pageSize,
+        this.state.lastPostId,
+        this.state.housingType,
+        this.state.location,
+        this.state.housingPrice,
+        this.state.moveInDate,
+        this.state.tags,
+        this.state.roomType,
+        this.state.layout
+      ).then((response) => {
         if (response != -1 && this._isMounted) {
           this.setState({
             page: response,
-            lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
-            isEnd: response.length === 0
+            lastPostId:
+              response.length > 0
+                ? response[response.length - 1]._id
+                : this.state.lastPostId,
+            isEnd: response.length === 0,
           });
         }
       });
@@ -64,11 +77,11 @@ class Feed extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    
-    getFeed(this.state.pageSize).then(response => {
+
+    getFeed(this.state.pageSize).then((response) => {
       if (this._isMounted) {
         if (response != -1) {
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             ...prevState,
             lastPostId: response[response.length - 1]._id,
             page: response,
@@ -76,11 +89,10 @@ class Feed extends Component {
             isEnd: response.length === 0,
             error: false,
           }));
-
         } else {
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             ...prevState,
-            error: true
+            error: true,
           }));
         }
       }
@@ -92,12 +104,11 @@ class Feed extends Component {
   }
 
   onEndReached = () => {
-
     if (this.state.isEnd) {
       return;
     }
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       loading: true,
     }));
@@ -105,32 +116,33 @@ class Feed extends Component {
     getFeed(
       this.state.pageSize,
       this.state.lastPostId,
-      this.state.housingType, 
-      this.state.location, 
-      this.state.housingPrice, 
-      this.state.moveInDate, 
-      this.state.tags, 
-      this.state.roomType, 
+      this.state.housingType,
+      this.state.location,
+      this.state.housingPrice,
+      this.state.moveInDate,
+      this.state.tags,
+      this.state.roomType,
       this.state.layout
-    ).then(response => {
-
+    ).then((response) => {
       if (this._isMounted) {
         if (response != -1) {
           let newPage = this.state.page.concat(response);
 
           this.setState({
             pageSize: this.state.pageSize,
-            lastPostId: response.length > 0 ? response[response.length - 1]._id : this.state.lastPostId,
+            lastPostId:
+              response.length > 0
+                ? response[response.length - 1]._id
+                : this.state.lastPostId,
             page: newPage,
             loading: false,
             isEnd: response.length === 0,
             error: false,
           });
-
         } else {
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             ...prevState,
-            error: true
+            error: true,
           }));
         }
       }
@@ -138,12 +150,12 @@ class Feed extends Component {
   };
 
   render() {
-    if(!this.state.error) {
+    if (!this.state.error) {
       return (
         <FlatList
           style={[styles.feedContainer]}
           data={this.state.page}
-          renderItem={({item}) => <ISO props={item} />}
+          renderItem={({ item }) => <ISO props={item} />}
           keyExtractor={(item) => item._id}
           onEndReached={this.onEndReached}
           onEndReachedThreshold={0.5}
@@ -151,34 +163,31 @@ class Feed extends Component {
         />
       );
     } else {
-      return (
-        <Text
-          style={[styles.errorContainer]} >
-            An error occurred.
-        </Text>
-      )
+      return <Text style={[styles.errorContainer]}>An error occurred.</Text>;
     }
   }
 }
 
 const styles = StyleSheet.create({
-  feedContainer: !isMobile ? {
-    paddingRight: '2%',
-    // height: win.height,
-    width: '40%',
-  } : {
-    height: win.height,
-  },
+  feedContainer: !isMobile
+    ? {
+        paddingRight: "2%",
+        // height: win.height,
+        width: "40%",
+      }
+    : {
+        height: win.height,
+      },
   errorContainer: {
     flexDirection: "column",
-    marginHorizontal: !isMobile ? '2%' : 0,
+    marginHorizontal: !isMobile ? "2%" : 0,
     height: 500,
-    width: !isMobile ? '40%' : win.width - 20,
-    color: 'red',
+    width: !isMobile ? "40%" : win.width - 20,
+    color: "red",
     borderRadius: 60,
-    border: !isMobile ? '2px solid #000' : '',
-    textAlign: 'center',
-  }
+    border: !isMobile ? "2px solid #000" : "",
+    textAlign: "center",
+  },
 });
 
 export default Feed;

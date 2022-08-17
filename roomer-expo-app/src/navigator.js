@@ -44,9 +44,9 @@ const Navigator = createStackNavigator(
     // },
     defaultNavigationOptions: () => ({
       cardStyle: {
-          backgroundColor: "#fff",
+        backgroundColor: "#fff",
       },
-  }),
+    }),
   }
 );
 

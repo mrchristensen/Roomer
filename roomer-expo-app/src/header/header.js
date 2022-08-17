@@ -17,7 +17,6 @@ const isMobile = win.width < 600;
 const ROOMER_GRAY = "#1f241a";
 
 const OnClickFindABuyerHeader = (props) => {
-
   const findABuyerIcon = (
     <div className="icon-wrapper">
       {!isMobile ? "Find a Buyer" : ""}
@@ -30,76 +29,78 @@ const OnClickFindABuyerHeader = (props) => {
       />
     </div>
   );
-  
+
   const navigation = useContext(NavigationContext);
   const [isHome, setIsHome] = useState(true);
 
-  useEffect(
-    () => {
-      if(navigation) setIsHome(navigation.state.routeName === "Home");
-    }, [navigation]);
+  useEffect(() => {
+    if (navigation) setIsHome(navigation.state.routeName === "Home");
+  }, [navigation]);
 
   return isHome ? (
     <span
       className="options underline-home-effect"
       onClick={() => {
-        if(navigation.state.routeName !== "Home") {
-          navigation.navigate("Home")
+        if (navigation.state.routeName !== "Home") {
+          navigation.navigate("Home");
         }
       }}
     >
       {findABuyerIcon}
     </span>
   ) : (
-    <span 
+    <span
       className="options underline-hover-effect"
       onClick={() => {
-        if(navigation.state.routeName !== "Home") {
-          navigation.navigate("Home")
+        if (navigation.state.routeName !== "Home") {
+          navigation.navigate("Home");
         }
       }}
     >
       {findABuyerIcon}
     </span>
-  )
+  );
 };
 
 const OnClickFindABuyerBanner = (props) => {
-
   const navigation = useContext(NavigationContext);
 
-  return <span
-  className="icon-wrapper"
-  style={{
-    backgroundColor: ROOMER_GRAY,
-    padding: 8,
-    borderRadius: 10,
-  }}
-  onClick={() => {
-    if(navigation.state.routeName !== "Home") {
-      navigation.navigate("Home")
-    }
-  }}
-  >
-    <Text style={styles.buttonText}>I'm looking for a buyer </Text>
-    <Icon name="search" type="feather" color={"#fff"} size={16} />
-  </span>
+  return (
+    <span
+      className="icon-wrapper"
+      style={{
+        backgroundColor: ROOMER_GRAY,
+        padding: 8,
+        borderRadius: 10,
+      }}
+      onClick={() => {
+        if (navigation.state.routeName !== "Home") {
+          navigation.navigate("Home");
+        }
+      }}
+    >
+      <Text style={styles.buttonText}>I'm looking for a buyer </Text>
+      <Icon name="search" type="feather" color={"#fff"} size={16} />
+    </span>
+  );
 };
 
 const RoomerLogoLink = (props) => {
   const navigation = useContext(NavigationContext);
   return (
     <a className="roomer-logo-link">
-      <img 
-        className="roomer-logo" 
-        src={RoomerLogo} 
+      <img
+        className="roomer-logo"
+        src={RoomerLogo}
         alt="Roomer logo"
         onClick={() => {
-          if(navigation.state.routeName !== "Home") {
-            navigation.navigate("Home")
+          if (navigation.state.routeName !== "Home") {
+            navigation.navigate("Home");
           }
-        }} />
-    </a>);
+        }}
+      />
+    </a>
+  );
 };
 
 class Header extends Component {
@@ -180,42 +181,43 @@ class Header extends Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
-  
+
   onClickFindAPlace = () => {
-      this.setState({showAddPostOverlay: !this.state.showAddPostOverlay});
-  }
-  
+    this.setState({ showAddPostOverlay: !this.state.showAddPostOverlay });
+  };
 
   componentDidMount() {
-      this._isMounted = true;
+    this._isMounted = true;
 
-      Auth.currentAuthenticatedUser().then(user => {
-          let names = user["attributes"]["name"].split(" ");
-          let parsedUser = {
-              Username: user["username"],
-              FirstName: names[0],
-              LastName: names[1],
-              Email: user["attributes"]["email"]
-          }
-          if (this._isMounted) {
-              this.setState(prevState => ({
-                  ...prevState,
-                  isLoggedIn: true,
-                  userInfo: parsedUser,
-                  signInClick: false,
-                  firstName: parsedUser.FirstName
-              }));
-          }
-      }).catch(() => {
-          if (this._isMounted) {
-                  this.setState(prevState => ({
-                  ...prevState,
-                  isLoggedIn: false,
-                  userInfo: null,
-                  signInClick: false,
-                  firstName: null
-              }));
-          }
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        let names = user["attributes"]["name"].split(" ");
+        let parsedUser = {
+          Username: user["username"],
+          FirstName: names[0],
+          LastName: names[1],
+          Email: user["attributes"]["email"],
+        };
+        if (this._isMounted) {
+          this.setState((prevState) => ({
+            ...prevState,
+            isLoggedIn: true,
+            userInfo: parsedUser,
+            signInClick: false,
+            firstName: parsedUser.FirstName,
+          }));
+        }
+      })
+      .catch(() => {
+        if (this._isMounted) {
+          this.setState((prevState) => ({
+            ...prevState,
+            isLoggedIn: false,
+            userInfo: null,
+            signInClick: false,
+            firstName: null,
+          }));
+        }
       });
   }
 
@@ -244,11 +246,11 @@ class Header extends Component {
               ) : (
                 <></>
               )}
-              <OnClickFindABuyerHeader/>
+              <OnClickFindABuyerHeader />
             </div>
           </div>
           <div className="roomer-logo-container">
-            <RoomerLogoLink/>
+            <RoomerLogoLink />
           </div>
           {this.state.isLoggedIn ? (
             <div className="header-options__right">
@@ -360,7 +362,7 @@ class Header extends Component {
               style={{ position: "absolute", bottom: "10%", right: ".5%" }}
               className="options"
             >
-              <OnClickFindABuyerBanner/>
+              <OnClickFindABuyerBanner />
             </div>
           </ImageBackground>
         </div>
