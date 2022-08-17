@@ -55,3 +55,4 @@ web-build/
 dist/
 
 .vscode/
+roomer-expo-app/secrets.js

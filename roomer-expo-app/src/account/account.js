@@ -22,6 +22,7 @@ import {
 } from "../ServerFacade";
 import { Auth } from "aws-amplify";
 import Header from "../header/header";
+import { getAWS_BUCKET_NAME } from "../../secrets";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -60,7 +61,7 @@ class EditProfileOverlay extends Component {
       onPress: props.props.onPressEdit,
       onEdit: props.props.onEdit,
       userId: props.props.userId,
-      token: props.props.token
+      token: props.props.token,
     };
 
     this.onChangeText = this.onChangeText.bind(this);
@@ -134,7 +135,9 @@ class Account extends Component {
           ? ""
           : props.navigation.state.params.id,
       imageUrl:
-        "https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/general_user.png",
+        "https://" +
+        getAWS_BUCKET_NAME() +
+        ".s3.us-east-2.amazonaws.com/general_user.png",
       profileName: "ROOMER USER",
       profileDescription: "",
       rating: 5,
@@ -172,7 +175,10 @@ class Account extends Component {
               showUnresolved={this.state.viewerIsUser}
             />
           ),
-          imageUrl: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${id}`,
+          imageUrl:
+            `https://` +
+            getAWS_BUCKET_NAME() +
+            `.s3.us-east-2.amazonaws.com/${id}`,
           token: user.signInUserSession.accessToken,
         });
 

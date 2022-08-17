@@ -13,6 +13,7 @@ import { Overlay, Icon } from "react-native-elements";
 import "../feed/Form.css";
 import { getUsername } from "../ServerFacade";
 import { NavigationContext } from "react-navigation";
+import { getAWS_BUCKET_NAME } from "../../secrets";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
@@ -83,7 +84,10 @@ class Message extends Component {
         <View style={[styles.rowContainer]}>
           <Image
             source={{
-              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.recipientID}`,
+              uri:
+                `https://` +
+                getAWS_BUCKET_NAME() +
+                `.s3.us-east-2.amazonaws.com/${this.state.recipientID}`,
             }}
             style={[styles.profileImage]}
           />

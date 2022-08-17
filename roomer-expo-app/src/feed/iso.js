@@ -1,59 +1,65 @@
-import React, {useContext, Component} from 'react';
+import React, { useContext, Component } from "react";
 import {
   Dimensions,
   FlatList,
   View,
-  Text, 
+  Text,
   Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import { Overlay, Icon } from 'react-native-elements';
-import './Form.css';
-import ExpandedISO from './expandedIso.js';
+} from "react-native";
+import { Overlay, Icon } from "react-native-elements";
+import "./Form.css";
+import ExpandedISO from "./expandedIso.js";
+import { getAWS_BUCKET_NAME } from "../../secrets";
 
 const win = Dimensions.get("window");
 const isMobile = win.width < 600;
 
-const TagItem = ({props}) => {
+const TagItem = ({ props }) => {
   return <Text style={[styles.tag]}>{props}</Text>;
 };
 
 function epochToDateString(epoch) {
   var d = new Date(epoch);
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  var options = { year: "numeric", month: "long", day: "numeric" };
   return d.toLocaleDateString("en-US", options);
 }
 
 //ISO post object as seen in feed, not the full view of it
 class ISO extends Component {
-
-  onPress = () => { 
+  onPress = () => {
     //Expanded version of ISO
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
-      expanded: !this.state.expanded
+      expanded: !this.state.expanded,
     }));
-  }
+  };
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       props: props.props,
       postDate: epochToDateString(props.props.postedDate),
       moveDate: epochToDateString(props.props.startDate),
       expanded: false,
-      resolvedIndicator: props.props.STATUS === "resolved" ? 
-      <View style={[styles.resolvedIcon]}>
-        <Icon           
-          name='check-circle'
-          type='feather'
-          color={ROOMER_BLUE}
-          style={{marginRight: 10}}
-        />{"   resolved"}</View>: <></>,
-    }
+      resolvedIndicator:
+        props.props.STATUS === "resolved" ? (
+          <View style={[styles.resolvedIcon]}>
+            <Icon
+              name="check-circle"
+              type="feather"
+              color={ROOMER_BLUE}
+              style={{ marginRight: 10 }}
+            />
+            {"   resolved"}
+          </View>
+        ) : (
+          <></>
+        ),
+    };
   }
 
   render() {
@@ -63,18 +69,21 @@ class ISO extends Component {
           <Image
             key={Date.now()}
             source={{
-              uri: `https://AWS_BUCKET_NAME.s3.us-east-2.amazonaws.com/${this.state.props.userID}`,
+              uri:
+                `https://` +
+                getAWS_BUCKET_NAME() +
+                `.s3.us-east-2.amazonaws.com/${this.state.props.userID}`,
             }}
             style={[styles.profileImage]}
           />
           <View style={[styles.isoContentContainer]}>
             <Text style={[styles.topInfoRow]}>
               Type: {this.state.props.housingType}
-              {', Price: $'}
+              {", Price: $"}
               {this.state.props.minCost}
-              {' - $'}
+              {" - $"}
               {this.state.props.maxCost}
-              {', Location: '}
+              {", Location: "}
               {this.state.props.location}
             </Text>
             <Text style={[styles.datePostedRow]}>
@@ -84,21 +93,18 @@ class ISO extends Component {
             <Text
               style={[styles.isoContentText]}
               numberOfLines={2}
-              ellipsizeMode={'tail'}>
+              ellipsizeMode={"tail"}
+            >
               {this.state.props.isoPost}
             </Text>
             <FlatList
               style={[styles.tagRow]}
               data={this.state.props.tags}
-              renderItem={({item}) => <TagItem props={item} />}
-              listKey={(item, index) => 'tag' + index.toString()}
+              renderItem={({ item }) => <TagItem props={item} />}
+              listKey={(item, index) => "tag" + index.toString()}
             />
-            <TouchableOpacity
-              style={styles.detailsText} 
-              onPress={this.onPress}>
-              <>
-              Details/Contact
-              </>
+            <TouchableOpacity style={styles.detailsText} onPress={this.onPress}>
+              <>Details/Contact</>
             </TouchableOpacity>
           </View>
         </View>
@@ -106,23 +112,23 @@ class ISO extends Component {
         <Overlay
           overlayStyle={styles.overlayStyle}
           isVisible={this.state.expanded}
-          onBackdropPress={this.onPress}>
-          <ScrollView 
+          onBackdropPress={this.onPress}
+        >
+          <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={styles.expandedScrollview}
             // showsHorizontalScrollIndicator={false}
-            >
+          >
             <TouchableOpacity
               onPress={this.onPress}
-              style={styles.touchableIconContainer}>
-              <Icon           
-                name='close'
-                type='antdesign'
-                color={ROOMER_GRAY}
-              />
+              style={styles.touchableIconContainer}
+            >
+              <Icon name="close" type="antdesign" color={ROOMER_GRAY} />
             </TouchableOpacity>
-            <ExpandedISO props={{iso: this.state.props, onPress: this.onPress}}/>
-          </ScrollView >
+            <ExpandedISO
+              props={{ iso: this.state.props, onPress: this.onPress }}
+            />
+          </ScrollView>
         </Overlay>
       </View>
     );
@@ -133,15 +139,17 @@ const ROOMER_GRAY = "#1f241a";
 const ROOMER_BLUE = "#5587a2";
 
 const styles = StyleSheet.create({
-  isoContainer: !isMobile ? {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    width: "100%",
-    fontFamily: 'sans-serif'
-  } : {
-    paddingVertical: 20,
-    fontFamily: 'sans-serif'
-  },
+  isoContainer: !isMobile
+    ? {
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        width: "100%",
+        fontFamily: "sans-serif",
+      }
+    : {
+        paddingVertical: 20,
+        fontFamily: "sans-serif",
+      },
   isoBorder: {
     width: "84%",
     borderColor: ROOMER_GRAY,
@@ -149,78 +157,82 @@ const styles = StyleSheet.create({
     height: 25,
     marginLeft: "8%",
   },
-  rowContainer: !isMobile ? {
-    flexDirection: 'row',
-  } : {
-    flexDirection: 'row',
-    width: win.width * .95,
-  },
+  rowContainer: !isMobile
+    ? {
+        flexDirection: "row",
+      }
+    : {
+        flexDirection: "row",
+        width: win.width * 0.95,
+      },
   isoContentContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
     width: "80%",
     paddingRight: "3%",
   },
-  profileImage: !isMobile ? {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    marginRight: 40,
-  } : {
-    width: win.width * .15,
-    height: win.width * .15,
-    borderRadius: win.width * .15 / 2,
-    marginRight: 10,
-    marginLeft: 10
-  },
+  profileImage: !isMobile
+    ? {
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        marginRight: 40,
+      }
+    : {
+        width: win.width * 0.15,
+        height: win.width * 0.15,
+        borderRadius: (win.width * 0.15) / 2,
+        marginRight: 10,
+        marginLeft: 10,
+      },
   profileImageWrapper: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingRight: !isMobile ? 20 : 0,
   },
   topInfoRow: {
-    flexDirection: 'row',
-    fontWeight: 'bold',
-    width: '100%',
+    flexDirection: "row",
+    fontWeight: "bold",
+    width: "100%",
   },
   resolvedIcon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    fontStyle: 'italic',
-    fontWeight: 'normal',
+    flexDirection: "row",
+    alignItems: "center",
+    fontStyle: "italic",
+    fontWeight: "normal",
   },
   resolvedButtonIcon: {
     marginRight: 10,
   },
   datePostedRow: {
-    flexDirection: 'row',
-    color: 'gray',
+    flexDirection: "row",
+    color: "gray",
     marginTop: 5,
     marginBottom: 10,
   },
   isoContentText: {
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     marginTop: 10,
     marginBottom: 20,
   },
   tagRow: {
-    flexDirection: 'row',
-    width: '100%',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    width: "100%",
+    flexWrap: "wrap",
     paddingBottom: !isMobile ? 0 : 20,
   },
   actionRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     width: !isMobile ? 150 : win.width,
-    justifyContent: !isMobile ? 'flex-end' : 'center',
+    justifyContent: !isMobile ? "flex-end" : "center",
     cursor: "pointer",
   },
   actionItem: {
-    flexDirection: 'column',
+    flexDirection: "column",
     marginRight: 15,
     fontSize: 10,
     color: "gray",
-    textAlign: 'center',
+    textAlign: "center",
   },
   tag: {
     backgroundColor: ROOMER_GRAY,
@@ -229,7 +241,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 10,
     marginBottom: 5,
-    color: 'white',
+    color: "white",
     shadowColor: ROOMER_GRAY,
     shadowOffset: {
       width: 1,
@@ -241,13 +253,13 @@ const styles = StyleSheet.create({
   },
   detailsText: {
     color: ROOMER_BLUE,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end",
     marginRight: 30,
-    alignItems: 'center',
+    alignItems: "center",
   },
   touchableIconContainer: {
-    alignItems: "flex-end"
+    alignItems: "flex-end",
   },
   cancelIcon: {
     height: 20,
@@ -260,7 +272,7 @@ const styles = StyleSheet.create({
   expandedScrollview: {
     width: !isMobile ? 820 : win.width,
     height: !isMobile ? win.height - 200 : win.height,
-    fontFamily: 'sans-serif'
+    fontFamily: "sans-serif",
   },
 });
 
