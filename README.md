@@ -12,11 +12,11 @@ The UX design can be see here: [https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlf
 
 ## Directories
 
-[roomer-expo-app/](roomer-expo-app/) contains all the React Native files for the front end. Expo is used to run and deploy the application.
+*[roomer-expo-app/](roomer-expo-app/)* contains all the React Native files for the front end. Expo is used to run and deploy the application.
 
-[Backend/](Backend/) contains the lambda layer files used in AWS Lambda Layers. [Backend/DAO/Dao](Backend/DAO/Dao) contains the code used for each Lambda Function.
+*[Backend/](Backend/)* contains the lambda layer files used in AWS Lambda Layers. [Backend/DAO/Dao](Backend/DAO/Dao) contains the code used for each Lambda Function.
 
-[Roomer.fig](Roomer.fig) contains the Figma file of the UX design and prototype. This prototype can also be see online: [figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)
+*[Roomer.fig](Roomer.fig)* contains the Figma file of the UX design and prototype (which can be see online: [figma.com/file/Z2QJRuX5a0RZ6...](https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlfp/Roomer)).
 
 ## Tech Stack
 
