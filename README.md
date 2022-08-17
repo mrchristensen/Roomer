@@ -14,6 +14,7 @@ The UX design can be see here: [https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlf
 - Expo (continuous integration and deployment)
 - AWS (backend)
 - MongoDB (database)
+- Google Maps (map/POI)
 - Figma (prototype)
 
 ## Directories
