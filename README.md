@@ -29,7 +29,7 @@ The UX design can be see here: [https://www.figma.com/file/Z2QJRuX5a0RZ6fZ00GSlf
 - Expo (continuous integration and deployment)
 - AWS (backend)
   - API Gateway (gateway for all backend endpoints)
-  - Lambda (cloud functions triggered by Gateway, Lambda layer contains att Data Access Object files)
+  - Lambda (cloud functions triggered by Gateway, Lambda layer contains all Data Access Object files)
   - Cognito (user authentication)
   - Amplify (hosts website client)
   - DynamoDB (database for user table (not user credentials)
