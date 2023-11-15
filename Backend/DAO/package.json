@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1401.0",
-    "axios": "^0.23.0",
+    "axios": "^1.6.0",
     "mongoose": "^6.12.0",
     "jsonwebtoken": "^9.0.0",
     "jwk-to-pem": "^2.0.5"
