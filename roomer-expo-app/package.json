@@ -23,7 +23,7 @@
     "@react-navigation/web": "^1.0.0-alpha.9",
     "accordion-collapse-react-native": "^1.1.0",
     "amazon-cognito-identity-js": "^5.2.3",
-    "aws-amplify": "^5.3.21",
+    "aws-amplify": "^6.6.7",
     "aws-sdk": "^2.1406.0",
     "axios": "^1.6.0",
     "expo": "~49.0.2",
